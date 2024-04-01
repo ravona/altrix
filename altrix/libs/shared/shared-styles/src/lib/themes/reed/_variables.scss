@@ -1,0 +1,38 @@
+$colors: (
+  bg: (
+    default: #e4d9ff,
+    alt: #c9b3ff,
+  ),
+  palette: (
+    1: #0466c8,
+    2: #0353a4,
+    3: #023e7d,
+    4: #002855,
+    5: #001845,
+  ),
+  txt: (
+    default: #171819,
+    alt: #555555,
+  ),
+);
+
+$fontFamilies: (
+  default: unquote("Raleway, sans-serif"),
+  alt: unquote("Dosis, sans-serif"),
+);
+
+$spacings: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  md: 1rem,
+  lg: 2rem,
+  xl: 4rem,
+);
+
+$fontSizes: (
+  xs: clamp(0.75rem, 2vw, 1rem),
+  sm: clamp(1rem, 4vw, 1.25rem),
+  md: clamp(1.25rem, 6vw, 1.5rem),
+  lg: clamp(1.5rem, 8vw, 2.5rem),
+  xl: clamp(2rem, 10vw, 3.5rem),
+);
