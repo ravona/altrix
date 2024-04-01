@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
+import '@altrix/shared-styles/_reset.scss';
 
 import App from './app/app';
 
