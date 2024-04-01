@@ -4,12 +4,13 @@ import styles from './Player.module.scss';
 
 const Player: React.FC<Story> = (props) => {
   return (
-    <div className={styles['Player']}>
-      <div key={props.id}>
+    <div key={props.id} className={styles['Player']}>
+      <header className={styles['Player__Header']}>
         <h3>{props.name}</h3>
         <h4>{props.source}</h4>
-        <article>{props.content}</article>
-      </div>
+      </header>
+      <article className={styles['Player__Screen']}>{props.content}</article>
+      <footer className={styles['Player__Footer']}>Footer</footer>
     </div>
   );
 };

@@ -17,8 +17,8 @@ $colors: (
 );
 
 $fontFamilies: (
-  default: unquote("Raleway, sans-serif"),
-  alt: unquote("Dosis, sans-serif"),
+  default: unquote('Mate, serif'),
+  alt: unquote('Podkova, serif'),
 );
 
 $spacings: (
@@ -35,4 +35,12 @@ $fontSizes: (
   md: clamp(1.25rem, 6vw, 1.5rem),
   lg: clamp(1.5rem, 8vw, 2.5rem),
   xl: clamp(2rem, 10vw, 3.5rem),
+);
+
+$layers: (
+  lowest: -1,
+  low: 10,
+  mid: 100,
+  high: 200,
+  highest: 1000,
 );

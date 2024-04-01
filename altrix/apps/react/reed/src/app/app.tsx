@@ -7,8 +7,7 @@ const myStory = stories[3];
 
 export function App() {
   return (
-    <main>
-      <h1>Reed</h1>
+    <main className={styles['App']}>
       <Player
         id={myStory.id}
         name={myStory.name}

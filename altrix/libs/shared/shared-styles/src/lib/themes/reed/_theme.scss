@@ -1,2 +1,2 @@
-@use './fonts' as *;
-@use './variables' as *;
+@forward './fonts';
+@forward './variables';
