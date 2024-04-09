@@ -11,18 +11,17 @@ import styles from './TextPlayer.module.scss';
 const TextPlayer: React.FC<Story> = (props) => {
     const [index, setIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [content, setContent] = useState<string[]>([]);
     const textPlayer = useRef<TextPlayerClass | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        textPlayer.current = new TextPlayerClass(
-            props,
-            (newIndex, newIsPlaying) => {
-                setIndex(newIndex);
-                setIsPlaying(newIsPlaying);
-                scrollChunkIntoView(newIndex);
-            },
-        );
+        textPlayer.current = new TextPlayerClass(props, (index, isPlaying) => {
+            setIndex(index);
+            setIsPlaying(isPlaying);
+            scrollChunkIntoView(index);
+        });
+        setContent(textPlayer.current?.content || []);
     }, [props]);
 
     const handlePlay = () => {
@@ -37,13 +36,11 @@ const TextPlayer: React.FC<Story> = (props) => {
         textPlayer.current?.stop();
     };
 
-    const handleSeek = (event: any, newValue: number | number[]) => {
+    const handleSeek = (event: Event, newValue: number | number[]) => {
         textPlayer.current?.seek(newValue as number);
-        // Scroll to the current chunk when slider value changes
         scrollChunkIntoView(newValue as number);
     };
 
-    // Function to scroll the current chunk into view
     const scrollChunkIntoView = (index: number) => {
         const element = containerRef.current?.querySelector(
             `.${styles['TextPlayer__Chunk']}:nth-child(${index + 1})`,
@@ -63,20 +60,15 @@ const TextPlayer: React.FC<Story> = (props) => {
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {textPlayer.current && textPlayer.current.content ? (
-                        textPlayer.current.content.map(
-                            (chunk: string, i: number) => (
-                                <p
-                                    key={i}
-                                    className={`${styles['TextPlayer__Chunk']} ${i === index ? styles['is-active'] : ''}`}
-                                >
-                                    {chunk}
-                                </p>
-                            ),
-                        )
-                    ) : (
-                        <p>Loading...</p>
-                    )}
+                    {content &&
+                        content.map((chunk: string, i: number) => (
+                            <p
+                                key={i}
+                                className={`${styles['TextPlayer__Chunk']} ${i === index ? styles['is-active'] : ''}`}
+                            >
+                                {chunk}
+                            </p>
+                        ))}
                 </div>
             </div>
             <footer className={styles['TextPlayer__Footer']}>
