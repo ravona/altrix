@@ -1,6 +1,6 @@
 export type Story = {
   id: string;
   name: string;
-  source: string;
+  source?: string;
   content: string;
 };

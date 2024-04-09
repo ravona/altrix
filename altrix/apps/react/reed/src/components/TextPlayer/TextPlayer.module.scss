@@ -1,0 +1,59 @@
+@use '../../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
+
+.TextPlayer {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
+    &__Header,
+    &__Content,
+    &__Footer {
+        padding: map-get($spacings, 'md');
+    }
+
+    &__Header,
+    &__Footer {
+        font-family: map-get($fontFamilies, 'alt');
+    }
+
+    &__Title,
+    &__Subtitle {
+        letter-spacing: 0.25ch;
+        line-height: 1;
+    }
+
+    &__Screen {
+        overflow-y: auto;
+    }
+
+    &__Content {
+        line-height: 1.5;
+        letter-spacing: -0.05ch;
+        font-family: map-get($fontFamilies, 'default');
+    }
+
+    &__Chunk {
+        font-size: map-get($fontSizes, 'md');
+        opacity: 0.5;
+        transition: all 0.25s ease;
+        margin-bottom: map-get($spacings, 'lg');
+        &:in-viewport {
+            border: 4px solid red;
+        }
+
+        &.is-active {
+            font-size: calc(map-get($fontSizes, 'md') + 10%);
+            opacity: 1;
+            transition: all 0.25s ease;
+        }
+    }
+
+    &__Footer {
+        padding-inline: map-get($spacings, 'lg');
+    }
+
+    &__Controls {
+        display: flex;
+        justify-content: center;
+    }
+}
