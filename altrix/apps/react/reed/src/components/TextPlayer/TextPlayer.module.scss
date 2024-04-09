@@ -5,14 +5,8 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
 
-    &__Header,
-    &__Content,
-    &__Footer {
+    &__Header {
         padding: map-get($spacings, 'md');
-    }
-
-    &__Header,
-    &__Footer {
         font-family: map-get($fontFamilies, 'alt');
     }
 
@@ -27,6 +21,7 @@
     }
 
     &__Content {
+        padding: map-get($spacings, 'md');
         line-height: 1.5;
         letter-spacing: -0.05ch;
         font-family: map-get($fontFamilies, 'default');
@@ -51,7 +46,8 @@
     }
 
     &__Footer {
-        padding-inline: map-get($spacings, 'lg');
+        padding: map-get($spacings, 'md');
+        font-family: map-get($fontFamilies, 'alt');
     }
 
     &__Controls {

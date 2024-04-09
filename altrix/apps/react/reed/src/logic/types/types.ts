@@ -4,3 +4,8 @@ export type Story = {
     source?: string;
     content: string;
 };
+
+export type Chunk = {
+    id: string;
+    text: string;
+};

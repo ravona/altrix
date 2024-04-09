@@ -1,59 +1,46 @@
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Button, ButtonGroup, Slider } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import { TextPlayer as TextPlayerClass } from '../../logic/TextPlayer';
-import { Story } from '../../logic/types/types';
+import { observer } from 'mobx-react';
+import React, { useEffect, useRef } from 'react';
+import { Chunk, Story } from '../../logic/types/types';
+import { textPlayerStore } from '../../mobx/text-player.store';
 
 import styles from './TextPlayer.module.scss';
+import { autorun } from 'mobx';
 
 const TextPlayer: React.FC<Story> = (props) => {
-    const [index, setIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [content, setContent] = useState<string[]>([]);
-    const textPlayer = useRef<TextPlayerClass | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        textPlayer.current = new TextPlayerClass(props, (index, isPlaying) => {
-            setIndex(index);
-            setIsPlaying(isPlaying);
-            scrollChunkIntoView(index);
+        const disposer = autorun(() => {
+            const currentIndex = textPlayerStore.index;
+            const currentChunkId = textPlayerStore.content[currentIndex]?.id;
+            if (currentChunkId) {
+                scrollChunkIntoView(currentChunkId);
+            }
         });
-        setContent(textPlayer.current?.content || []);
-    }, [props]);
 
-    const handlePlay = () => {
-        textPlayer.current?.play();
+        return () => disposer();
+    }, []);
+
+    const handleMoveSlider = (event: any, newValue: number | number[]) => {
+        const newIndex = Array.isArray(newValue) ? newValue[0] : newValue;
+        textPlayerStore.setIndex(newIndex);
     };
 
-    const handlePause = () => {
-        textPlayer.current?.pause();
+    const scrollChunkIntoView = (id: string) => {
+        const element = containerRef.current?.querySelector(`#${id}`);
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
 
-    const handleStop = () => {
-        textPlayer.current?.stop();
-    };
-
-    const handleSeek = (event: Event, newValue: number | number[]) => {
-        textPlayer.current?.seek(newValue as number);
-        scrollChunkIntoView(newValue as number);
-    };
-
-    const scrollChunkIntoView = (index: number) => {
-        const element = containerRef.current?.querySelector(
-            `.${styles['TextPlayer__Chunk']}:nth-child(${index + 1})`,
+    const handleChunkClick = (id: string) => {
+        textPlayerStore.setIndex(
+            textPlayerStore.content.findIndex((chunk) => chunk.id === id),
         );
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    };
-
-    const handleChunkClick = (chunkIndex: number) => {
-        setIndex(chunkIndex);
-        textPlayer.current?.seek(chunkIndex);
-        scrollChunkIntoView(chunkIndex);
+        scrollChunkIntoView(id);
     };
 
     return (
@@ -66,13 +53,14 @@ const TextPlayer: React.FC<Story> = (props) => {
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {content?.map((chunk: string, i: number) => (
+                    {textPlayerStore.content?.map((chunk: Chunk, i: number) => (
                         <p
-                            key={i}
-                            onClick={() => handleChunkClick(i)}
-                            className={`${styles['TextPlayer__Chunk']} ${i === index ? styles['is-active'] : ''}`}
+                            id={chunk.id}
+                            key={chunk.id}
+                            onClick={() => handleChunkClick(chunk.id)}
+                            className={`${styles['TextPlayer__Chunk']} ${i === textPlayerStore.index ? styles['is-active'] : ''}`}
                         >
-                            {chunk}
+                            {chunk.text}
                         </p>
                     ))}
                 </div>
@@ -80,28 +68,35 @@ const TextPlayer: React.FC<Story> = (props) => {
 
             <footer className={styles['TextPlayer__Footer']}>
                 <Slider
-                    value={index}
-                    onChange={handleSeek}
-                    max={
-                        textPlayer.current?.content.length
-                            ? textPlayer.current.content.length - 1
-                            : 0
-                    }
+                    value={textPlayerStore.index}
+                    onChange={handleMoveSlider}
+                    max={textPlayerStore.content.length - 1}
+                    marks
                 />
 
                 <div className={styles['TextPlayer__Controls']}>
-                    <ButtonGroup variant="text" aria-label="Basic button group">
-                        {isPlaying ? (
-                            <Button onClick={handlePause}>
+                    <ButtonGroup
+                        size="large"
+                        variant="text"
+                        aria-label="Basic button group"
+                    >
+                        {textPlayerStore.isPlaying && (
+                            <Button onClick={() => textPlayerStore.restart()}>
+                                <RestartAltIcon />
+                            </Button>
+                        )}
+
+                        {textPlayerStore.isPlaying ? (
+                            <Button onClick={() => textPlayerStore.pause()}>
                                 <PauseIcon />
                             </Button>
                         ) : (
-                            <Button onClick={handlePlay}>
+                            <Button onClick={() => textPlayerStore.play()}>
                                 <PlayArrowIcon />
                             </Button>
                         )}
 
-                        <Button onClick={handleStop}>
+                        <Button onClick={() => textPlayerStore.stop()}>
                             <StopIcon />
                         </Button>
                     </ButtonGroup>
@@ -111,4 +106,4 @@ const TextPlayer: React.FC<Story> = (props) => {
     );
 };
 
-export default TextPlayer;
+export default observer(TextPlayer);

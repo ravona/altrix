@@ -4,5 +4,5 @@ export const regexRules = {
 };
 
 export function splitTextWithRegex(text: string, regex: RegExp): string[] {
-    return text.split(regex);
+    return text.split(regex).filter(Boolean);
 }
