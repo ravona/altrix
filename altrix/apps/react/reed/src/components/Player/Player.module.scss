@@ -1,4 +1,4 @@
-@use '../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
+@use '../../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
 
 .Player {
   height: 100%;
@@ -7,16 +7,31 @@
   grid-template-rows: auto 1fr auto;
 
   &__Header,
+  &__Content,
   &__Footer {
     padding: map-get($spacings, 'md');
+  }
+
+  &__Header,
+  &__Footer {
     font-family: map-get($fontFamilies, 'alt');
+    line-height: 1;
+  }
+
+  &__Title,
+  &__Subtitle {
+    letter-spacing: 0.25ch;
   }
 
   &__Screen {
-    padding: map-get($spacings, 'lg');
     font-size: map-get($fontSizes, 'md');
     font-family: map-get($fontFamilies, 'default');
     background-color: map-get(map-get($colors, 'bg'), 'default');
     overflow-y: auto;
+  }
+
+  &__Content {
+    line-height: 1.314;
+    letter-spacing: -0.05ch;
   }
 }

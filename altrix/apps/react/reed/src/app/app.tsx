@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Player from '../components/Player';
+import Player from '../components/Player/Player';
 import stories from '../data/stories.json';
 import styles from './app.module.scss';
 
