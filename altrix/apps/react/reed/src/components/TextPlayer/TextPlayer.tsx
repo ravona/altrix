@@ -50,6 +50,12 @@ const TextPlayer: React.FC<Story> = (props) => {
         }
     };
 
+    const handleChunkClick = (chunkIndex: number) => {
+        setIndex(chunkIndex);
+        textPlayer.current?.seek(chunkIndex);
+        scrollChunkIntoView(chunkIndex);
+    };
+
     return (
         <article key={props.id} className={styles['TextPlayer']}>
             <header className={styles['TextPlayer__Header']}>
@@ -60,17 +66,18 @@ const TextPlayer: React.FC<Story> = (props) => {
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {content &&
-                        content.map((chunk: string, i: number) => (
-                            <p
-                                key={i}
-                                className={`${styles['TextPlayer__Chunk']} ${i === index ? styles['is-active'] : ''}`}
-                            >
-                                {chunk}
-                            </p>
-                        ))}
+                    {content?.map((chunk: string, i: number) => (
+                        <p
+                            key={i}
+                            onClick={() => handleChunkClick(i)}
+                            className={`${styles['TextPlayer__Chunk']} ${i === index ? styles['is-active'] : ''}`}
+                        >
+                            {chunk}
+                        </p>
+                    ))}
                 </div>
             </div>
+
             <footer className={styles['TextPlayer__Footer']}>
                 <Slider
                     value={index}

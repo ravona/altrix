@@ -5,10 +5,10 @@ import '@altrix/shared-styles/_reset.scss';
 import '@altrix/shared-styles/themes/reed/_theme.scss';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement,
 );
 root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+    <StrictMode>
+        <App />
+    </StrictMode>,
 );

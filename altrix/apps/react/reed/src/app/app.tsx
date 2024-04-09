@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Container } from '@mui/material'
-import TextPlayer from '../components/TextPlayer/TextPlayer'
-import stories from '../data/stories.json'
-import styles from './app.module.scss'
+import { Container } from '@mui/material';
+import TextPlayer from '../components/TextPlayer/TextPlayer';
+import stories from '../data/stories.json';
+import styles from './app.module.scss';
 
-const myStory = stories[1]
+const myStory = stories[1];
 
 export function App() {
     return (
@@ -18,7 +18,7 @@ export function App() {
                 />
             </main>
         </Container>
-    )
+    );
 }
 
-export default App
+export default App;
