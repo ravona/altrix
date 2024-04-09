@@ -9,7 +9,7 @@ class TextPlayerStore {
     content: Chunk[] = [];
     isPlaying: Boolean = false;
     intervalId?: number;
-    intervalDuration: number = 1000;
+    intervalDuration: number = 5000;
     index: number = 0;
 
     constructor(story: Story) {

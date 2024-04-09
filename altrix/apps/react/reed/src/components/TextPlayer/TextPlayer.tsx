@@ -80,7 +80,8 @@ const TextPlayer: React.FC<Story> = (props) => {
                         variant="text"
                         aria-label="Basic button group"
                     >
-                        {textPlayerStore.isPlaying && (
+                        {textPlayerStore.index ===
+                            textPlayerStore.content.length - 1 && (
                             <Button onClick={() => textPlayerStore.restart()}>
                                 <RestartAltIcon />
                             </Button>

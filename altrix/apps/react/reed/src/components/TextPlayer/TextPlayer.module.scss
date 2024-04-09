@@ -1,5 +1,7 @@
 @use '../../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
 
+$transition_duration: 0.333s;
+
 .TextPlayer {
     height: 100%;
     display: grid;
@@ -32,21 +34,23 @@
         font-size: map-get($fontSizes, 'md');
         margin-bottom: map-get($spacings, 'lg');
         opacity: 0.5;
-        transition: all 0.25s ease;
+        transition: all $transition_duration ease;
 
         &:hover {
             opacity: 1;
+            color: sienna;
+            font-size: calc(map-get($fontSizes, 'md') + 0.25rem);
         }
 
         &.is-active {
-            font-size: calc(map-get($fontSizes, 'md') * 1.2);
+            font-size: map-get($fontSizes, 'md');
             opacity: 1;
-            transition: all 0.25s ease;
+            transition: all $transition_duration ease;
         }
     }
 
     &__Footer {
-        padding: map-get($spacings, 'md');
+        padding: map-get($spacings, 'lg');
         font-family: map-get($fontFamilies, 'alt');
     }
 
