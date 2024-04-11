@@ -9,27 +9,40 @@ import { Story, TextFrame } from '../../logic/types/types';
 import styles from './TextPlayer.module.scss';
 
 const TextPlayer: React.FC<Story> = (props) => {
-    const [textPlayer, setTextPlayer] = useState<TextPlayerClass | null>(null);
+    const textPlayer = useRef<TextPlayerClass | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    // ui state:
+    const [currentTextFrame, setCurrentTextFrame] = useState<TextFrame | null>(
+        null,
+    );
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!textPlayer) {
-            const myPlayer = new TextPlayerClass(props);
-            setTextPlayer(myPlayer);
-            debugger;
+        if (!textPlayer.current) {
+            textPlayer.current = new TextPlayerClass(props);
+            setCurrentTextFrame(textPlayer.current.getCurrentTextFrame());
+            setCurrentIndex(textPlayer.current.getCurrentIndex());
         }
     }, [props]);
 
     const handlePlay = () => {
-        textPlayer?.play();
+        setIsPlaying(true);
+        textPlayer.current?.play();
     };
 
     const handlePause = () => {
-        textPlayer?.pause();
+        setIsPlaying(false);
+        textPlayer.current?.pause();
     };
 
     const handleStop = () => {
-        textPlayer?.stop();
+        setCurrentIndex(0);
+        textPlayer.current?.setCurrentTextFrame;
+        if (textPlayer.current?.getCurrentTextFrame()) {
+            setCurrentTextFrame(textPlayer.current?.getTextFrames()[0]);
+        }
+        textPlayer.current?.stop();
     };
 
     const scrollElementIntoView = (id: string) => {
@@ -38,20 +51,23 @@ const TextPlayer: React.FC<Story> = (props) => {
     };
 
     const handleMoveSlider = (event: Event, newValue: number | number[]) => {
-        const currentTextFrame =
-            textPlayer?.getTextFrames()[newValue as number];
-        if (currentTextFrame) {
-            textPlayer?.setCurrentTextFrame(currentTextFrame.id);
-            textPlayer?.setCurrentIndex(newValue as number);
+        const newFrame =
+            textPlayer.current?.getTextFrames()[newValue as number];
+
+        if (newFrame) {
+            textPlayer.current?.setCurrentTextFrame(newFrame.id);
+            textPlayer.current?.setCurrentIndex(newValue as number);
+            setCurrentTextFrame(newFrame);
+            setCurrentIndex(newValue as number);
+            scrollElementIntoView(newFrame.id);
         }
     };
 
     const handleTextFrameClick = (textFrame: TextFrame, i: number) => {
-        textPlayer?.setCurrentTextFrame(textFrame.id);
-        textPlayer?.setCurrentIndex(i);
-        if (textPlayer?.getCurrentTextFrame()) {
-            scrollElementIntoView(textPlayer?.getCurrentTextFrame()?.id || '');
-        }
+        textPlayer.current?.setCurrentTextFrame(textFrame.id);
+        textPlayer.current?.setCurrentIndex(i);
+        setCurrentTextFrame(textFrame);
+        scrollElementIntoView(textFrame.id);
     };
 
     return (
@@ -64,7 +80,7 @@ const TextPlayer: React.FC<Story> = (props) => {
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {textPlayer
+                    {textPlayer.current
                         ?.getTextFrames()
                         ?.map((textFrame: TextFrame, i: number) => (
                             <p
@@ -73,7 +89,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                                 onClick={() =>
                                     handleTextFrameClick(textFrame, i)
                                 }
-                                className={`${styles['TextPlayer__Chunk']} ${textFrame.id === textPlayer.getCurrentTextFrame()?.id ? styles['is-active'] : ''}`}
+                                className={`${styles['TextPlayer__Chunk']} ${textFrame.id === currentTextFrame?.id ? styles['is-active'] : ''}`}
                             >
                                 {textFrame.content}
                             </p>
@@ -82,18 +98,18 @@ const TextPlayer: React.FC<Story> = (props) => {
             </div>
             <footer className={styles['TextPlayer__Footer']}>
                 <Slider
-                    value={textPlayer?.getCurrentIndex() || 0}
+                    value={currentIndex}
                     onChange={handleMoveSlider}
                     max={
-                        textPlayer?.getTextFrames()
-                            ? textPlayer?.getTextFrames().length - 1
+                        textPlayer.current?.getTextFrames()
+                            ? textPlayer.current?.getTextFrames().length - 1
                             : 0
                     }
                 />
 
                 <div className={styles['TextPlayer__Controls']}>
                     <ButtonGroup variant="text" aria-label="Basic button group">
-                        {textPlayer?.getIsPlaying() ? (
+                        {isPlaying ? (
                             <Button onClick={handlePause}>
                                 <PauseIcon />
                             </Button>

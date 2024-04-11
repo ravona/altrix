@@ -1,14 +1,14 @@
+import { generateUniqueId } from '@altrix/shared-utils';
 import { regexRules } from './logic';
 import { Story, TextFrame } from './types/types';
-import { generateUniqueId } from '@altrix/shared-utils';
 
 export class TextPlayer {
     private textFrames: TextFrame[] = [];
-    private currentIndex: number = 0;
-    private currentTextFrame: TextFrame | null = null;
+    private currentIndex: number = 0; // ui
+    private currentTextFrame: TextFrame | null = null; // ui
     private intervalId: NodeJS.Timeout | null = null;
-    private intervalSpeed: number = 2000;
-    private isPlaying: boolean = false;
+    private intervalSpeed: number = 2000; // ui
+    private isPlaying: boolean = false; // ui
 
     constructor(story: Story) {
         const parsedContent = this.splitTextWithRegex(
@@ -18,6 +18,7 @@ export class TextPlayer {
         this.textFrames = parsedContent.map(
             (content: string): TextFrame => this.generateTextFrame(content),
         );
+        this.currentTextFrame = this.textFrames[this.currentIndex];
     }
 
     private generateTextFrame(content: string) {
@@ -38,13 +39,15 @@ export class TextPlayer {
     play() {
         if (this.isPlaying) return;
         this.isPlaying = true;
+
         if (!this.intervalId) {
             this.intervalId = setInterval(() => {
-                if (this.currentIndex < this.textFrames.length - 1) {
-                    this.currentIndex++;
-                } else {
+                if (this.currentIndex === this.textFrames.length - 1) {
                     this.pause();
+                    return;
                 }
+                this.currentTextFrame = this.textFrames[this.currentIndex];
+                this.currentIndex++;
             }, this.intervalSpeed);
         }
     }
@@ -56,7 +59,6 @@ export class TextPlayer {
     }
 
     stop() {
-        if (this.isPlaying) return;
         clearInterval(this.intervalId as NodeJS.Timeout);
         this.currentIndex = 0;
         this.isPlaying = false;

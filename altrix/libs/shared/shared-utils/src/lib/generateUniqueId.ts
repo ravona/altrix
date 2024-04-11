@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { customAlphabet, nanoid } from 'nanoid';
 
 /**
  * Generates a unique ID.
@@ -6,5 +6,7 @@ import { nanoid } from 'nanoid';
  * @returns A unique string ID.
  */
 export function generateUniqueId(...args: Parameters<typeof nanoid>): string {
-    return nanoid(...args);
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const uniqueId = customAlphabet(alphabet, 21);
+    return uniqueId(...args);
 }
