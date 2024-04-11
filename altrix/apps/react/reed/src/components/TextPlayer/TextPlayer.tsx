@@ -1,74 +1,86 @@
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Story, TextFrame } from '../../logic/types/types';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { Button, ButtonGroup, Slider } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import { TextPlayer as TextPlayerClass } from '../../logic/TextPlayer';
-import { Story, TextFrame } from '../../logic/types/types';
-
 import styles from './TextPlayer.module.scss';
+import { generateUniqueId } from '@altrix/shared-utils';
+import { regexRules } from '../../logic/logic';
+
+const splitTextWithRegex = (text: string, regex: RegExp): string[] =>
+    text.split(regex);
+
+const generateTextFrame = (content: string): TextFrame => ({
+    id: generateUniqueId(),
+    content,
+});
 
 const TextPlayer: React.FC<Story> = (props) => {
-    const textPlayer = useRef<TextPlayerClass | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    // ui state:
-    const [currentTextFrame, setCurrentTextFrame] = useState<TextFrame | null>(
-        null,
-    );
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const [textFrames, setTextFrames] = useState<TextFrame[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
-        if (!textPlayer.current) {
-            textPlayer.current = new TextPlayerClass(props);
-            setCurrentTextFrame(textPlayer.current.getCurrentTextFrame());
-            setCurrentIndex(textPlayer.current.getCurrentIndex());
-        }
-    }, [props]);
-
-    const handlePlay = () => {
-        setIsPlaying(true);
-        textPlayer.current?.play();
-    };
-
-    const handlePause = () => {
-        setIsPlaying(false);
-        textPlayer.current?.pause();
-    };
-
-    const handleStop = () => {
+        const parsedFrames = splitTextWithRegex(
+            props.content,
+            regexRules.sentences,
+        ).map(generateTextFrame);
+        setTextFrames(parsedFrames);
         setCurrentIndex(0);
-        textPlayer.current?.setCurrentTextFrame;
-        if (textPlayer.current?.getCurrentTextFrame()) {
-            setCurrentTextFrame(textPlayer.current?.getTextFrames()[0]);
-        }
-        textPlayer.current?.stop();
-    };
+    }, [props.content]);
 
-    const scrollElementIntoView = (id: string) => {
+    useEffect(() => {
+        if (isPlaying) {
+            intervalRef.current = setInterval(() => {
+                setCurrentIndex((prevIndex) => {
+                    const nextIndex = (prevIndex + 1) % textFrames.length;
+                    scrollElementIntoView(textFrames[nextIndex].id);
+                    return nextIndex;
+                });
+            }, 2000);
+
+            return () => {
+                if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                }
+            };
+        }
+    }, [isPlaying, textFrames]);
+
+    const scrollElementIntoView = useCallback((id: string) => {
         const element = containerRef.current?.querySelector(`#${id}`);
         element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
+    }, []);
 
-    const handleMoveSlider = (event: Event, newValue: number | number[]) => {
-        const newFrame =
-            textPlayer.current?.getTextFrames()[newValue as number];
+    const handlePlayPause = useCallback(() => {
+        setIsPlaying(!isPlaying);
+    }, [isPlaying]);
 
-        if (newFrame) {
-            textPlayer.current?.setCurrentTextFrame(newFrame.id);
-            textPlayer.current?.setCurrentIndex(newValue as number);
-            setCurrentTextFrame(newFrame);
-            setCurrentIndex(newValue as number);
-            scrollElementIntoView(newFrame.id);
-        }
-    };
+    const handleStop = useCallback(() => {
+        setIsPlaying(false);
+        setCurrentIndex(0);
+        scrollElementIntoView(textFrames[0].id);
+    }, [textFrames]);
 
-    const handleTextFrameClick = (textFrame: TextFrame, i: number) => {
-        textPlayer.current?.setCurrentTextFrame(textFrame.id);
-        textPlayer.current?.setCurrentIndex(i);
-        setCurrentTextFrame(textFrame);
-        scrollElementIntoView(textFrame.id);
-    };
+    const handleMoveSlider = useCallback(
+        (event: any, newValue: number | number[]) => {
+            const newIndex = Array.isArray(newValue) ? newValue[0] : newValue;
+            setCurrentIndex(newIndex);
+            scrollElementIntoView(textFrames[newIndex].id);
+        },
+        [textFrames],
+    );
+
+    const handleTextFrameClick = useCallback(
+        (index: number) => {
+            setCurrentIndex(index);
+            scrollElementIntoView(textFrames[index].id);
+        },
+        [textFrames],
+    );
 
     return (
         <article key={props.id} className={styles['TextPlayer']}>
@@ -80,45 +92,35 @@ const TextPlayer: React.FC<Story> = (props) => {
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {textPlayer.current
-                        ?.getTextFrames()
-                        ?.map((textFrame: TextFrame, i: number) => (
-                            <p
-                                id={textFrame.id}
-                                key={textFrame.id}
-                                onClick={() =>
-                                    handleTextFrameClick(textFrame, i)
-                                }
-                                className={`${styles['TextPlayer__Chunk']} ${textFrame.id === currentTextFrame?.id ? styles['is-active'] : ''}`}
-                            >
-                                {textFrame.content}
-                            </p>
-                        ))}
+                    {textFrames.map((frame, index) => (
+                        <p
+                            key={frame.id}
+                            id={frame.id}
+                            className={`${styles['TextPlayer__Chunk']} ${index === currentIndex ? styles['is-active'] : ''}`}
+                            onClick={() => handleTextFrameClick(index)}
+                        >
+                            {frame.content}
+                        </p>
+                    ))}
                 </div>
             </div>
             <footer className={styles['TextPlayer__Footer']}>
                 <Slider
                     value={currentIndex}
                     onChange={handleMoveSlider}
-                    max={
-                        textPlayer.current?.getTextFrames()
-                            ? textPlayer.current?.getTextFrames().length - 1
-                            : 0
-                    }
+                    max={textFrames.length - 1}
                 />
-
                 <div className={styles['TextPlayer__Controls']}>
                     <ButtonGroup variant="text" aria-label="Basic button group">
                         {isPlaying ? (
-                            <Button onClick={handlePause}>
+                            <Button onClick={handlePlayPause}>
                                 <PauseIcon />
                             </Button>
                         ) : (
-                            <Button onClick={handlePlay}>
+                            <Button onClick={handlePlayPause}>
                                 <PlayArrowIcon />
                             </Button>
                         )}
-
                         <Button onClick={handleStop}>
                             <StopIcon />
                         </Button>
