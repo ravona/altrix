@@ -6,7 +6,7 @@ import { customAlphabet, nanoid } from 'nanoid';
  * @returns A unique string ID.
  */
 export function generateUniqueId(...args: Parameters<typeof nanoid>): string {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    const uniqueId = customAlphabet(alphabet, 21);
+    const myAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const uniqueId = customAlphabet(myAlphabet, 21);
     return uniqueId(...args);
 }
