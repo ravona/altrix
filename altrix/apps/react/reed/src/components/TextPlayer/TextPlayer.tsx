@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Slider } from '@mui/material';
 import styles from './TextPlayer.module.scss';
 import { generateUniqueId } from '@altrix/shared-utils';
 import { regexRules } from '../../logic/logic';
+import TextPlayerSlider from './components/TextPlayerSlider';
 
 const splitTextWithRegex = (text: string, regex: RegExp): string[] =>
     text.split(regex);
@@ -19,6 +20,7 @@ const generateTextFrame = (content: string): TextFrame => ({
 const TextPlayer: React.FC<Story> = (props) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    // ui state:
     const [textFrames, setTextFrames] = useState<TextFrame[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -66,10 +68,10 @@ const TextPlayer: React.FC<Story> = (props) => {
     }, [textFrames]);
 
     const handleMoveSlider = useCallback(
-        (event: any, newValue: number | number[]) => {
-            const newIndex = Array.isArray(newValue) ? newValue[0] : newValue;
-            setCurrentIndex(newIndex);
-            scrollElementIntoView(textFrames[newIndex].id);
+        (event: Event, value: number | number[]) => {
+            const newValue = Array.isArray(value) ? value[0] : value;
+            setCurrentIndex(newValue);
+            scrollElementIntoView(textFrames[newValue].id);
         },
         [textFrames],
     );
@@ -105,11 +107,12 @@ const TextPlayer: React.FC<Story> = (props) => {
                 </div>
             </div>
             <footer className={styles['TextPlayer__Footer']}>
-                <Slider
+                <TextPlayerSlider
                     value={currentIndex}
                     onChange={handleMoveSlider}
                     max={textFrames.length - 1}
                 />
+
                 <div className={styles['TextPlayer__Controls']}>
                     <ButtonGroup variant="text" aria-label="Basic button group">
                         {isPlaying ? (
