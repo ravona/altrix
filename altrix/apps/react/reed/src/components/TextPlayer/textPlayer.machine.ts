@@ -1,6 +1,15 @@
-import { assign, createMachine } from 'xstate';
+import { assign, setup, fromCallback } from 'xstate';
 
-export const textPlayerMachine = createMachine({
+export const textPlayerMachine = setup({
+    actors: {
+        frames: fromCallback(({ sendBack }) => {
+            const interval = setInterval(() => {
+                sendBack({ type: 'FRAME' });
+            }, 500);
+            return () => clearInterval(interval);
+        }),
+    },
+}).createMachine({
     id: 'textPlayer',
     context: {
         index: 0,
@@ -12,6 +21,10 @@ export const textPlayerMachine = createMachine({
                 PLAY: {
                     target: 'playing',
                     actions: assign({ isPlaying: true }),
+                },
+                STOP: {
+                    target: 'stopped',
+                    actions: assign({ isPlaying: false, index: 0 }),
                 },
                 SET_INDEX: {
                     actions: assign({

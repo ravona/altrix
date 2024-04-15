@@ -32,7 +32,7 @@
         font-family: map-get($fontFamilies, 'default');
     }
 
-    &__Chunk {
+    &__Frame {
         cursor: pointer;
         font-size: map-get($fontSizes, 'md');
         margin-bottom: map-get($spacings, 'lg');
