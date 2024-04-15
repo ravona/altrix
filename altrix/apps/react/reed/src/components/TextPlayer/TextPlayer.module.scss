@@ -44,7 +44,7 @@
         }
 
         &.is-active {
-            font-size: calc(map-get($fontSizes, 'md') * 1.2);
+            font-size: calc(map-get($fontSizes, 'md') * 1.1);
             opacity: 1;
             transition: all 0.25s ease;
         }

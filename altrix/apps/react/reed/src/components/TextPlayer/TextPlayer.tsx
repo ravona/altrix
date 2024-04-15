@@ -1,45 +1,74 @@
+import { generateUniqueId } from '@altrix/shared-utils';
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import StopIcon from '@mui/icons-material/Stop';
 import { Button, ButtonGroup, Slider } from '@mui/material';
 import { useMachine } from '@xstate/react';
 import React, { useEffect, useRef, useState } from 'react';
-import { TextPlayer as TextPlayerClass } from '../../logic/TextPlayer';
-import { Story } from '../../logic/types/types';
+import data from '../../data/stories.json';
+import { regexRules, splitTextWithRegex } from '../../logic/logic';
+import { Story, TextFrame } from '../../logic/types/types';
 import styles from './TextPlayer.module.scss';
 import { textPlayerMachine } from './textPlayer.machine';
 
 const TextPlayer: React.FC<Story> = (props) => {
+    const stories = useRef(data);
+    const [currentStory, setCurrentStory] = useState<Story | null>(
+        stories ? stories.current[0] : null,
+    );
+    const [frames, setFrames] = useState<TextFrame[] | []>([]);
     const containerRef = useRef<HTMLDivElement>(null);
     const [state, send] = useMachine(textPlayerMachine);
-    const [textPlayer, setTextPlayer] = useState(
-        () => new TextPlayerClass(props),
-    );
+    const [showPlaylist, setShowPlaylist] = useState(false);
 
     useEffect(() => {
-        const currentFrame = textPlayer.getTextFrames()[state.context.index];
+        if (currentStory) {
+            send({ type: 'STOP' });
+            const parsedStory = splitTextWithRegex(
+                currentStory.content,
+                regexRules.sentences,
+            );
+            const parsedFrames = parsedStory.map(
+                (content: string): TextFrame => {
+                    return {
+                        id: generateUniqueId(),
+                        content,
+                    };
+                },
+            );
+            setFrames(parsedFrames);
+        }
+    }, [currentStory]);
+
+    useEffect(() => {
+        const currentFrame = frames[state.context.index];
         currentFrame?.id &&
             containerRef.current
                 ?.querySelector(`#${currentFrame.id}`)
-                ?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                });
-    }, [state.context.index, textPlayer]);
+                ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, [state.context.index]);
 
     return (
         <article className={styles['TextPlayer']}>
             <header className={styles['TextPlayer__Header']}>
-                <h2 className={styles['TextPlayer__Title']}>{props.name}</h2>
+                <h2 className={styles['TextPlayer__Title']}>
+                    {currentStory?.name}
+                </h2>
                 <h3 className={styles['TextPlayer__Subtitle']}>
-                    {props.source}
+                    {currentStory?.source}
                 </h3>
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {textPlayer.getTextFrames().map((frame, index) => (
+                    {frames.map((frame, index) => (
                         <p
-                            onClick={() => send({ type: 'SET_INDEX', index })}
+                            onClick={() => {
+                                send({ type: 'SET_INDEX', index });
+                            }}
                             key={frame.id}
                             id={frame.id}
                             className={`${styles['TextPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
@@ -55,7 +84,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                     onChange={(_, value) =>
                         send({ type: 'SET_INDEX', index: value as number })
                     }
-                    max={textPlayer.getTextFrames().length - 1}
+                    max={frames.length - 1}
                 />
 
                 <div className={styles['TextPlayer__Controls']}>
@@ -63,10 +92,41 @@ const TextPlayer: React.FC<Story> = (props) => {
                         variant="text"
                         aria-label="Text player controls"
                     >
+                        <Button
+                            onClick={() =>
+                                send({
+                                    type: 'SET_INDEX',
+                                    index:
+                                        state.context.index === 0
+                                            ? 0
+                                            : state.context.index - 1,
+                                })
+                            }
+                        >
+                            <FastRewindIcon />
+                        </Button>
+                        <Button
+                            onClick={() =>
+                                send({
+                                    type: 'SET_INDEX',
+                                    index: state.context.index + 1,
+                                })
+                            }
+                        >
+                            <FastForwardIcon />
+                        </Button>
                         {state.matches('playing') ? (
-                            <Button onClick={() => send({ type: 'PAUSE' })}>
-                                <PauseIcon />
-                            </Button>
+                            <>
+                                <Button
+                                    onClick={() =>
+                                        send({
+                                            type: 'PAUSE',
+                                        })
+                                    }
+                                >
+                                    <PauseIcon />
+                                </Button>
+                            </>
                         ) : (
                             <Button onClick={() => send({ type: 'PLAY' })}>
                                 <PlayArrowIcon />
@@ -75,9 +135,25 @@ const TextPlayer: React.FC<Story> = (props) => {
                         <Button onClick={() => send({ type: 'STOP' })}>
                             <StopIcon />
                         </Button>
+
+                        <Button onClick={() => setShowPlaylist(!showPlaylist)}>
+                            {showPlaylist ? (
+                                <PlaylistRemoveIcon />
+                            ) : (
+                                <PlaylistPlayIcon />
+                            )}
+                        </Button>
                     </ButtonGroup>
                 </div>
             </footer>
+            <div>
+                {showPlaylist &&
+                    stories.current.map((story) => (
+                        <div onClick={() => setCurrentStory(story)}>
+                            {story.name}
+                        </div>
+                    ))}
+            </div>
         </article>
     );
 };

@@ -5,9 +5,14 @@ export const textPlayerMachine = setup({
         frames: fromCallback(({ sendBack }) => {
             const interval = setInterval(() => {
                 sendBack({ type: 'FRAME' });
-            }, 500);
+            }, 1000);
             return () => clearInterval(interval);
         }),
+    },
+    actions: {
+        playing: assign({ isPlaying: true }),
+        pausing: assign({ isPlaying: false }),
+        stopping: assign({ isPlaying: false, index: 0 }),
     },
 }).createMachine({
     id: 'textPlayer',
@@ -20,11 +25,11 @@ export const textPlayerMachine = setup({
             on: {
                 PLAY: {
                     target: 'playing',
-                    actions: assign({ isPlaying: true }),
+                    actions: ['playing'],
                 },
                 STOP: {
                     target: 'stopped',
-                    actions: assign({ isPlaying: false, index: 0 }),
+                    actions: ['stopping'],
                 },
                 SET_INDEX: {
                     actions: assign({
@@ -42,11 +47,11 @@ export const textPlayerMachine = setup({
                 },
                 PAUSE: {
                     target: 'paused',
-                    actions: assign({ isPlaying: false }),
+                    actions: ['pausing'],
                 },
                 STOP: {
                     target: 'stopped',
-                    actions: assign({ isPlaying: false, index: 0 }),
+                    actions: ['stopping'],
                 },
                 SET_INDEX: {
                     actions: assign({
@@ -62,11 +67,11 @@ export const textPlayerMachine = setup({
             on: {
                 PLAY: {
                     target: 'playing',
-                    actions: assign({ isPlaying: true }),
+                    actions: ['playing'],
                 },
                 STOP: {
                     target: 'stopped',
-                    actions: assign({ isPlaying: false, index: 0 }),
+                    actions: ['stopping'],
                 },
                 SET_INDEX: {
                     actions: assign({
