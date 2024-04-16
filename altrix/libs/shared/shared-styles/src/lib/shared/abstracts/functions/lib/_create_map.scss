@@ -1,0 +1,27 @@
+// Meow!
+//  /\_/\
+// ( o.o )
+//  > ^ <
+// =x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=--=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=
+// # create dynamic maps from 2 lists to ensure consistency, and avoid typos.
+// =x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=--=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=
+
+@use 'sass:map';
+@use 'sass:list';
+
+@function create_map($list_a, $list_b) {
+  @if type-of($list_a) != 'list' or type-of($list_b) != 'list' {
+    @error "Both arguments must be lists.";
+  }
+
+  @if list.length($list_a) != list.length($list_b) {
+    @error "Both lists must have the same length to be zipped together.";
+  }
+
+  $new_map: ();
+  @each $key, $value in list.zip($list_a, $list_b) {
+    $new_map: map.set($new_map, $key, $value);
+  }
+
+  @return $new_map;
+}
