@@ -24,11 +24,12 @@
 
     &__Screen {
         overflow-y: auto;
+        padding: map-get($spacings, 'xl');
     }
 
     &__Content {
         line-height: 1.5;
-        letter-spacing: -0.05ch;
+
         font-family: map-get($fontFamilies, 'default');
     }
 
@@ -44,9 +45,11 @@
         }
 
         &.is-active {
-            font-size: calc(map-get($fontSizes, 'md') * 1.1);
+            // font-size: calc(map-get($fontSizes, 'md') * 1.1);
+            // transform: scale(1.25);
             opacity: 1;
             transition: all 0.25s ease;
+            font-weight: bold;
         }
     }
 

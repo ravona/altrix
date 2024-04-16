@@ -5,7 +5,7 @@ export const textPlayerMachine = setup({
         frames: fromCallback(({ sendBack }) => {
             const interval = setInterval(() => {
                 sendBack({ type: 'FRAME' });
-            }, 1000);
+            }, 5000);
             return () => clearInterval(interval);
         }),
     },

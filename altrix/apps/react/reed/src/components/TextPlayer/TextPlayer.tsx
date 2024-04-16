@@ -18,7 +18,7 @@ import { textPlayerMachine } from './textPlayer.machine';
 const TextPlayer: React.FC<Story> = (props) => {
     const stories = useRef(data);
     const [currentStory, setCurrentStory] = useState<Story | null>(
-        stories ? stories.current[0] : null,
+        stories ? stories.current[3] : null,
     );
     const [frames, setFrames] = useState<TextFrame[] | []>([]);
     const containerRef = useRef<HTMLDivElement>(null);
