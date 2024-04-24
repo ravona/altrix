@@ -1,0 +1,76 @@
+@mixin spacing(
+  $m: null,
+  $p: null,
+  $mt: null,
+  $mr: null,
+  $mb: null,
+  $ml: null,
+  $mx: null,
+  $my: null,
+  $pt: null,
+  $pr: null,
+  $pb: null,
+  $pl: null,
+  $px: null,
+  $py: null
+) {
+  @if $m != null {
+    margin: $m;
+  }
+
+  @if $p != null {
+    padding: $p;
+  }
+
+  @if $mt != null {
+    margin-top: $mt;
+  }
+
+  @if $mr != null {
+    margin-right: $mr;
+  }
+
+  @if $mb != null {
+    margin-bottom: $mb;
+  }
+
+  @if $ml != null {
+    margin-left: $ml;
+  }
+
+  @if $mx != null {
+    margin-left: $mx;
+    margin-right: $mx;
+  }
+
+  @if $my != null {
+    margin-top: $my;
+    margin-bottom: $my;
+  }
+
+  @if $pt != null {
+    padding-top: $pt;
+  }
+
+  @if $pr != null {
+    padding-right: $pr;
+  }
+
+  @if $pb != null {
+    padding-bottom: $pb;
+  }
+
+  @if $pl != null {
+    padding-left: $pl;
+  }
+
+  @if $px != null {
+    padding-left: $px;
+    padding-right: $px;
+  }
+
+  @if $py != null {
+    padding-top: $py;
+    padding-bottom: $py;
+  }
+}

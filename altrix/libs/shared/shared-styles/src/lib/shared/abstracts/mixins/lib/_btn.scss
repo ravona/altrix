@@ -1,0 +1,43 @@
+@use '../../functions';
+
+@mixin btn(
+    $theme,
+    $bg,
+    $color,
+    $font-family,
+    $font-weight,
+    $size,
+    $text-align,
+    $text-transform
+) {
+    background-color: $bg;
+    border-radius: 1rem;
+    color: $color;
+    font-family: $font-family;
+    font-size: $size;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+        background-color: lighten($bg, 5%);
+    }
+
+    &:active {
+        background-color: darken($bg, 5%);
+    }
+
+    &:disabled {
+        @extend %is-disabled;
+    }
+
+    @if $text-align != null {
+        text-align: $text-align;
+    }
+
+    @if $font-weight != null {
+        font-weight: $font-weight;
+    }
+
+    @if $text-transform != null {
+        text-transform: $text-transform;
+    }
+}

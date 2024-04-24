@@ -1,0 +1,30 @@
+@use '../../functions' as f;
+
+@mixin txt(
+    $theme,
+    $color: null,
+    $font-weight: null,
+    $font: main,
+    $size: sm,
+    $text-align: null,
+    $text-transform: null
+) {
+    font-family: $font;
+    font-size: $size;
+
+    @if $text-align != null {
+        text-align: $text-align;
+    }
+
+    @if $color != null {
+        color: $color;
+    }
+
+    @if $font-weight != null {
+        font-weight: $font-weight;
+    }
+
+    @if $text-transform != null {
+        text-transform: $text-transform;
+    }
+}

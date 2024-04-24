@@ -1,0 +1,37 @@
+@use '@altrix/shared-styles' as *;
+
+.btn {
+    &:disabled {
+        @extend %is-disabled;
+    }
+}
+
+@each $key, $value in safe_map_get($colors, 'palette') {
+    .btn-bg--#{$key} {
+        background-color: $value;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: lighten($value, 5%);
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        &:active {
+            background-color: darken($value, 5%);
+        }
+    }
+}
+
+@each $key, $value in $colors {
+    .btn-color--#{$key} {
+        color: $value;
+    }
+}
+
+@each $size in $abstract_sizes {
+    .btn-size--#{$size} {
+        font-size: map-get($text_sizes, $size);
+        padding: calc(map-get($spacings, $size) / 2) map-get($spacings, $size);
+    }
+}

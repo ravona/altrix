@@ -1,0 +1,7 @@
+@use '../../shared/index' as theme;
+
+@each $key, $color in theme.$colors {
+  .color--#{$key} {
+    color: $color;
+  }
+}
