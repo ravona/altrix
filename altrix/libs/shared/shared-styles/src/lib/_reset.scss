@@ -1,19 +1,118 @@
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
+html {
+    --fontStack: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI',
+        Tahoma, Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Open Sans',
+        sans-serif;
+
     box-sizing: border-box;
+    font-family: var(--fontStack);
+    scroll-behavior: smooth;
 }
 
-html {
-    scroll-behavior: smooth;
-    overflow-wrap: break-word;
+* {
+    box-sizing: inherit;
+    user-select: none;
+}
+
+*:before,
+*:after {
+    box-sizing: inherit;
 }
 
 body {
     text-rendering: optimizeSpeed;
+    box-sizing: border-box;
 }
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+// ## images
+
+svg {
+    display: block;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+// ## form elements
+
+button {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+input,
+fieldset,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+}
+
+// ## lists
+
+ul,
+li {
+    list-style: square;
+}
+
+// ## text
+
+b {
+    font-weight: 400;
+}
+
+em,
+i {
+    font-style: normal;
+}
+
+// ## links
+
+a {
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+// ## scrollbar
 
 *::-webkit-scrollbar {
     width: 3px;
@@ -26,41 +125,4 @@ body {
 
 *::-webkit-scrollbar-thumb {
     background-color: lightgray;
-}
-
-a {
-    text-decoration: none;
-}
-
-img {
-    max-width: 100%;
-}
-
-button {
-    cursor: pointer;
-    border: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: unset;
-    font-weight: inherit;
-}
-
-button,
-a,
-input,
-select,
-textarea {
-    font: inherit;
-    color: inherit;
-}
-
-ul,
-li {
-    list-style: square;
 }
