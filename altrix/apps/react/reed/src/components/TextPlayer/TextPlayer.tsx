@@ -6,7 +6,6 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import StopIcon from '@mui/icons-material/Stop';
-import { Button, ButtonGroup, Slider } from '@mui/material';
 import { useMachine } from '@xstate/react';
 import React, { useEffect, useRef, useState } from 'react';
 import data from '../../data/stories.json';
@@ -14,6 +13,8 @@ import { regexRules, splitTextWithRegex } from '../../logic/logic';
 import { Story, TextFrame } from '../../logic/types/types';
 import styles from './TextPlayer.module.scss';
 import { textPlayerMachine } from './textPlayer.machine';
+import sharedButtonStyles from '@altrix/shared-styles/shared/ui/button.module.scss';
+import sharedTextStyles from '@altrix/shared-styles/shared/ui/text.module.scss';
 
 const TextPlayer: React.FC<Story> = (props) => {
     const stories = useRef(data);
@@ -59,7 +60,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                     {currentStory?.name}
                 </h2>
                 <h3 className={styles['TextPlayer__Subtitle']}>
-                    {currentStory?.source}
+                    Source: {currentStory?.source}
                 </h3>
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
@@ -79,81 +80,111 @@ const TextPlayer: React.FC<Story> = (props) => {
                 </div>
             </div>
             <footer className={styles['TextPlayer__Footer']}>
-                <Slider
+                <input
+                    className={styles['TextPlayer__Slider']}
+                    type="range"
+                    min={0}
                     value={state.context.index}
-                    onChange={(_, value) =>
-                        send({ type: 'SET_INDEX', index: value as number })
+                    onChange={(event) =>
+                        send({
+                            type: 'SET_INDEX',
+                            index: parseInt(event.target.value, 10),
+                        })
                     }
                     max={frames.length - 1}
                 />
 
                 <div className={styles['TextPlayer__Controls']}>
-                    <ButtonGroup
-                        variant="text"
-                        aria-label="Text player controls"
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() =>
+                            send({
+                                type: 'SET_INDEX',
+                                index:
+                                    state.context.index === 0
+                                        ? 0
+                                        : state.context.index - 1,
+                            })
+                        }
                     >
-                        <Button
-                            onClick={() =>
-                                send({
-                                    type: 'SET_INDEX',
-                                    index:
-                                        state.context.index === 0
-                                            ? 0
-                                            : state.context.index - 1,
-                                })
-                            }
+                        <FastRewindIcon />
+                    </button>
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() =>
+                            send({
+                                type: 'SET_INDEX',
+                                index: state.context.index + 1,
+                            })
+                        }
+                    >
+                        <FastForwardIcon />
+                    </button>
+                    {state.matches('playing') ? (
+                        <>
+                            <button
+                                className={styles['TextPlayer__Control']}
+                                type="button"
+                                onClick={() =>
+                                    send({
+                                        type: 'PAUSE',
+                                    })
+                                }
+                            >
+                                <PauseIcon />
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            className={styles['TextPlayer__Control']}
+                            type="button"
+                            onClick={() => send({ type: 'PLAY' })}
                         >
-                            <FastRewindIcon />
-                        </Button>
-                        <Button
-                            onClick={() =>
-                                send({
-                                    type: 'SET_INDEX',
-                                    index: state.context.index + 1,
-                                })
-                            }
-                        >
-                            <FastForwardIcon />
-                        </Button>
-                        {state.matches('playing') ? (
-                            <>
-                                <Button
-                                    onClick={() =>
-                                        send({
-                                            type: 'PAUSE',
-                                        })
-                                    }
-                                >
-                                    <PauseIcon />
-                                </Button>
-                            </>
-                        ) : (
-                            <Button onClick={() => send({ type: 'PLAY' })}>
-                                <PlayArrowIcon />
-                            </Button>
-                        )}
-                        <Button onClick={() => send({ type: 'STOP' })}>
-                            <StopIcon />
-                        </Button>
+                            <PlayArrowIcon />
+                        </button>
+                    )}
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() => send({ type: 'STOP' })}
+                    >
+                        <StopIcon />
+                    </button>
 
-                        <Button onClick={() => setShowPlaylist(!showPlaylist)}>
-                            {showPlaylist ? (
-                                <PlaylistRemoveIcon />
-                            ) : (
-                                <PlaylistPlayIcon />
-                            )}
-                        </Button>
-                    </ButtonGroup>
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() => setShowPlaylist(!showPlaylist)}
+                    >
+                        {showPlaylist ? (
+                            <PlaylistRemoveIcon />
+                        ) : (
+                            <PlaylistPlayIcon />
+                        )}
+                    </button>
                 </div>
+
+                {showPlaylist && (
+                    <ol className={styles['TextPlayer__Playlist']}>
+                        {stories.current.map((story) => (
+                            <li
+                                className={styles['TextPlayer__PlaylistItem']}
+                                key={story.id}
+                            >
+                                <button
+                                    className="button"
+                                    type="button"
+                                    onClick={() => setCurrentStory(story)}
+                                >
+                                    {story.name}
+                                </button>
+                            </li>
+                        ))}
+                    </ol>
+                )}
             </footer>
-            <div>
-                {showPlaylist &&
-                    stories.current.map((story) => (
-                        <div onClick={() => setCurrentStory(story)}>
-                            {story.name}
-                        </div>
-                    ))}
-            </div>
         </article>
     );
 };

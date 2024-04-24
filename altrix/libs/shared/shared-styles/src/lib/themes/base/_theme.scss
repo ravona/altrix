@@ -1,0 +1,23 @@
+@use './variables' as *;
+
+:root {
+    @each $key, $value in $colors {
+        --clr-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $layers {
+        --z-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $fontSizes {
+        --txt-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $spacings {
+        --spacing-#{$key}: #{$value};
+    }
+
+    @each $key, $value in $fontFamilies {
+        --font-#{$key}: #{$value};
+    }
+}

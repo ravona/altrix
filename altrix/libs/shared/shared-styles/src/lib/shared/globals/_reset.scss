@@ -78,13 +78,15 @@ textarea {
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
+    display: block;
 }
 
 // ## lists
-
+ol,
 ul,
 li {
-    list-style: square;
+    padding: 0;
+    list-style-position: inside;
 }
 
 // ## text

@@ -1,42 +1,38 @@
-@use '../../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
-
 .TextPlayer {
-    height: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
+    height: 100dvh;
 
     &__Header,
-    &__Content,
-    &__Footer {
-        padding: map-get($spacings, 'md');
+    &__Content {
+        padding: var(--spacing-md);
     }
 
     &__Header,
     &__Footer {
-        font-family: map-get($fontFamilies, 'alt');
+        font-family: var(--font-secondary);
     }
 
     &__Title,
     &__Subtitle {
-        letter-spacing: 0.25ch;
+        font-size: var(--txt-lg);
         line-height: 1;
     }
 
     &__Screen {
         overflow-y: auto;
-        padding: map-get($spacings, 'xl');
     }
 
     &__Content {
         line-height: 1.5;
-
-        font-family: map-get($fontFamilies, 'default');
+        font-family: var(--font-default);
+        color: var(--clr-txt2);
     }
 
     &__Frame {
         cursor: pointer;
-        font-size: map-get($fontSizes, 'md');
-        margin-bottom: map-get($spacings, 'lg');
+        font-size: var(--txt-sm);
+        margin-bottom: var(--spacing-lg);
         opacity: 0.5;
         transition: all 0.25s ease;
 
@@ -45,8 +41,6 @@
         }
 
         &.is-active {
-            // font-size: calc(map-get($fontSizes, 'md') * 1.1);
-            // transform: scale(1.25);
             opacity: 1;
             transition: all 0.25s ease;
             font-weight: bold;
@@ -54,11 +48,47 @@
     }
 
     &__Footer {
-        padding-inline: map-get($spacings, 'lg');
+        z-index: var(--z-high);
+        padding: var(--spacing-md);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__Slider {
+        width: 100%;
+        flex-grow: 1;
+        padding: var(--spacing-md);
     }
 
     &__Controls {
         display: flex;
         justify-content: center;
+        gap: var(--spacing-md);
+        padding-block: var(--spacing-md);
+    }
+
+    &__Control {
+        color: var(--clr-action);
+        &:hover {
+            color: lightem(var(--clr-action), 10%);
+        }
+    }
+
+    &__Playlist {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    &__PlaylistItem {
+        cursor: pointer;
+        font-size: var(--txt-sm);
+        opacity: 0.5;
+        transition: all 0.25s ease;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }
