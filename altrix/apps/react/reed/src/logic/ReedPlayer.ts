@@ -20,13 +20,13 @@ export class ReedPlayer {
         );
 
         this.frames = parsedContent.map(
-            (content: string): Frame => generateTextFrame(content),
+            (text: string): Frame => generateTextFrame(text),
         );
 
         this.activeFrame = this.frames[this.index];
     }
 
-    private onAutoFrameChange() {
+    private handleAutoFrameChange() {
         if (this.index === this.frames.length - 1) {
             this.pause();
             return;
@@ -42,7 +42,7 @@ export class ReedPlayer {
 
         if (!this.intervalId) {
             this.intervalId = setInterval(
-                this.onAutoFrameChange,
+                this.handleAutoFrameChange,
                 this.intervalSpeed,
             );
         }
@@ -80,17 +80,19 @@ export class ReedPlayer {
         this.index = value;
     }
 
-    getFrame(): Frame | null {
+    getActiveFrame(): Frame | null {
         return this.activeFrame;
     }
 
-    setFrame(id: string) {
-        const activeFrame = this.frames.find((frame: Frame) => frame.id === id);
+    setActiveFrame(id: string) {
+        const newActiveFrame = this.frames.find(
+            (frame: Frame) => frame.id === id,
+        );
 
-        if (!activeFrame) {
+        if (!newActiveFrame) {
             console.error('TextFrame not found');
         } else {
-            this.activeFrame = activeFrame;
+            this.activeFrame = newActiveFrame;
         }
     }
 }

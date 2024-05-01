@@ -1,19 +1,21 @@
-import ReedPlayer from '../components/ReedPlayer/ReedPlayer';
+import ReedPlayerComponent from '../components/ReedPlayer/ReedPlayer';
 import stories from '../data/stories.json';
 import styles from './app.module.scss';
 import sharedStyle from '@altrix/shared-styles/shared/ui/app.module.scss';
-
-const myStory = stories[1];
 
 export function App() {
     return (
         <main className={sharedStyle['app']}>
             <div className={styles['wrapper']}>
-                <ReedPlayer
-                    id={myStory.id}
-                    name={myStory.name}
-                    source={myStory.source}
-                    content={myStory.content}
+                <ReedPlayerComponent
+                    stories={stories}
+                    isPlaying={false}
+                    onPause={() => console.log('Pause')}
+                    onPlay={() => console.log('Play')}
+                    onSelectFrame={(id: string) =>
+                        console.log('SelectFrame', id)
+                    }
+                    onStop={() => console.log('Stop')}
                 />
             </div>
         </main>

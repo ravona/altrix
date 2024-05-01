@@ -7,6 +7,6 @@ export type Story = {
 
 export type Frame = {
     id: string;
-    content: string;
+    text: string;
     img?: string;
 };

@@ -2,11 +2,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 // # third-party:
-import { generateUniqueId } from '@altrix/shared-utils';
-import { useMachine } from '@xstate/react';
 // ## icons:
-import FastForwardIcon from '@mui/icons-material/FastForward';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
+// import FastForwardIcon from '@mui/icons-material/FastForward';
+// import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
@@ -16,100 +14,109 @@ import StopIcon from '@mui/icons-material/Stop';
 // types:
 import { Story, Frame } from '../../logic/types/types';
 
-// xstate:
-import { reedPlayerMachine } from './reedPlayer.machine';
-
 // logic:
 import { regexRules, splitTextWithRegex } from '../../logic/logic';
 
-// data:
-import data from '../../data/stories.json';
-
 // styles:
 import styles from './ReedPlayer.module.scss';
+import { generateTextFrame } from './utils';
+import ReedPlayer from '../../logic/ReedPlayer';
 
-const ReedPlayer: React.FC<Story> = (props) => {
-    const stories = useRef(data);
+type Props = {
+    stories: Story[] | [];
+    isPlaying: boolean;
+    onPause: () => void;
+    onPlay: () => void;
+    onSelectFrame: (id: string) => void;
+    onStop: () => void;
+};
+
+const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
+    const playerRef = useRef<ReedPlayer>();
     const [currentStory, setCurrentStory] = useState<Story | null>(
-        stories ? stories.current[3] : null,
+        props.stories ? props.stories[0] : null,
     );
+
     const [frames, setFrames] = useState<Frame[] | []>([]);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [activeFrame, setActiveFrame] = useState<Frame | null>(
+        frames ? frames[0] : null,
+    );
+
+    // player settings:
     const [showPlaylist, setShowPlaylist] = useState(false);
-    const [state, send] = useMachine(reedPlayerMachine);
+
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (currentStory) {
-            send({ type: 'STOP' });
             const parsedStory = splitTextWithRegex(
                 currentStory.content,
                 regexRules.sentences,
             );
-            const parsedFrames = parsedStory.map((content: string): Frame => {
-                return {
-                    id: generateUniqueId(),
-                    content,
-                };
-            });
+            const parsedFrames = parsedStory.map((text) =>
+                generateTextFrame(text),
+            );
             setFrames(parsedFrames);
+            setActiveFrame(parsedFrames[0]);
         }
     }, [currentStory]);
 
     useEffect(() => {
-        const currentFrame = frames[state.context.index];
-        currentFrame?.id &&
+        activeFrame?.id &&
             containerRef.current
-                ?.querySelector(`#${currentFrame.id}`)
+                ?.querySelector(`#${activeFrame.id}`)
                 ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, [state.context.index]);
+    }, [activeFrame]);
+
+    const handleChangeIndex = (i: number) => {
+        setActiveFrame(frames[i]);
+    };
 
     return (
-        <article className={styles['reedPlayer']}>
-            <header className={styles['reedPlayer__Header']}>
-                <h2 className={styles['reedPlayer__Title']}>
+        <article className={styles['ReedPlayer']}>
+            <header className={styles['ReedPlayer__Header']}>
+                <h2 className={styles['ReedPlayer__Title']}>
                     {currentStory?.name}
                 </h2>
-                <h3 className={styles['reedPlayer__Subtitle']}>
+                <h3 className={styles['ReedPlayer__Subtitle']}>
                     Source: {currentStory?.source}
                 </h3>
             </header>
-            <div className={styles['reedPlayer__Screen']} ref={containerRef}>
-                <div className={styles['reedPlayer__Content']}>
-                    {frames.map((frame, index) => (
+            <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
+                <div className={styles['ReedPlayer__Content']}>
+                    {frames.map((frame) => (
                         <p
                             onClick={() => {
-                                send({
-                                    type: 'SET_INDEX',
-                                    index,
-                                });
+                                setActiveFrame(frame);
+                                props.onSelectFrame(frame.id);
                             }}
                             key={frame.id}
                             id={frame.id}
-                            className={`${styles['reedPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
+                            className={`${styles['ReedPlayer__Frame']} ${activeFrame?.id === frame.id ? styles['is-active'] : ''}`}
                         >
-                            {frame.content}
+                            {frame.text}
                         </p>
                     ))}
                 </div>
             </div>
-            <footer className={styles['reedPlayer__Footer']}>
+            <footer className={styles['ReedPlayer__Footer']}>
                 <input
-                    className={styles['reedPlayer__Slider']}
+                    className={styles['ReedPlayer__Slider']}
                     type="range"
                     min={0}
-                    value={state.context.index}
-                    onChange={(event) =>
-                        send({
-                            type: 'SET_INDEX',
-                            index: parseInt(event.target.value, 10),
-                        })
-                    }
+                    value={frames.findIndex(
+                        (frame) => frame.id === activeFrame?.id,
+                    )}
+                    onChange={(event) => {
+                        const newIndex = parseInt(event.target.value, 10);
+                        handleChangeIndex(newIndex);
+                    }}
                     max={frames.length - 1}
                 />
 
-                <div className={styles['reedPlayer__Controls']}>
-                    <button
-                        className={styles['reedPlayer__Control']}
+                <div className={styles['ReedPlayer__Controls']}>
+                    {/* <button
+                        className={styles['ReedPlayer__Control']}
                         type="button"
                         onClick={() =>
                             send({
@@ -124,7 +131,7 @@ const ReedPlayer: React.FC<Story> = (props) => {
                         <FastRewindIcon />
                     </button>
                     <button
-                        className={styles['reedPlayer__Control']}
+                        className={styles['ReedPlayer__Control']}
                         type="button"
                         onClick={() =>
                             send({
@@ -134,36 +141,36 @@ const ReedPlayer: React.FC<Story> = (props) => {
                         }
                     >
                         <FastForwardIcon />
-                    </button>
-                    {state.matches('playing') ? (
+                    </button> */}
+                    {props.isPlaying ? (
                         <>
                             <button
-                                className={styles['reedPlayer__Control']}
+                                className={styles['ReedPlayer__Control']}
                                 type="button"
-                                onClick={() => send({ type: 'PAUSE' })}
+                                onClick={props.onPause}
                             >
                                 <PauseIcon />
                             </button>
                         </>
                     ) : (
                         <button
-                            className={styles['reedPlayer__Control']}
+                            className={styles['ReedPlayer__Control']}
                             type="button"
-                            onClick={() => send({ type: 'PLAY' })}
+                            onClick={props.onPlay}
                         >
                             <PlayArrowIcon />
                         </button>
                     )}
                     <button
-                        className={styles['reedPlayer__Control']}
+                        className={styles['ReedPlayer__Control']}
                         type="button"
-                        onClick={() => send({ type: 'STOP' })}
+                        onClick={props.onStop}
                     >
                         <StopIcon />
                     </button>
 
                     <button
-                        className={styles['reedPlayer__Control']}
+                        className={styles['ReedPlayer__Control']}
                         type="button"
                         onClick={() => setShowPlaylist(!showPlaylist)}
                     >
@@ -176,10 +183,10 @@ const ReedPlayer: React.FC<Story> = (props) => {
                 </div>
 
                 {showPlaylist && (
-                    <ol className={styles['reedPlayer__Playlist']}>
-                        {stories.current.map((story) => (
+                    <ol className={styles['ReedPlayer__Playlist']}>
+                        {props.stories.map((story: Story) => (
                             <li
-                                className={styles['reedPlayer__PlaylistItem']}
+                                className={styles['ReedPlayer__PlaylistItem']}
                                 key={story.id}
                             >
                                 <button
@@ -198,4 +205,4 @@ const ReedPlayer: React.FC<Story> = (props) => {
     );
 };
 
-export default ReedPlayer;
+export default ReedPlayerComponent;

@@ -4,9 +4,9 @@ export const splitTextWithRegex = (text: string, regex: RegExp): string[] => {
     return text.split(regex);
 };
 
-export const generateTextFrame = (content: string) => {
+export const generateTextFrame = (text: string) => {
     return {
         id: generateUniqueId(),
-        content,
+        text,
     };
 };
