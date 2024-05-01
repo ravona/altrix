@@ -23,7 +23,6 @@
     }
 
     &__Content {
-        padding: map-get($spacings, 'md');
         line-height: 1.5;
         font-family: var(--font-primary);
         color: var(--clr-txt2);
@@ -35,12 +34,10 @@
         font-size: var(--txt-sm);
         margin-bottom: var(--spacing-lg);
         opacity: 0.5;
-        transition: all $transition_duration ease;
+        transition: all 0.25s ease;
 
         &:hover {
             opacity: 1;
-            color: sienna;
-            font-size: calc(map-get($fontSizes, 'md') + 0.25rem);
         }
 
         &.is-active {

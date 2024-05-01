@@ -28,6 +28,7 @@ import data from '../../data/stories.json';
 // styles:
 import styles from './TextPlayer.module.scss';
 import { autorun } from 'mobx';
+import { observer } from 'mobx-react';
 
 const TextPlayer: React.FC<Story> = (props) => {
     const stories = useRef(data);
@@ -46,10 +47,10 @@ const TextPlayer: React.FC<Story> = (props) => {
                 currentStory.content,
                 regexRules.sentences,
             );
-            const parsedFrames = parsedStory.map((content: string): Frame => {
+            const parsedFrames = parsedStory.map((text: string): Frame => {
                 return {
                     id: generateUniqueId(),
-                    content,
+                    text,
                 };
             });
             setFrames(parsedFrames);
@@ -88,7 +89,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                             id={frame.id}
                             className={`${styles['TextPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
                         >
-                            {frame.content}
+                            {frame.text}
                         </p>
                     ))}
                 </div>

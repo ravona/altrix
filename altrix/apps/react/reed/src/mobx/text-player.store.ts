@@ -1,12 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { Chunk, Story } from '../logic/types/types';
+
 import { regexRules, splitTextWithRegex } from '../logic/logic';
 import stories from '../data/stories.json';
-import { nanoid } from 'nanoid';
+import { Frame, Story } from '../logic/types/types';
+import { generateUniqueId } from '@altrix/shared-utils';
 
 class TextPlayerStore {
     story: Story | null = null;
-    content: Chunk[] = [];
+    content: string[] = [];
+    frames: Frame[] = [];
     isPlaying: Boolean = false;
     intervalId?: number;
     intervalDuration: number = 5000;
@@ -19,18 +21,15 @@ class TextPlayerStore {
             story.content,
             regexRules.sentences,
         );
-        this.setContent(parsedContent);
-    }
-
-    getChunk(index: number): Chunk {
-        return this.content[index];
-    }
-
-    setContent(content: string[]) {
-        this.content = content.map((text) => ({
-            id: nanoid(),
+        this.content = parsedContent;
+        this.frames = this.content.map((text) => ({
+            id: generateUniqueId(),
             text,
         }));
+    }
+
+    getFrame(index: number): Frame {
+        return this.frames[index];
     }
 
     play() {
