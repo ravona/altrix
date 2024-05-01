@@ -1,20 +1,20 @@
-@use '../../../../../../libs/shared/shared-styles/src/lib/themes/reed/theme' as *;
-
-$transition_duration: 0.333s;
-
 .TextPlayer {
-    height: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
+    height: 100dvh;
 
     &__Header {
-        padding: map-get($spacings, 'md');
-        font-family: map-get($fontFamilies, 'alt');
+        font-family: var(--font-secondary);
+        padding: var(--spacing-md);
     }
 
-    &__Title,
+    &__Title {
+        font-size: var(--txt-lg);
+        line-height: 1;
+    }
+
     &__Subtitle {
-        letter-spacing: 0.25ch;
+        font-size: var(--txt-md);
         line-height: 1;
     }
 
@@ -25,14 +25,15 @@ $transition_duration: 0.333s;
     &__Content {
         padding: map-get($spacings, 'md');
         line-height: 1.5;
-        letter-spacing: -0.05ch;
-        font-family: map-get($fontFamilies, 'default');
+        font-family: var(--font-primary);
+        color: var(--clr-txt2);
+        padding: var(--spacing-md);
     }
 
-    &__Chunk {
+    &__Frame {
         cursor: pointer;
-        font-size: map-get($fontSizes, 'md');
-        margin-bottom: map-get($spacings, 'lg');
+        font-size: var(--txt-sm);
+        margin-bottom: var(--spacing-lg);
         opacity: 0.5;
         transition: all $transition_duration ease;
 
@@ -43,19 +44,50 @@ $transition_duration: 0.333s;
         }
 
         &.is-active {
-            font-size: map-get($fontSizes, 'md');
             opacity: 1;
-            transition: all $transition_duration ease;
+            transition: all 0.25s ease;
+            font-weight: bold;
         }
     }
 
     &__Footer {
-        padding: map-get($spacings, 'lg');
-        font-family: map-get($fontFamilies, 'alt');
+        z-index: var(--z-high);
+        padding: var(--spacing-md);
+        font-family: var(--font-secondary);
+    }
+
+    &__Slider {
+        width: 100%;
+        padding: var(--spacing-md);
     }
 
     &__Controls {
         display: flex;
         justify-content: center;
+        gap: var(--spacing-md);
+        padding-block: var(--spacing-md);
+    }
+
+    &__Control {
+        color: var(--clr-action);
+        &:hover {
+            color: lightem(var(--clr-action), 10%);
+        }
+    }
+
+    &__Playlist {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    &__PlaylistItem {
+        cursor: pointer;
+        font-size: var(--txt-sm);
+        opacity: 0.5;
+        transition: all 0.25s ease;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }

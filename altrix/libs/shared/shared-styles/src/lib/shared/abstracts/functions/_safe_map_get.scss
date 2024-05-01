@@ -1,0 +1,14 @@
+//  /\_/\
+// ( o.o )
+//  > ^ <
+// # A safer version of the built in sass function 'map-get'.
+// # Instead of returning null if the key is not found in the map, an error is thrown.
+// =x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=--=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=
+
+@function safe_map_get($map, $key) {
+  @if map-has-key($map, $key) {
+    @return map-get($map, $key);
+  } @else {
+    @error "Invalid key `#{$key}`. Allowed keys are: #{map-keys($map)}.";
+  }
+}

@@ -1,107 +1,199 @@
+// react:
+import React, { useEffect, useRef, useState } from 'react';
+
+// # third-party:
+import { generateUniqueId } from '@altrix/shared-utils';
+import { useMachine } from '@xstate/react';
+// ## icons:
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import StopIcon from '@mui/icons-material/Stop';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { Button, ButtonGroup, Slider } from '@mui/material';
-import { observer } from 'mobx-react';
-import React, { useEffect, useRef } from 'react';
-import { Chunk, Story } from '../../logic/types/types';
-import { textPlayerStore } from '../../mobx/text-player.store';
 
+// types:
+import { Story, Frame } from '../../logic/types/types';
+
+// xstate:
+import { textPlayerMachine } from './textPlayer.machine';
+
+// logic:
+import { regexRules, splitTextWithRegex } from '../../logic/logic';
+
+// data:
+import data from '../../data/stories.json';
+
+// styles:
 import styles from './TextPlayer.module.scss';
 import { autorun } from 'mobx';
 
 const TextPlayer: React.FC<Story> = (props) => {
+    const stories = useRef(data);
+    const [currentStory, setCurrentStory] = useState<Story | null>(
+        stories ? stories.current[3] : null,
+    );
+    const [frames, setFrames] = useState<Frame[] | []>([]);
     const containerRef = useRef<HTMLDivElement>(null);
+    const [showPlaylist, setShowPlaylist] = useState(false);
+    const [state, send] = useMachine(textPlayerMachine);
 
     useEffect(() => {
-        const disposer = autorun(() => {
-            const currentIndex = textPlayerStore.index;
-            const currentChunkId = textPlayerStore.content[currentIndex]?.id;
-            if (currentChunkId) {
-                scrollChunkIntoView(currentChunkId);
-            }
-        });
+        if (currentStory) {
+            send({ type: 'STOP' });
+            const parsedStory = splitTextWithRegex(
+                currentStory.content,
+                regexRules.sentences,
+            );
+            const parsedFrames = parsedStory.map((content: string): Frame => {
+                return {
+                    id: generateUniqueId(),
+                    content,
+                };
+            });
+            setFrames(parsedFrames);
+        }
+    }, [currentStory]);
 
-        return () => disposer();
-    }, []);
-
-    const handleMoveSlider = (event: any, newValue: number | number[]) => {
-        const newIndex = Array.isArray(newValue) ? newValue[0] : newValue;
-        textPlayerStore.setIndex(newIndex);
-    };
-
-    const scrollChunkIntoView = (id: string) => {
-        const element = containerRef.current?.querySelector(`#${id}`);
-        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
-
-    const handleChunkClick = (id: string) => {
-        textPlayerStore.setIndex(
-            textPlayerStore.content.findIndex((chunk) => chunk.id === id),
-        );
-        scrollChunkIntoView(id);
-    };
+    useEffect(() => {
+        const currentFrame = frames[state.context.index];
+        currentFrame?.id &&
+            containerRef.current
+                ?.querySelector(`#${currentFrame.id}`)
+                ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, [state.context.index]);
 
     return (
-        <article key={props.id} className={styles['TextPlayer']}>
+        <article className={styles['TextPlayer']}>
             <header className={styles['TextPlayer__Header']}>
-                <h2 className={styles['TextPlayer__Title']}>{props.name}</h2>
+                <h2 className={styles['TextPlayer__Title']}>
+                    {currentStory?.name}
+                </h2>
                 <h3 className={styles['TextPlayer__Subtitle']}>
-                    {props.source}
+                    Source: {currentStory?.source}
                 </h3>
             </header>
             <div className={styles['TextPlayer__Screen']} ref={containerRef}>
                 <div className={styles['TextPlayer__Content']}>
-                    {textPlayerStore.content?.map((chunk: Chunk, i: number) => (
+                    {frames.map((frame, index) => (
                         <p
-                            id={chunk.id}
-                            key={chunk.id}
-                            onClick={() => handleChunkClick(chunk.id)}
-                            className={`${styles['TextPlayer__Chunk']} ${i === textPlayerStore.index ? styles['is-active'] : ''}`}
+                            onClick={() => {
+                                send({
+                                    type: 'SET_INDEX',
+                                    index,
+                                });
+                            }}
+                            key={frame.id}
+                            id={frame.id}
+                            className={`${styles['TextPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
                         >
-                            {chunk.text}
+                            {frame.content}
                         </p>
                     ))}
                 </div>
             </div>
-
             <footer className={styles['TextPlayer__Footer']}>
-                <Slider
-                    value={textPlayerStore.index}
-                    onChange={handleMoveSlider}
-                    max={textPlayerStore.content.length - 1}
-                    marks
+                <input
+                    className={styles['TextPlayer__Slider']}
+                    type="range"
+                    min={0}
+                    value={state.context.index}
+                    onChange={(event) =>
+                        send({
+                            type: 'SET_INDEX',
+                            index: parseInt(event.target.value, 10),
+                        })
+                    }
+                    max={frames.length - 1}
                 />
 
                 <div className={styles['TextPlayer__Controls']}>
-                    <ButtonGroup
-                        size="large"
-                        variant="text"
-                        aria-label="Basic button group"
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() =>
+                            send({
+                                type: 'SET_INDEX',
+                                index:
+                                    state.context.index === 0
+                                        ? 0
+                                        : state.context.index - 1,
+                            })
+                        }
                     >
-                        {textPlayerStore.index ===
-                            textPlayerStore.content.length - 1 && (
-                            <Button onClick={() => textPlayerStore.restart()}>
-                                <RestartAltIcon />
-                            </Button>
-                        )}
-
-                        {textPlayerStore.isPlaying ? (
-                            <Button onClick={() => textPlayerStore.pause()}>
+                        <FastRewindIcon />
+                    </button>
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() =>
+                            send({
+                                type: 'SET_INDEX',
+                                index: state.context.index + 1,
+                            })
+                        }
+                    >
+                        <FastForwardIcon />
+                    </button>
+                    {state.matches('playing') ? (
+                        <>
+                            <button
+                                className={styles['TextPlayer__Control']}
+                                type="button"
+                                onClick={() => send({ type: 'PAUSE' })}
+                            >
                                 <PauseIcon />
-                            </Button>
-                        ) : (
-                            <Button onClick={() => textPlayerStore.play()}>
-                                <PlayArrowIcon />
-                            </Button>
-                        )}
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            className={styles['TextPlayer__Control']}
+                            type="button"
+                            onClick={() => send({ type: 'PLAY' })}
+                        >
+                            <PlayArrowIcon />
+                        </button>
+                    )}
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() => send({ type: 'STOP' })}
+                    >
+                        <StopIcon />
+                    </button>
 
-                        <Button onClick={() => textPlayerStore.stop()}>
-                            <StopIcon />
-                        </Button>
-                    </ButtonGroup>
+                    <button
+                        className={styles['TextPlayer__Control']}
+                        type="button"
+                        onClick={() => setShowPlaylist(!showPlaylist)}
+                    >
+                        {showPlaylist ? (
+                            <PlaylistRemoveIcon />
+                        ) : (
+                            <PlaylistPlayIcon />
+                        )}
+                    </button>
                 </div>
+
+                {showPlaylist && (
+                    <ol className={styles['TextPlayer__Playlist']}>
+                        {stories.current.map((story) => (
+                            <li
+                                className={styles['TextPlayer__PlaylistItem']}
+                                key={story.id}
+                            >
+                                <button
+                                    className="button"
+                                    type="button"
+                                    onClick={() => setCurrentStory(story)}
+                                >
+                                    {story.name}
+                                </button>
+                            </li>
+                        ))}
+                    </ol>
+                )}
             </footer>
         </article>
     );

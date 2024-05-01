@@ -1,22 +1,23 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Container } from '@mui/material';
 import TextPlayer from '../components/TextPlayer/TextPlayer';
 import stories from '../data/stories.json';
 import styles from './app.module.scss';
 import { textPlayerStore } from '../mobx/text-player.store';
+import sharedStyle from '@altrix/shared-styles/shared/ui/app.module.scss';
+
+const myStory = stories[1];
 
 export function App() {
     return (
-        <Container maxWidth="md">
-            <main className={styles['App']}>
+        <main className={sharedStyle['app']}>
+            <div className={styles['wrapper']}>
                 <TextPlayer
                     id={textPlayerStore.story?.id || ''}
                     name={textPlayerStore.story?.name || 'Story Name'}
                     source={textPlayerStore.story?.source || 'Story Source'}
                     content={textPlayerStore.story?.content || 'Story Content'}
                 />
-            </main>
-        </Container>
+            </div>
+        </main>
     );
 }
 

@@ -1,0 +1,24 @@
+// Meow!
+//  /\_/\
+// ( o.o )
+//  > ^ <
+// =x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=--=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=
+// # A recursive version of the built in sass function 'map-get'.
+// # Returns the value of the first key found in the map, or in any of its nested maps.
+// # If the key is not found in the map, or in any of its nested maps, an error is thrown.
+// =x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=--=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=-=x=
+
+@function deep_map_get($map, $key) {
+  @each $k, $v in $map {
+    @if $k == $key {
+      @return $v;
+    }
+    @if type-of($v) == map {
+      $nested_map: deep_map_get($v, $key);
+      @if $nested_map != null {
+        @return $nested_map;
+      }
+    }
+  }
+  @error "`#{$key}` was not found in `#{$map}`, nor in any of its nested maps.";
+}

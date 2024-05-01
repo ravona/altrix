@@ -5,7 +5,8 @@ export type Story = {
     content: string;
 };
 
-export type Chunk = {
+export type Frame = {
     id: string;
-    text: string;
+    content: string;
+    img?: string;
 };

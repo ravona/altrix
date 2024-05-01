@@ -1,0 +1,12 @@
+{
+    "name": "@altrix/shared-utils",
+    "version": "0.0.1",
+    "dependencies": {
+        "nanoid": "^5.0.7",
+        "nanoid-dictionary": "^4.3.0"
+    },
+    "main": "./index.js",
+    "module": "./index.mjs",
+    "typings": "./index.d.ts",
+    "private": true
+}

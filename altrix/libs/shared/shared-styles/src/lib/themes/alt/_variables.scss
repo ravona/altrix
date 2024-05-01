@@ -1,0 +1,38 @@
+@use '../base/variables' as *;
+
+$color_primary: hsl(300, 32%, 77%);
+$color_secondary: hsl(39, 100%, 50%);
+
+$colors: (
+    action: $color_action,
+    disabled: $color_disabled,
+    error: $color_error,
+    info: $color_info,
+    primary: $color_primary,
+    secondary: $color_secondary,
+    success: $color_success,
+    txt: $color_txt,
+    txt2: $color_txt2,
+    warning: $color_warning,
+);
+
+$fontFamilies: (
+    primary: unquote('Berkshire Swash, serif'),
+    secondary: unquote('Playfair Display, serif'),
+);
+
+$spacings: (
+    xs: 0.25rem,
+    sm: 0.5rem,
+    md: 1rem,
+    lg: 2rem,
+    xl: 4rem,
+);
+
+$fontSizes: (
+    xs: clamp(0.75rem, 2vw, 1rem),
+    sm: clamp(1rem, 4vw, 1.25rem),
+    md: clamp(1.25rem, 6vw, 1.5rem),
+    lg: clamp(1.5rem, 8vw, 2.5rem),
+    xl: clamp(2rem, 10vw, 3.5rem),
+);

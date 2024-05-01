@@ -1,24 +1,25 @@
+@use '../base/variables' as *;
+
+$color_primary: hsla(40, 10%, 80%, 1);
+$color_secondary: darken($color_primary, 20%);
+$color_action: hsla(40, 100%, 42%, 1);
+
 $colors: (
-    bg: (
-        default: #e4d9ff,
-        alt: #c9b3ff,
-    ),
-    palette: (
-        1: #0466c8,
-        2: #0353a4,
-        3: #023e7d,
-        4: #002855,
-        5: #001845,
-    ),
-    txt: (
-        default: #171819,
-        alt: #555555,
-    ),
+    action: $color_action,
+    disabled: $color_disabled,
+    error: $color_error,
+    info: $color_info,
+    primary: $color_primary,
+    secondary: $color_secondary,
+    success: $color_success,
+    txt: $color_txt,
+    txt2: $color_txt2,
+    warning: $color_warning,
 );
 
 $fontFamilies: (
-    default: unquote('Mate, serif'),
-    alt: unquote('Podkova, serif'),
+    primary: unquote('Mate, serif'),
+    secondary: unquote('Podkova, serif'),
 );
 
 $spacings: (
@@ -35,12 +36,4 @@ $fontSizes: (
     md: clamp(1.25rem, 6vw, 1.5rem),
     lg: clamp(1.5rem, 8vw, 2.5rem),
     xl: clamp(2rem, 10vw, 3.5rem),
-);
-
-$layers: (
-    lowest: -1,
-    low: 10,
-    mid: 100,
-    high: 200,
-    highest: 1000,
 );

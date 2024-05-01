@@ -1,5 +1,33 @@
-/* Your styles goes here. */
-.App {
-    height: 100vh;
-    overflow: hidden;
+.wrapper {
+    max-width: 50vw;
+    margin-inline: auto;
+}
+
+input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border-radius: var(--txt-md);
+    height: var(--txt-xs);
+
+    &::-webkit-slider-runnable-track {
+        cursor: pointer;
+        padding-inline: 1ch;
+        height: var(--txt-xs);
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        width: var(--txt-xs);
+        height: var(--txt-xs);
+        border-radius: 50%;
+        background: var(--clr-action);
+        transition: all 0.25s ease;
+        &:hover {
+            transform: scale(1.1);
+            transition: all 0.25s ease;
+        }
+    }
 }

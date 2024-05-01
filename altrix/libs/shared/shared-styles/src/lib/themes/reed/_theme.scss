@@ -1,2 +1,2 @@
-@forward './fonts';
-@forward './variables';
+@use './variables' as *;
+@use '../base/theme' as *;
