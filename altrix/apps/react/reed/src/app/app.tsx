@@ -9,7 +9,6 @@ export function App() {
             <div className={styles['wrapper']}>
                 <ReedPlayerComponent
                     stories={stories}
-                    isPlaying={false}
                     onPause={() => console.log('Pause')}
                     onPlay={() => console.log('Play')}
                     onSelectFrame={(id: string) =>

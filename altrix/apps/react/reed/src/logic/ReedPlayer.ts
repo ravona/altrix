@@ -33,13 +33,12 @@ export class ReedPlayer {
         }
 
         this.activeFrame = this.frames[this.index];
-        this.index = this.index + 1;
+        this.index++;
     }
 
     play() {
         if (this.isPlaying) return;
         this.isPlaying = true;
-
         if (!this.intervalId) {
             this.intervalId = setInterval(
                 this.handleAutoFrameChange,
@@ -50,8 +49,8 @@ export class ReedPlayer {
 
     pause() {
         if (!this.isPlaying) return;
-        clearInterval(this.intervalId as NodeJS.Timeout);
         this.isPlaying = false;
+        clearInterval(this.intervalId as NodeJS.Timeout);
     }
 
     stop() {
@@ -94,6 +93,14 @@ export class ReedPlayer {
         } else {
             this.activeFrame = newActiveFrame;
         }
+    }
+
+    setIntervalSpeed(value: number) {
+        this.intervalSpeed = value;
+    }
+
+    getIntervalSpeed(): number {
+        return this.intervalSpeed;
     }
 }
 

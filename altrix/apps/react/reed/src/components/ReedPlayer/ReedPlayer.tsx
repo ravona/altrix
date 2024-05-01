@@ -14,17 +14,12 @@ import StopIcon from '@mui/icons-material/Stop';
 // types:
 import { Story, Frame } from '../../logic/types/types';
 
-// logic:
-import { regexRules, splitTextWithRegex } from '../../logic/logic';
-
 // styles:
 import styles from './ReedPlayer.module.scss';
-import { generateTextFrame } from './utils';
 import ReedPlayer from '../../logic/ReedPlayer';
 
 type Props = {
     stories: Story[] | [];
-    isPlaying: boolean;
     onPause: () => void;
     onPlay: () => void;
     onSelectFrame: (id: string) => void;
@@ -32,32 +27,22 @@ type Props = {
 };
 
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
-    const playerRef = useRef<ReedPlayer>();
+    const playerRef = useRef<ReedPlayer | null>(null);
     const [currentStory, setCurrentStory] = useState<Story | null>(
-        props.stories ? props.stories[0] : null,
+        props.stories[0],
     );
-
-    const [frames, setFrames] = useState<Frame[] | []>([]);
-    const [activeFrame, setActiveFrame] = useState<Frame | null>(
-        frames ? frames[0] : null,
-    );
-
-    // player settings:
-    const [showPlaylist, setShowPlaylist] = useState(false);
-
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [frames, setFrames] = useState<Frame[]>([]);
+    const [activeFrame, setActiveFrame] = useState<Frame | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const [showPlaylist, setShowPlaylist] = useState(false);
 
     useEffect(() => {
         if (currentStory) {
-            const parsedStory = splitTextWithRegex(
-                currentStory.content,
-                regexRules.sentences,
-            );
-            const parsedFrames = parsedStory.map((text) =>
-                generateTextFrame(text),
-            );
-            setFrames(parsedFrames);
-            setActiveFrame(parsedFrames[0]);
+            const player = new ReedPlayer(currentStory);
+            playerRef.current = player;
+            setFrames(player.getFrames());
+            setActiveFrame(player.getActiveFrame());
         }
     }, [currentStory]);
 
@@ -84,7 +69,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             </header>
             <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
                 <div className={styles['ReedPlayer__Content']}>
-                    {frames.map((frame) => (
+                    {playerRef.current?.getFrames().map((frame: Frame) => (
                         <p
                             onClick={() => {
                                 setActiveFrame(frame);
@@ -142,12 +127,15 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                     >
                         <FastForwardIcon />
                     </button> */}
-                    {props.isPlaying ? (
+
+                    {isPlaying ? (
                         <>
                             <button
                                 className={styles['ReedPlayer__Control']}
                                 type="button"
-                                onClick={props.onPause}
+                                onClick={() => {
+                                    setIsPlaying(false);
+                                }}
                             >
                                 <PauseIcon />
                             </button>
@@ -156,7 +144,9 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                         <button
                             className={styles['ReedPlayer__Control']}
                             type="button"
-                            onClick={props.onPlay}
+                            onClick={() => {
+                                setIsPlaying(true);
+                            }}
                         >
                             <PlayArrowIcon />
                         </button>
