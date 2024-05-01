@@ -3,19 +3,18 @@
     grid-template-rows: auto 1fr auto;
     height: 100dvh;
 
-    &__Header,
-    &__Content {
+    &__Header {
+        font-family: var(--font-secondary);
         padding: var(--spacing-md);
     }
 
-    &__Header,
-    &__Footer {
-        font-family: var(--font-secondary);
+    &__Title {
+        font-size: var(--txt-lg);
+        line-height: 1;
     }
 
-    &__Title,
     &__Subtitle {
-        font-size: var(--txt-lg);
+        font-size: var(--txt-md);
         line-height: 1;
     }
 
@@ -25,8 +24,9 @@
 
     &__Content {
         line-height: 1.5;
-        font-family: var(--font-default);
+        font-family: var(--font-primary);
         color: var(--clr-txt2);
+        padding: var(--spacing-md);
     }
 
     &__Frame {
@@ -50,15 +50,11 @@
     &__Footer {
         z-index: var(--z-high);
         padding: var(--spacing-md);
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        font-family: var(--font-secondary);
     }
 
     &__Slider {
         width: 100%;
-        flex-grow: 1;
         padding: var(--spacing-md);
     }
 

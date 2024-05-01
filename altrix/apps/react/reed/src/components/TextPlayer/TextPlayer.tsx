@@ -1,4 +1,10 @@
+// react:
+import React, { useEffect, useRef, useState } from 'react';
+
+// # third-party:
 import { generateUniqueId } from '@altrix/shared-utils';
+import { useMachine } from '@xstate/react';
+// ## icons:
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -6,25 +12,31 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import StopIcon from '@mui/icons-material/Stop';
-import { useMachine } from '@xstate/react';
-import React, { useEffect, useRef, useState } from 'react';
-import data from '../../data/stories.json';
-import { regexRules, splitTextWithRegex } from '../../logic/logic';
-import { Story, TextFrame } from '../../logic/types/types';
-import styles from './TextPlayer.module.scss';
+
+// types:
+import { Story, Frame } from '../../logic/types/types';
+
+// xstate:
 import { textPlayerMachine } from './textPlayer.machine';
-import sharedButtonStyles from '@altrix/shared-styles/shared/ui/button.module.scss';
-import sharedTextStyles from '@altrix/shared-styles/shared/ui/text.module.scss';
+
+// logic:
+import { regexRules, splitTextWithRegex } from '../../logic/logic';
+
+// data:
+import data from '../../data/stories.json';
+
+// styles:
+import styles from './TextPlayer.module.scss';
 
 const TextPlayer: React.FC<Story> = (props) => {
     const stories = useRef(data);
     const [currentStory, setCurrentStory] = useState<Story | null>(
         stories ? stories.current[3] : null,
     );
-    const [frames, setFrames] = useState<TextFrame[] | []>([]);
+    const [frames, setFrames] = useState<Frame[] | []>([]);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [state, send] = useMachine(textPlayerMachine);
     const [showPlaylist, setShowPlaylist] = useState(false);
+    const [state, send] = useMachine(textPlayerMachine);
 
     useEffect(() => {
         if (currentStory) {
@@ -33,14 +45,12 @@ const TextPlayer: React.FC<Story> = (props) => {
                 currentStory.content,
                 regexRules.sentences,
             );
-            const parsedFrames = parsedStory.map(
-                (content: string): TextFrame => {
-                    return {
-                        id: generateUniqueId(),
-                        content,
-                    };
-                },
-            );
+            const parsedFrames = parsedStory.map((content: string): Frame => {
+                return {
+                    id: generateUniqueId(),
+                    content,
+                };
+            });
             setFrames(parsedFrames);
         }
     }, [currentStory]);
@@ -68,7 +78,10 @@ const TextPlayer: React.FC<Story> = (props) => {
                     {frames.map((frame, index) => (
                         <p
                             onClick={() => {
-                                send({ type: 'SET_INDEX', index });
+                                send({
+                                    type: 'SET_INDEX',
+                                    index,
+                                });
                             }}
                             key={frame.id}
                             id={frame.id}
@@ -127,11 +140,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                             <button
                                 className={styles['TextPlayer__Control']}
                                 type="button"
-                                onClick={() =>
-                                    send({
-                                        type: 'PAUSE',
-                                    })
-                                }
+                                onClick={() => send({ type: 'PAUSE' })}
                             >
                                 <PauseIcon />
                             </button>

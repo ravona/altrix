@@ -5,7 +5,8 @@ export type Story = {
     content: string;
 };
 
-export type TextFrame = {
+export type Frame = {
     id: string;
     content: string;
+    img?: string;
 };
