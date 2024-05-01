@@ -1,29 +1,24 @@
 @use '../base/variables' as *;
 
-$color_primary: purple;
-$color_secondary: orange;
+$color_primary: hsl(300, 32%, 77%);
+$color_secondary: hsl(39, 100%, 50%);
 
 $colors: (
-    bg: (
-        primary: $color_primary,
-        secondary: $color_secondary,
-    ),
-    palette: (
-        1: darken($color_primary, 10%),
-        2: darken($color_primary, 20%),
-        3: darken($color_primary, 30%),
-        4: darken($color_primary, 40%),
-        5: darken($color_primary, 50%),
-    ),
-    txt: (
-        primary: #171819,
-        secondary: #555555,
-    ),
+    action: $color_action,
+    disabled: $color_disabled,
+    error: $color_error,
+    info: $color_info,
+    primary: $color_primary,
+    secondary: $color_secondary,
+    success: $color_success,
+    txt: $color_txt,
+    txt2: $color_txt2,
+    warning: $color_warning,
 );
 
 $fontFamilies: (
-    primary: unquote('Mate, serif'),
-    secondary: unquote('Podkova, serif'),
+    primary: unquote('Berkshire Swash, serif'),
+    secondary: unquote('Playfair Display, serif'),
 );
 
 $spacings: (
