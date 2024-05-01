@@ -1,5 +1,5 @@
 // react:
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 // # third-party:
 // ## icons:
@@ -17,13 +17,10 @@ import { Story, Frame } from '../../logic/types/types';
 // styles:
 import styles from './ReedPlayer.module.scss';
 import ReedPlayer from '../../logic/ReedPlayer';
+import ReedPlayerSlider from './components/ReedPlayerSlider/ReedPlayerSlider';
 
 type Props = {
     stories: Story[] | [];
-    onPause: () => void;
-    onPlay: () => void;
-    onSelectFrame: (id: string) => void;
-    onStop: () => void;
 };
 
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
@@ -31,11 +28,37 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     const [currentStory, setCurrentStory] = useState<Story | null>(
         props.stories[0],
     );
-    const [isPlaying, setIsPlaying] = useState(false);
+
     const [frames, setFrames] = useState<Frame[]>([]);
     const [activeFrame, setActiveFrame] = useState<Frame | null>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [index, setIndex] = useState(0);
+
+    const [delay, setDelay] = useState(1000);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+
+    // player options:
     const [showPlaylist, setShowPlaylist] = useState(false);
+
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const onPause = () => {
+        if (!isPlaying) return;
+        setIsPlaying(false);
+        clearInterval(intervalId as NodeJS.Timeout);
+    };
+
+    const onPlay = () => {
+        if (isPlaying) return;
+        setIsPlaying(true);
+    };
+
+    const onStop = () => {
+        if (!isPlaying) return;
+        setIsPlaying(false);
+        clearInterval(intervalId as NodeJS.Timeout);
+        setIndex(0);
+    };
 
     useEffect(() => {
         if (currentStory) {
@@ -53,8 +76,37 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                 ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, [activeFrame]);
 
+    useEffect(() => {
+        if (isPlaying) {
+            const id = setInterval(handleAutoFrameChange, delay);
+            setIntervalId(id);
+        } else {
+            clearInterval(intervalId as NodeJS.Timeout);
+        }
+
+        return () => {
+            clearInterval(intervalId as NodeJS.Timeout);
+        };
+    }, [isPlaying, delay]);
+
     const handleChangeIndex = (i: number) => {
         setActiveFrame(frames[i]);
+    };
+
+    const handleAutoFrameChange = () => {
+        if (index === frames.length - 1) {
+            onPause();
+            return;
+        }
+
+        setIndex(index + 1);
+        setActiveFrame(frames[index]);
+        console.log('index', index);
+        console.log('active frame', activeFrame?.text);
+    };
+
+    const handleChangeDelay = (event: ChangeEvent<HTMLInputElement>) => {
+        setDelay(Number(event.target.value));
     };
 
     return (
@@ -69,11 +121,10 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             </header>
             <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
                 <div className={styles['ReedPlayer__Content']}>
-                    {playerRef.current?.getFrames().map((frame: Frame) => (
+                    {frames.map((frame: Frame) => (
                         <p
                             onClick={() => {
                                 setActiveFrame(frame);
-                                props.onSelectFrame(frame.id);
                             }}
                             key={frame.id}
                             id={frame.id}
@@ -85,18 +136,13 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                 </div>
             </div>
             <footer className={styles['ReedPlayer__Footer']}>
-                <input
-                    className={styles['ReedPlayer__Slider']}
-                    type="range"
+                <ReedPlayerSlider
                     min={0}
+                    max={frames.length - 1}
                     value={frames.findIndex(
                         (frame) => frame.id === activeFrame?.id,
                     )}
-                    onChange={(event) => {
-                        const newIndex = parseInt(event.target.value, 10);
-                        handleChangeIndex(newIndex);
-                    }}
-                    max={frames.length - 1}
+                    onChange={(i: number) => handleChangeIndex(i)}
                 />
 
                 <div className={styles['ReedPlayer__Controls']}>
@@ -135,6 +181,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                                 type="button"
                                 onClick={() => {
                                     setIsPlaying(false);
+                                    onPause();
                                 }}
                             >
                                 <PauseIcon />
@@ -146,6 +193,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                             type="button"
                             onClick={() => {
                                 setIsPlaying(true);
+                                onPlay();
                             }}
                         >
                             <PlayArrowIcon />
@@ -154,7 +202,11 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                     <button
                         className={styles['ReedPlayer__Control']}
                         type="button"
-                        onClick={props.onStop}
+                        onClick={() => {
+                            setIsPlaying(false);
+                            setActiveFrame(frames[0]);
+                            onStop();
+                        }}
                     >
                         <StopIcon />
                     </button>
