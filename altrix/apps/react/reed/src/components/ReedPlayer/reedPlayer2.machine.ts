@@ -1,6 +1,6 @@
 import { assign, setup, fromCallback, sendParent } from 'xstate';
 
-export const textPlayerMachine = setup({
+export const reedPlayerMachine = setup({
     types: {
         context: {
             index: 0,
@@ -81,7 +81,7 @@ export const textPlayerMachine = setup({
         },
     },
 }).createMachine({
-    id: 'textPlayer',
+    id: 'reedPlayer',
     context: {
         index: 0,
         isPlaying: false,

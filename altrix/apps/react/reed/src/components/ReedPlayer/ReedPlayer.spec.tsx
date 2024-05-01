@@ -1,17 +1,17 @@
 import { render } from '@testing-library/react';
 
-import TextPlayer from './TextPlayer';
+import ReedPlayer from './ReedPlayer';
 
-describe('TextPlayer', () => {
+describe('reedPlayer', () => {
     it('should render successfully', () => {
         const playerProps = {
             id: '1',
-            name: 'Test TextPlayer',
+            name: 'Test reedPlayer',
             source: 'test-source',
             content: 'test-content',
         };
 
-        const { baseElement } = render(<TextPlayer {...playerProps} />);
+        const { baseElement } = render(<ReedPlayer {...playerProps} />);
         expect(baseElement).toBeTruthy();
     });
 });

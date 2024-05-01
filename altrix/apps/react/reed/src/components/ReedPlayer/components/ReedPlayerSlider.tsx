@@ -6,7 +6,7 @@ export type Props = {
     max: number;
 };
 
-const TextPlayerSlider: React.FC<Props> = (props) => {
+const reedPlayerSlider: React.FC<Props> = (props) => {
     return (
         <Slider
             value={props.value}
@@ -17,4 +17,4 @@ const TextPlayerSlider: React.FC<Props> = (props) => {
     );
 };
 
-export default TextPlayerSlider;
+export default reedPlayerSlider;

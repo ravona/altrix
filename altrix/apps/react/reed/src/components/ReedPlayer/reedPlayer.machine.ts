@@ -1,6 +1,6 @@
 import { assign, setup, fromCallback } from 'xstate';
 
-export const textPlayerMachine = setup({
+export const reedPlayerMachine = setup({
     actors: {
         frames: fromCallback(({ sendBack }) => {
             const interval = setInterval(() => {
@@ -15,7 +15,7 @@ export const textPlayerMachine = setup({
         stopping: assign({ isPlaying: false, index: 0 }),
     },
 }).createMachine({
-    id: 'textPlayer',
+    id: 'reedPlayer',
     context: {
         index: 0,
         isPlaying: false,

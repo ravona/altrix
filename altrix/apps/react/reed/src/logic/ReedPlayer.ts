@@ -3,7 +3,7 @@ import { Story, Frame } from './types/types';
 import {
     generateTextFrame,
     splitTextWithRegex,
-} from '../components/TextPlayer/utils';
+} from '../components/ReedPlayer/utils';
 
 export class ReedPlayer {
     private frames: Frame[] = [];

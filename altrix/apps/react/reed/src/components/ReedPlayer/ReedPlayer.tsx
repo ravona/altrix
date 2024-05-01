@@ -17,7 +17,7 @@ import StopIcon from '@mui/icons-material/Stop';
 import { Story, Frame } from '../../logic/types/types';
 
 // xstate:
-import { textPlayerMachine } from './textPlayer.machine';
+import { reedPlayerMachine } from './reedPlayer.machine';
 
 // logic:
 import { regexRules, splitTextWithRegex } from '../../logic/logic';
@@ -26,9 +26,9 @@ import { regexRules, splitTextWithRegex } from '../../logic/logic';
 import data from '../../data/stories.json';
 
 // styles:
-import styles from './TextPlayer.module.scss';
+import styles from './ReedPlayer.module.scss';
 
-const TextPlayer: React.FC<Story> = (props) => {
+const ReedPlayer: React.FC<Story> = (props) => {
     const stories = useRef(data);
     const [currentStory, setCurrentStory] = useState<Story | null>(
         stories ? stories.current[3] : null,
@@ -36,7 +36,7 @@ const TextPlayer: React.FC<Story> = (props) => {
     const [frames, setFrames] = useState<Frame[] | []>([]);
     const containerRef = useRef<HTMLDivElement>(null);
     const [showPlaylist, setShowPlaylist] = useState(false);
-    const [state, send] = useMachine(textPlayerMachine);
+    const [state, send] = useMachine(reedPlayerMachine);
 
     useEffect(() => {
         if (currentStory) {
@@ -64,17 +64,17 @@ const TextPlayer: React.FC<Story> = (props) => {
     }, [state.context.index]);
 
     return (
-        <article className={styles['TextPlayer']}>
-            <header className={styles['TextPlayer__Header']}>
-                <h2 className={styles['TextPlayer__Title']}>
+        <article className={styles['reedPlayer']}>
+            <header className={styles['reedPlayer__Header']}>
+                <h2 className={styles['reedPlayer__Title']}>
                     {currentStory?.name}
                 </h2>
-                <h3 className={styles['TextPlayer__Subtitle']}>
+                <h3 className={styles['reedPlayer__Subtitle']}>
                     Source: {currentStory?.source}
                 </h3>
             </header>
-            <div className={styles['TextPlayer__Screen']} ref={containerRef}>
-                <div className={styles['TextPlayer__Content']}>
+            <div className={styles['reedPlayer__Screen']} ref={containerRef}>
+                <div className={styles['reedPlayer__Content']}>
                     {frames.map((frame, index) => (
                         <p
                             onClick={() => {
@@ -85,16 +85,16 @@ const TextPlayer: React.FC<Story> = (props) => {
                             }}
                             key={frame.id}
                             id={frame.id}
-                            className={`${styles['TextPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
+                            className={`${styles['reedPlayer__Frame']} ${index === state.context.index ? styles['is-active'] : ''}`}
                         >
                             {frame.content}
                         </p>
                     ))}
                 </div>
             </div>
-            <footer className={styles['TextPlayer__Footer']}>
+            <footer className={styles['reedPlayer__Footer']}>
                 <input
-                    className={styles['TextPlayer__Slider']}
+                    className={styles['reedPlayer__Slider']}
                     type="range"
                     min={0}
                     value={state.context.index}
@@ -107,9 +107,9 @@ const TextPlayer: React.FC<Story> = (props) => {
                     max={frames.length - 1}
                 />
 
-                <div className={styles['TextPlayer__Controls']}>
+                <div className={styles['reedPlayer__Controls']}>
                     <button
-                        className={styles['TextPlayer__Control']}
+                        className={styles['reedPlayer__Control']}
                         type="button"
                         onClick={() =>
                             send({
@@ -124,7 +124,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                         <FastRewindIcon />
                     </button>
                     <button
-                        className={styles['TextPlayer__Control']}
+                        className={styles['reedPlayer__Control']}
                         type="button"
                         onClick={() =>
                             send({
@@ -138,7 +138,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                     {state.matches('playing') ? (
                         <>
                             <button
-                                className={styles['TextPlayer__Control']}
+                                className={styles['reedPlayer__Control']}
                                 type="button"
                                 onClick={() => send({ type: 'PAUSE' })}
                             >
@@ -147,7 +147,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                         </>
                     ) : (
                         <button
-                            className={styles['TextPlayer__Control']}
+                            className={styles['reedPlayer__Control']}
                             type="button"
                             onClick={() => send({ type: 'PLAY' })}
                         >
@@ -155,7 +155,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                         </button>
                     )}
                     <button
-                        className={styles['TextPlayer__Control']}
+                        className={styles['reedPlayer__Control']}
                         type="button"
                         onClick={() => send({ type: 'STOP' })}
                     >
@@ -163,7 +163,7 @@ const TextPlayer: React.FC<Story> = (props) => {
                     </button>
 
                     <button
-                        className={styles['TextPlayer__Control']}
+                        className={styles['reedPlayer__Control']}
                         type="button"
                         onClick={() => setShowPlaylist(!showPlaylist)}
                     >
@@ -176,10 +176,10 @@ const TextPlayer: React.FC<Story> = (props) => {
                 </div>
 
                 {showPlaylist && (
-                    <ol className={styles['TextPlayer__Playlist']}>
+                    <ol className={styles['reedPlayer__Playlist']}>
                         {stories.current.map((story) => (
                             <li
-                                className={styles['TextPlayer__PlaylistItem']}
+                                className={styles['reedPlayer__PlaylistItem']}
                                 key={story.id}
                             >
                                 <button
@@ -198,4 +198,4 @@ const TextPlayer: React.FC<Story> = (props) => {
     );
 };
 
-export default TextPlayer;
+export default ReedPlayer;
