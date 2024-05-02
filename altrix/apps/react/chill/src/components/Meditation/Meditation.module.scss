@@ -1,0 +1,55 @@
+@keyframes msg {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(2);
+    }
+}
+
+@keyframes bg {
+    from {
+        filter: hue-rotate(0);
+        // filter: saturate(5%);
+        // background-position: top;
+    }
+    to {
+        filter: hue-rotate(360deg);
+        // filter: saturate(100%);
+        // background-position: bottom;
+    }
+}
+
+.Meditation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
+
+.Message {
+    font-size: var(--txt-sm);
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 10rem;
+    width: 10rem;
+    font-family: var(--font-primary);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-align: center;
+    animation: msg 4s alternate infinite;
+}
+
+.primary {
+    background-image: url('../../assets/images/metatron_cube.jpg');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: bg 12s alternate infinite;
+}
+
+.secondary {
+    border: 5px dashed royalblue;
+}
