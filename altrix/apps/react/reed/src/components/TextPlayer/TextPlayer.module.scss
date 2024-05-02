@@ -31,9 +31,9 @@
 
     &__Frame {
         cursor: pointer;
-        font-size: var(--txt-sm);
+        font-size: var(--txt-md);
         margin-bottom: var(--spacing-lg);
-        opacity: 0.5;
+        opacity: 0.75;
         transition: all 0.25s ease;
 
         &:hover {
@@ -44,6 +44,7 @@
             opacity: 1;
             transition: all 0.25s ease;
             font-weight: bold;
+            font-size: calc(var(--txt-md) + 0.25rem);
         }
     }
 
@@ -67,8 +68,13 @@
 
     &__Control {
         color: var(--clr-action);
+
         &:hover {
             color: lightem(var(--clr-action), 10%);
+        }
+
+        svg {
+            font-size: var(--txt-lg);
         }
     }
 
