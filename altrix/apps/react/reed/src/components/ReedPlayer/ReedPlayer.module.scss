@@ -3,48 +3,8 @@
     grid-template-rows: auto 1fr auto;
     height: 100dvh;
 
-    &__Header {
-        font-family: var(--font-secondary);
-        padding: var(--spacing-md);
-    }
-
-    &__Title {
-        font-size: var(--txt-lg);
-        line-height: 1;
-    }
-
-    &__Subtitle {
-        font-size: var(--txt-md);
-        line-height: 1;
-    }
-
     &__Screen {
         overflow-y: auto;
-    }
-
-    &__Content {
-        line-height: 1.5;
-        font-family: var(--font-primary);
-        color: var(--clr-txt2);
-        padding: var(--spacing-md);
-    }
-
-    &__Frame {
-        cursor: pointer;
-        font-size: var(--txt-sm);
-        margin-bottom: var(--spacing-lg);
-        opacity: 0.5;
-        transition: all 0.25s ease;
-
-        &:hover {
-            opacity: 1;
-        }
-
-        &.is-active {
-            opacity: 1;
-            transition: all 0.25s ease;
-            font-weight: bold;
-        }
     }
 
     &__Footer {
@@ -56,20 +16,6 @@
     &__Slider {
         width: 100%;
         padding: var(--spacing-md);
-    }
-
-    &__Controls {
-        display: flex;
-        justify-content: center;
-        gap: var(--spacing-md);
-        padding-block: var(--spacing-md);
-    }
-
-    &__Control {
-        color: var(--clr-action);
-        &:hover {
-            color: lightem(var(--clr-action), 10%);
-        }
     }
 
     &__Playlist {

@@ -1,0 +1,13 @@
+.ReedPlayer__Controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding-block: var(--spacing-md);
+}
+
+.ReedPlayer__Control {
+    color: var(--clr-action);
+    &:hover {
+        color: lightem(var(--clr-action), 10%);
+    }
+}

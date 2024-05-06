@@ -7,15 +7,7 @@ export function App() {
     return (
         <main className={sharedStyle['app']}>
             <div className={styles['wrapper']}>
-                <ReedPlayerComponent
-                    stories={stories}
-                    onPause={() => console.log('Pause')}
-                    onPlay={() => console.log('Play')}
-                    onSelectFrame={(id: string) =>
-                        console.log('SelectFrame', id)
-                    }
-                    onStop={() => console.log('Stop')}
-                />
+                <ReedPlayerComponent stories={stories} />
             </div>
         </main>
     );

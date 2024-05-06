@@ -1,0 +1,14 @@
+.ReedPlayer__Header {
+    font-family: var(--font-secondary);
+    padding: var(--spacing-md);
+
+    &-Title {
+        font-size: var(--txt-lg);
+        line-height: 1;
+    }
+
+    &-Subtitle {
+        font-size: var(--txt-md);
+        line-height: 1;
+    }
+}

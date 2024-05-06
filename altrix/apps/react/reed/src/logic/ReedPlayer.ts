@@ -5,78 +5,45 @@ import {
     splitTextWithRegex,
 } from '../components/ReedPlayer/utils';
 
-export class ReedPlayer {
+class ReedPlayer {
+    private story: Story | null = null;
     private frames: Frame[] = [];
     private activeFrame: Frame | null = null;
     private index: number = 0;
-    private intervalId?: NodeJS.Timeout;
-    private intervalSpeed: number = 2000;
+    private intervalSpeed: number = 1000;
     private isPlaying: boolean = false;
 
     constructor(story: Story) {
+        this.story = story;
         const parsedContent = splitTextWithRegex(
             story.content,
             regexRules.sentences,
         );
-
         this.frames = parsedContent.map(
             (text: string): Frame => generateTextFrame(text),
         );
-
         this.activeFrame = this.frames[this.index];
     }
 
-    private handleAutoFrameChange() {
-        if (this.index === this.frames.length - 1) {
-            this.pause();
-            return;
-        }
-
-        this.activeFrame = this.frames[this.index];
-        this.index++;
+    getStory(): Story | null {
+        return this.story;
     }
 
     play() {
-        if (this.isPlaying) return;
         this.isPlaying = true;
-        if (!this.intervalId) {
-            this.intervalId = setInterval(
-                this.handleAutoFrameChange,
-                this.intervalSpeed,
-            );
-        }
     }
 
     pause() {
-        if (!this.isPlaying) return;
         this.isPlaying = false;
-        clearInterval(this.intervalId as NodeJS.Timeout);
     }
 
     stop() {
-        clearInterval(this.intervalId as NodeJS.Timeout);
         this.index = 0;
         this.isPlaying = false;
     }
 
     getFrames(): Frame[] {
         return this.frames;
-    }
-
-    getIsPlaying(): boolean {
-        return this.isPlaying;
-    }
-
-    setIsPlaying(value: boolean): void {
-        this.isPlaying = value;
-    }
-
-    getIndex(): number {
-        return this.index;
-    }
-
-    setIndex(value: number): void {
-        this.index = value;
     }
 
     getActiveFrame(): Frame | null {
@@ -93,6 +60,18 @@ export class ReedPlayer {
         } else {
             this.activeFrame = newActiveFrame;
         }
+    }
+
+    getIndex(): number {
+        return this.index;
+    }
+
+    setIndex(value: number): void {
+        this.index = value;
+    }
+
+    getIsPlaying(): boolean {
+        return this.isPlaying;
     }
 
     setIntervalSpeed(value: number) {

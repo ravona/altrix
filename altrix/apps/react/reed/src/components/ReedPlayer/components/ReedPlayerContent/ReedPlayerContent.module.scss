@@ -1,0 +1,24 @@
+.ReedPlayer__Content {
+    line-height: 1.5;
+    font-family: var(--font-primary);
+    color: var(--clr-txt2);
+    padding: var(--spacing-md);
+}
+
+.ReedPlayer__Frame {
+    cursor: pointer;
+    font-size: var(--txt-sm);
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+    transition: all 0.25s ease;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &.is-active {
+        opacity: 1;
+        transition: all 0.25s ease;
+        font-weight: bold;
+    }
+}
