@@ -18,20 +18,37 @@ import ReedPlayerControls from './components/ReedPlayerControls/ReedPlayerContro
 import ReedPlayerOptions from './components/ReedPlayerOptions/ReedPlayerOptions';
 
 type Props = {
-    stories: Story[] | [];
+    stories: Story[];
+};
+
+type PlayerMode = 'auto' | 'manual';
+type PlayerSpeed = 1000 | 2000 | 3000 | 4000 | 5000;
+type PlayerSplitPattern = 'sentence' | 'word';
+type PlayerTheme = 'primary' | 'secondary';
+
+type PlayerOptions = {
+    speed: PlayerSpeed;
+    theme: PlayerTheme;
+    mode: PlayerMode;
+    splitPattern: PlayerSplitPattern;
+};
+
+type PlayerState = {
+    story: Story;
+    frames: Frame[];
+    activeFrame: Frame;
+    isPlaying: boolean;
+    playerOptions: PlayerOptions;
 };
 
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
-    const playerRef = useRef<ReedPlayer | null>(null);
-    const [currentStory, setCurrentStory] = useState<Story | null>(
-        props.stories[0],
-    );
-
-    const [frames, setFrames] = useState<Frame[]>([]);
-    const [activeFrame, setActiveFrame] = useState<Frame>(frames[0]);
+    const playerRef = useRef<ReedPlayer>(new ReedPlayer(props.stories[0]));
+    const [currentStory, setCurrentStory] = useState<Story | null>(null);
+    const [frames, setFrames] = useState<Frame[] | []>([]);
+    const [activeFrame, setActiveFrame] = useState<Frame | null>(null);
     const [index, setIndex] = useState<number>(0);
 
-    const [playerSpeed, setPlayerSpeed] = useState(1000);
+    const [playerSpeed, setPlayerSpeed] = useState<number>(1000);
     const [isPlaying, setIsPlaying] = useState(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
@@ -45,9 +62,10 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
         if (currentStory) {
             const player = new ReedPlayer(currentStory);
             playerRef.current = player;
+
             setFrames(player.getFrames());
             setIndex(player.getIndex());
-            setActiveFrame(player.getActiveFrame() ?? ({} as Frame));
+            setActiveFrame(player.getActiveFrame());
         }
     }, [currentStory]);
 
@@ -62,6 +80,8 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
         if (isPlaying) {
             const id = setInterval(handleAutoFrameChange, playerSpeed);
             setIntervalId(id);
+        } else {
+            clearInterval(intervalId as NodeJS.Timeout);
         }
         return () => {
             clearInterval(intervalId as NodeJS.Timeout);
@@ -83,20 +103,19 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     const handleStop = () => {
         if (!isPlaying) return;
         setIsPlaying(false);
-        clearInterval(intervalId as NodeJS.Timeout);
         setIndex(0);
     };
 
     const handlePrevFrame = () => {
         if (index === 0) return;
         setIndex(index - 1);
-        setActiveFrame(frames[index]);
+        // setActiveFrame(frames[index]);
     };
 
     const handleNextFrame = () => {
         if (index === frames.length - 1) return;
         setIndex(index + 1);
-        setActiveFrame(frames[index]);
+        // setActiveFrame(frames[index]);
     };
 
     const handleTogglePlayerOptions = () => {
@@ -109,7 +128,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
 
     const handleChangeIndex = (i: number) => {
         setIndex(i);
-        setActiveFrame(frames[i]);
+        setActiveFrame(playerRef.current.getFrames()[i]);
     };
 
     const handleAutoFrameChange = () => {
@@ -120,7 +139,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
         }
 
         setIndex(index + 1);
-        setActiveFrame(frames[index]);
+        // setActiveFrame(frames[index]);
         console.log('index', index);
         console.log('active frame', activeFrame?.text);
     };
@@ -137,18 +156,18 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             />
             <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
                 <ReedPlayerContent
-                    frames={frames}
-                    activeFrame={activeFrame}
+                    frames={playerRef.current.getFrames() || []}
+                    activeFrame={
+                        playerRef.current?.getActiveFrame() || ({} as Frame)
+                    }
                     onClickFrame={(frame: Frame) => setActiveFrame(frame)}
                 />
             </div>
             <footer className={styles['ReedPlayer__Footer']}>
                 <ReedPlayerSlider
                     min={0}
-                    max={frames.length - 1}
-                    value={frames.findIndex(
-                        (frame) => frame.id === activeFrame?.id,
-                    )}
+                    max={playerRef.current?.getFrames().length ?? 0}
+                    value={playerRef.current?.getIndex() ?? 0}
                     onChange={(i: number) => handleChangeIndex(i)}
                 />
 
