@@ -25,10 +25,6 @@ class ReedPlayer {
         this.activeFrame = this.frames[this.index];
     }
 
-    getStory(): Story | null {
-        return this.story;
-    }
-
     play() {
         this.isPlaying = true;
     }
@@ -38,8 +34,12 @@ class ReedPlayer {
     }
 
     stop() {
-        this.index = 0;
         this.isPlaying = false;
+        this.index = 0;
+    }
+
+    getStory(): Story | null {
+        return this.story;
     }
 
     getFrames(): Frame[] {
@@ -50,16 +50,8 @@ class ReedPlayer {
         return this.activeFrame;
     }
 
-    setActiveFrame(id: string) {
-        const newActiveFrame = this.frames.find(
-            (frame: Frame) => frame.id === id,
-        );
-
-        if (!newActiveFrame) {
-            console.error('TextFrame not found');
-        } else {
-            this.activeFrame = newActiveFrame;
-        }
+    setActiveFrame(frame: Frame) {
+        this.activeFrame = frame;
     }
 
     getIndex(): number {
@@ -68,6 +60,10 @@ class ReedPlayer {
 
     setIndex(value: number): void {
         this.index = value;
+    }
+
+    getIndexByFrameId(id: string): number {
+        return this.frames.findIndex((frame: Frame) => frame.id === id);
     }
 
     getIsPlaying(): boolean {

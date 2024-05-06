@@ -7,6 +7,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
 import styles from './ReedPlayerControls.module.scss';
+import { useContext } from 'react';
+import { ReedPlayerContext } from '../../ReedPlayerContext';
 
 export type Props = {
     onPrevFrame: () => void;
@@ -25,6 +27,8 @@ const ReedPlayerControls: React.FC<Props> = ({
     onStop,
     isPlaying,
 }: Props) => {
+    const { index } = useContext(ReedPlayerContext);
+
     return (
         <div className={styles['ReedPlayer__Controls']}>
             <button
@@ -65,15 +69,17 @@ const ReedPlayerControls: React.FC<Props> = ({
                     <PlayArrowIcon />
                 </button>
             )}
-            <button
-                className={styles['ReedPlayer__Control']}
-                type="button"
-                onClick={() => {
-                    onStop();
-                }}
-            >
-                <StopIcon />
-            </button>
+            {index !== 0 && (
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={() => {
+                        onStop();
+                    }}
+                >
+                    <StopIcon />
+                </button>
+            )}
         </div>
     );
 };

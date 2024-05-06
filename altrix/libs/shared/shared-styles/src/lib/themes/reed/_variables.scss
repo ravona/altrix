@@ -1,8 +1,11 @@
 @use '../base/variables' as *;
 
-$color_primary: hsla(40, 10%, 80%, 1);
+$color_primary: hsl(40, 15%, 50%);
 $color_secondary: darken($color_primary, 20%);
-$color_action: hsla(40, 100%, 42%, 1);
+$color_action: hsla(40, 50%, 80%, 1);
+
+$color_txt: lighten($color_primary, 20%);
+$color_txt2: lighten($color_primary, 40%);
 
 $colors: (
     action: $color_action,

@@ -3,7 +3,7 @@ import styles from './ReedPlayerContent.module.scss';
 
 export type Props = {
     frames: Frame[];
-    activeFrame: Frame;
+    activeFrame: Frame | null;
     onClickFrame: (frame: Frame) => void;
 };
 
