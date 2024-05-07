@@ -13,7 +13,7 @@ export type Frame = {
 
 export type PlayerMode = 'auto' | 'manual';
 export type PlayerSpeed = 1000 | 2000 | 3000 | 4000 | 5000;
-export type PlayerSplitPattern = 'sentence' | 'word';
+export type PlayerSplitPattern = 'sentences' | 'words';
 export type PlayerTheme = 'primary' | 'secondary';
 
 export type PlayerOptions = {

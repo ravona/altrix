@@ -6,15 +6,15 @@ import {
 } from '../components/ReedPlayer/utils';
 
 class ReedPlayer {
-    private story: Story | null = null;
+    private story: Story;
     private frames: Frame[] = [];
-    private activeFrame: Frame | null = null;
+    private activeFrame: Frame;
     private index: number = 0;
     private options: PlayerOptions = {
         speed: 1000,
         theme: 'primary',
         mode: 'auto',
-        splitPattern: 'sentence',
+        splitPattern: 'sentences',
     };
     private isPlaying: boolean = false;
 
@@ -65,10 +65,6 @@ class ReedPlayer {
 
     setIndex(value: number): void {
         this.index = value;
-    }
-
-    getIndexByFrameId(id: string): number {
-        return this.frames.findIndex((frame: Frame) => frame.id === id);
     }
 
     getIsPlaying(): boolean {

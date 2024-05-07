@@ -1,8 +1,3 @@
-// # third-party:
-// ## icons:
-// import FastForwardIcon from '@mui/icons-material/FastForward';
-// import FastRewindIcon from '@mui/icons-material/FastRewind';
-
 import styles from './ReedPlayerOptions.module.scss';
 
 export type Props = {

@@ -16,7 +16,6 @@ export type Props = {
     onPlay: () => void;
     onPause: () => void;
     onStop: () => void;
-    isPlaying: boolean;
 };
 
 const ReedPlayerControls: React.FC<Props> = ({
@@ -25,9 +24,8 @@ const ReedPlayerControls: React.FC<Props> = ({
     onPlay,
     onPause,
     onStop,
-    isPlaying,
 }: Props) => {
-    const { index } = useContext(ReedPlayerContext);
+    const { index, isPlaying } = useContext(ReedPlayerContext);
 
     return (
         <div className={styles['ReedPlayer__Controls']}>

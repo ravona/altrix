@@ -3,7 +3,13 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 // react:
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, {
+    ChangeEvent,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 // types:
 import {
@@ -37,32 +43,44 @@ type PlayerState = {
 };
 
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
+    const {
+        activeFrame,
+        setActiveFrame,
+        ourStories,
+        activeStory,
+        setActiveStory,
+        index,
+        setIndex,
+        isPlaying,
+        setIsPlaying,
+    } = useContext(ReedPlayerContext);
+
     const defaultStory = props.stories[0];
 
     const playerRef = useRef<ReedPlayer>(
-        new ReedPlayer(props.story || defaultStory),
+        new ReedPlayer(activeStory || defaultStory),
     );
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [currentStory, setCurrentStory] = useState<Story | null>(
-        playerRef.current.getStory(),
-    );
+    // const [currentStory, setCurrentStory] = useState<Story | null>(
+    //     playerRef.current.getStory(),
+    // );
 
     const [frames, setFrames] = useState<Frame[]>(
         playerRef.current.getFrames(),
     );
 
-    const [activeFrame, setActiveFrame] = useState<Frame | null>(
-        playerRef.current.getActiveFrame(),
-    );
+    // const [activeFrame, setActiveFrame] = useState<Frame | null>(
+    //     playerRef.current.getActiveFrame(),
+    // );
 
-    const [index, setIndex] = useState<number>(
-        playerRef.current.getIndex() || 0,
-    );
+    // const [index, setIndex] = useState<number>(
+    //     playerRef.current.getIndex() || 0,
+    // );
 
-    const [isPlaying, setIsPlaying] = useState(
-        playerRef.current.getIsPlaying(),
-    );
+    // const [isPlaying, setIsPlaying] = useState(
+    //     playerRef.current.getIsPlaying(),
+    // );
 
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
@@ -70,7 +88,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
         speed: 1000,
         theme: 'primary',
         mode: 'auto',
-        splitPattern: 'sentence',
+        splitPattern: 'sentences',
     });
 
     // toggle options:
@@ -78,8 +96,8 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     const [showPlaylist, setShowPlaylist] = useState(false);
 
     useEffect(() => {
-        if (currentStory) {
-            const player = new ReedPlayer(currentStory);
+        if (activeStory) {
+            const player = new ReedPlayer(activeStory);
             playerRef.current = player;
 
             setFrames(player.getFrames());
@@ -87,7 +105,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             setIsPlaying(player.getIsPlaying());
             setActiveFrame(player.getActiveFrame());
         }
-    }, [currentStory]);
+    }, [activeStory]);
 
     useEffect(() => {
         if (frames.length === 0) return;
@@ -108,10 +126,11 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
         } else {
             clearInterval(intervalId as NodeJS.Timeout);
         }
+
         return () => {
             clearInterval(intervalId as NodeJS.Timeout);
         };
-    }, [isPlaying]);
+    }, [isPlaying, playerOptions.speed]);
 
     const handlePause = () => {
         if (!isPlaying) return;
@@ -134,12 +153,12 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
 
     const handlePrevFrame = () => {
         if (index === 0) return;
-        setIndex((prev) => prev - 1);
+        setIndex(index - 1);
     };
 
     const handleNextFrame = () => {
         if (index === frames.length - 1) return;
-        setIndex((prev) => prev + 1);
+        setIndex(index + 1);
     };
 
     const handleTogglePlayerOptions = () => {
@@ -167,10 +186,13 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             return;
         }
 
-        setIndex((prev) => prev + 1);
-        setActiveFrame(frames[index]);
-        console.log('index', index);
-        console.log('active frame', activeFrame?.text);
+        setIndex((prevIndex: number) => {
+            const newIndex = prevIndex + 1;
+            setActiveFrame(frames[newIndex]);
+            console.log('index', newIndex);
+            console.log('active frame', activeFrame?.text);
+            return newIndex;
+        });
     };
 
     const handleChangeSpeed = (event: ChangeEvent<HTMLInputElement>) => {
@@ -182,90 +204,82 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     };
 
     return (
-        <ReedPlayerContext.Provider value={{ index, setIndex }}>
-            <article className={styles['ReedPlayer']}>
-                <ReedPlayerHeader
-                    name={currentStory?.name || ''}
-                    source={currentStory?.source}
+        <article className={styles['ReedPlayer']}>
+            <ReedPlayerHeader
+                name={activeStory?.name || ''}
+                source={activeStory?.source}
+            />
+            <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
+                <ReedPlayerContent
+                    frames={frames}
+                    activeFrame={activeFrame}
+                    onClickFrame={(frame: Frame) => handleClickFrame(frame)}
                 />
-                <div
-                    className={styles['ReedPlayer__Screen']}
-                    ref={containerRef}
+            </div>
+            <footer className={styles['ReedPlayer__Footer']}>
+                <ReedPlayerSlider
+                    min={0}
+                    max={frames.length - 1}
+                    value={index}
+                    onChange={(i: number) => handleChangeIndex(i)}
+                />
+
+                <ReedPlayerControls
+                    onPrevFrame={handlePrevFrame}
+                    onNextFrame={handleNextFrame}
+                    onPause={handlePause}
+                    onPlay={handlePlay}
+                    onStop={handleStop}
+                />
+
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={handleTogglePlayerOptions}
                 >
-                    <ReedPlayerContent
-                        frames={frames}
-                        activeFrame={activeFrame}
-                        onClickFrame={(frame: Frame) => handleClickFrame(frame)}
-                    />
-                </div>
-                <footer className={styles['ReedPlayer__Footer']}>
-                    <ReedPlayerSlider
-                        min={0}
-                        max={frames.length - 1}
-                        value={index}
-                        onChange={(i: number) => handleChangeIndex(i)}
-                    />
+                    <SettingsIcon />
+                </button>
 
-                    <ReedPlayerControls
-                        onPrevFrame={handlePrevFrame}
-                        onNextFrame={handleNextFrame}
-                        isPlaying={isPlaying}
-                        onPause={handlePause}
-                        onPlay={handlePlay}
-                        onStop={handleStop}
+                {showPlayerOptions && (
+                    <ReedPlayerOptions
+                        onChangeMode={() => console.log('mode changed')}
+                        onChangeSpeed={() => console.log('speed changed')}
+                        onChangeTheme={() => console.log('theme changed')}
                     />
+                )}
 
-                    <button
-                        className={styles['ReedPlayer__Control']}
-                        type="button"
-                        onClick={handleTogglePlayerOptions}
-                    >
-                        <SettingsIcon />
-                    </button>
-
-                    {showPlayerOptions && (
-                        <ReedPlayerOptions
-                            onChangeMode={() => console.log('mode changed')}
-                            onChangeSpeed={() => console.log('speed changed')}
-                            onChangeTheme={() => console.log('theme changed')}
-                        />
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={handleToggleShowPlaylist}
+                >
+                    {showPlaylist ? (
+                        <PlaylistRemoveIcon />
+                    ) : (
+                        <PlaylistPlayIcon />
                     )}
+                </button>
 
-                    <button
-                        className={styles['ReedPlayer__Control']}
-                        type="button"
-                        onClick={handleToggleShowPlaylist}
-                    >
-                        {showPlaylist ? (
-                            <PlaylistRemoveIcon />
-                        ) : (
-                            <PlaylistPlayIcon />
-                        )}
-                    </button>
-
-                    {showPlaylist && (
-                        <ol className={styles['ReedPlayer__Playlist']}>
-                            {props.stories.map((story: Story) => (
-                                <li
-                                    className={
-                                        styles['ReedPlayer__PlaylistItem']
-                                    }
-                                    key={story.id}
+                {showPlaylist && (
+                    <ol className={styles['ReedPlayer__Playlist']}>
+                        {ourStories.map((story: Story) => (
+                            <li
+                                className={styles['ReedPlayer__PlaylistItem']}
+                                key={story.id}
+                            >
+                                <button
+                                    className="button"
+                                    type="button"
+                                    onClick={() => setActiveStory(story)}
                                 >
-                                    <button
-                                        className="button"
-                                        type="button"
-                                        onClick={() => setCurrentStory(story)}
-                                    >
-                                        {story.name}
-                                    </button>
-                                </li>
-                            ))}
-                        </ol>
-                    )}
-                </footer>
-            </article>
-        </ReedPlayerContext.Provider>
+                                    {story.name}
+                                </button>
+                            </li>
+                        ))}
+                    </ol>
+                )}
+            </footer>
+        </article>
     );
 };
 
