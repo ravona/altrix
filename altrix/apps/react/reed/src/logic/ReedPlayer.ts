@@ -1,5 +1,5 @@
 import { regexRules } from './logic';
-import { Story, Frame } from './types/types';
+import { Story, Frame, PlayerOptions, PlayerSpeed } from './types/types';
 import {
     generateTextFrame,
     splitTextWithRegex,
@@ -10,7 +10,12 @@ class ReedPlayer {
     private frames: Frame[] = [];
     private activeFrame: Frame | null = null;
     private index: number = 0;
-    private intervalSpeed: number = 1000;
+    private options: PlayerOptions = {
+        speed: 1000,
+        theme: 'primary',
+        mode: 'auto',
+        splitPattern: 'sentence',
+    };
     private isPlaying: boolean = false;
 
     constructor(story: Story) {
@@ -70,12 +75,12 @@ class ReedPlayer {
         return this.isPlaying;
     }
 
-    setIntervalSpeed(value: number) {
-        this.intervalSpeed = value;
+    setIntervalSpeed(value: PlayerSpeed) {
+        this.options.speed = value;
     }
 
-    getIntervalSpeed(): number {
-        return this.intervalSpeed;
+    getIntervalSpeed(): PlayerSpeed {
+        return this.options.speed;
     }
 }
 

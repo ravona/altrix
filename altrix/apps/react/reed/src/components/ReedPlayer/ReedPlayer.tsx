@@ -6,7 +6,12 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 // types:
-import { Story, Frame } from '../../logic/types/types';
+import {
+    Story,
+    Frame,
+    PlayerOptions,
+    PlayerSpeed,
+} from '../../logic/types/types';
 
 // styles:
 import styles from './ReedPlayer.module.scss';
@@ -20,18 +25,7 @@ import { ReedPlayerContext } from './ReedPlayerContext';
 
 type Props = {
     stories: Story[];
-};
-
-type PlayerMode = 'auto' | 'manual';
-type PlayerSpeed = 1000 | 2000 | 3000 | 4000 | 5000;
-type PlayerSplitPattern = 'sentence' | 'word';
-type PlayerTheme = 'primary' | 'secondary';
-
-type PlayerOptions = {
-    speed: PlayerSpeed;
-    theme: PlayerTheme;
-    mode: PlayerMode;
-    splitPattern: PlayerSplitPattern;
+    story?: Story;
 };
 
 type PlayerState = {
@@ -43,17 +37,33 @@ type PlayerState = {
 };
 
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
-    const playerRef = useRef<ReedPlayer>(new ReedPlayer(props.stories[0]));
+    const defaultStory = props.stories[0];
+
+    const playerRef = useRef<ReedPlayer>(
+        new ReedPlayer(props.story || defaultStory),
+    );
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [currentStory, setCurrentStory] = useState<Story | null>(
         playerRef.current.getStory(),
     );
-    const [frames, setFrames] = useState<Frame[]>([]);
-    const [activeFrame, setActiveFrame] = useState<Frame | null>(null);
-    const [index, setIndex] = useState<number>(0);
 
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [frames, setFrames] = useState<Frame[]>(
+        playerRef.current.getFrames(),
+    );
+
+    const [activeFrame, setActiveFrame] = useState<Frame | null>(
+        playerRef.current.getActiveFrame(),
+    );
+
+    const [index, setIndex] = useState<number>(
+        playerRef.current.getIndex() || 0,
+    );
+
+    const [isPlaying, setIsPlaying] = useState(
+        playerRef.current.getIsPlaying(),
+    );
+
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
     const [playerOptions, setPlayerOptions] = useState<PlayerOptions>({

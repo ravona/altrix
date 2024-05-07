@@ -10,3 +10,15 @@ export type Frame = {
     text: string;
     img?: string;
 };
+
+export type PlayerMode = 'auto' | 'manual';
+export type PlayerSpeed = 1000 | 2000 | 3000 | 4000 | 5000;
+export type PlayerSplitPattern = 'sentence' | 'word';
+export type PlayerTheme = 'primary' | 'secondary';
+
+export type PlayerOptions = {
+    speed: PlayerSpeed;
+    theme: PlayerTheme;
+    mode: PlayerMode;
+    splitPattern: PlayerSplitPattern;
+};
