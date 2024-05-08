@@ -1,8 +1,6 @@
 .ReedPlayer__Options {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    padding-block: var(--spacing-md);
+    color: var(--clr-action) !important;
+    padding: var(--spacing-md);
 }
 
 .ReedPlayer__Option {

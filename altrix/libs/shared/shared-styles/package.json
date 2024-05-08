@@ -1,7 +1,0 @@
-{
-    "name": "@altrix/shared-styles",
-    "version": "0.0.1",
-    "dependencies": {},
-    "style": "./src/lib/index.scss",
-    "private": true
-}

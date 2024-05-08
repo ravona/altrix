@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ReedPlayer from '../app/ReedPlayer.vue';
+import NxWelcome from '../app/ReedPlayer.vue';
 </script>
 
 <template>
-    <main>
-        <ReedPlayer />
-    </main>
+  <main>
+    <NxWelcome />
+  </main>
 </template>

@@ -58,13 +58,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                     onStop={() => store.stop()}
                 />
 
-                {store.showPlayerOptions && (
-                    <ReedPlayerOptions
-                        onChangeMode={() => console.log('mode changed')}
-                        onChangeSpeed={() => console.log('speed changed')}
-                        onChangeTheme={() => console.log('theme changed')}
-                    />
-                )}
+                {store.showPlayerOptions && <ReedPlayerOptions />}
 
                 {store.showPlaylist && (
                     <ol className={styles['ReedPlayer__Playlist']}>

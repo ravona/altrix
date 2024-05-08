@@ -1,24 +1,25 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "rootDir": ".",
-        "sourceMap": true,
-        "declaration": false,
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "target": "es2015",
-        "module": "esnext",
-        "lib": ["es2020", "dom"],
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "@altrix/reed-core": ["libs/reed-core/src/index.ts"],
-            "@altrix/shared-styles/*": ["libs/shared/shared-styles/src/lib/*"],
-            "@altrix/shared-utils": ["libs/shared/shared-utils/src/index.ts"]
-        }
-    },
-    "exclude": ["node_modules", "tmp"]
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@altrix/reed-core": ["libs/reed-core/src/index.ts"],
+      "@altrix/shared-lib": ["libs/shared-lib/src/index.ts"],
+      "@altrix/shared-styles/*": ["libs/shared-styles/src/lib/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
 }

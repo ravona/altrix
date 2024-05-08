@@ -15,6 +15,7 @@ import {
     splitTextWithRegex,
     PlayerTheme,
     PlayerSpeed,
+    PlayerMode,
 } from '@altrix/reed-core';
 
 export class ReedPlayerStore {
@@ -22,11 +23,12 @@ export class ReedPlayerStore {
     @observable frames: Frame[] = [];
     @observable isPlaying: boolean = false;
     @observable intervalId?: number;
-    @observable intervalDuration: PlayerSpeed = 2;
+    @observable playerSpeed: PlayerSpeed = 2;
     @observable index: number = 0;
     @observable showPlayerOptions: boolean = false;
     @observable showPlaylist: boolean = false;
     @observable theme: PlayerTheme = 'dark';
+    @observable playerMode: PlayerMode = 'auto';
 
     constructor(story: Story) {
         makeAutoObservable(this);
@@ -37,7 +39,7 @@ export class ReedPlayerStore {
             (activeFrame: Frame | null) => {
                 if (activeFrame?.id) {
                     const element = document.querySelector(
-                        `#${activeFrame.id}`,
+                        `#${activeFrame.id}`
                     );
                     if (element) {
                         element.scrollIntoView({
@@ -46,7 +48,7 @@ export class ReedPlayerStore {
                         });
                     }
                 }
-            },
+            }
         );
     }
 
@@ -54,10 +56,10 @@ export class ReedPlayerStore {
         this.story = story;
         const parsedContent = splitTextWithRegex(
             story.content,
-            regexRules.sentences,
+            regexRules.sentences
         );
         this.frames = parsedContent.map(
-            (text: string): Frame => generateTextFrame(text),
+            (text: string): Frame => generateTextFrame(text)
         );
         this.index = 0;
         this.isPlaying = false;
@@ -71,13 +73,16 @@ export class ReedPlayerStore {
         if (this.isPlaying || this.frames.length === 0) return;
 
         this.isPlaying = true;
+        if (this.showPlayerOptions) {
+            this.showPlayerOptions = false;
+        }
         this.intervalId = window.setInterval(() => {
             if (this.index >= this.frames.length - 1) {
                 this.pause();
             } else {
                 this.setIndex(this.index + 1);
             }
-        }, this.intervalDuration * 1000);
+        }, this.playerSpeed * 1000);
     }
 
     @action pause() {
@@ -99,7 +104,7 @@ export class ReedPlayerStore {
                     this.index += 1;
                 }
             });
-        }, this.intervalDuration);
+        }, this.playerSpeed);
     }
 
     @action stop() {
@@ -120,10 +125,6 @@ export class ReedPlayerStore {
         this.index = index;
     }
 
-    @action setIntervalDuration(duration: PlayerSpeed) {
-        this.intervalDuration = duration;
-    }
-
     @action togglePlayerOptions() {
         this.showPlayerOptions = !this.showPlayerOptions;
     }
@@ -137,8 +138,16 @@ export class ReedPlayerStore {
         this.setIndex(index);
     }
 
+    @action setPlayerSpeed(duration: PlayerSpeed) {
+        this.playerSpeed = duration;
+    }
+
     @action setTheme(theme: PlayerTheme) {
         this.theme = theme;
+    }
+
+    @action setMode(mode: PlayerMode) {
+        this.playerMode = mode;
     }
 }
 
