@@ -1,3 +1,5 @@
+import Slider from '@mui/material/Slider';
+
 import styles from './ReedPlayerOptions.module.scss';
 
 export type Props = {
@@ -13,18 +15,19 @@ const ReedPlayerOptions: React.FC<Props> = ({
 }: Props) => {
     return (
         <div className={styles['ReedPlayer__Options']}>
-            <button
-                className={styles['ReedPlayer__Control']}
-                type="button"
-                onClick={() => {
-                    onChangeSpeed();
-                }}
-            >
-                speed
-            </button>
+            <Slider
+                aria-label="Temperature"
+                defaultValue={2}
+                valueLabelDisplay="auto"
+                step={10}
+                marks
+                min={0}
+                max={5}
+                onChange={onChangeSpeed}
+            />
 
             <button
-                className={styles['ReedPlayer__Control']}
+                className={styles['ReedPlayer__Option']}
                 type="button"
                 onClick={() => {
                     onChangeMode();
@@ -34,7 +37,7 @@ const ReedPlayerOptions: React.FC<Props> = ({
             </button>
 
             <button
-                className={styles['ReedPlayer__Control']}
+                className={styles['ReedPlayer__Option']}
                 type="button"
                 onClick={() => {
                     onChangeTheme();

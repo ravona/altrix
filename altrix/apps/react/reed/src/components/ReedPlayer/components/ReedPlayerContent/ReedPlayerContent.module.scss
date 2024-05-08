@@ -1,8 +1,8 @@
 $active_frame_font_color: var(--clr-action);
 
 $frame_font_size: var(--txt-sm);
-$active_frame_font_size: calc($frame_font_size + 20%);
-$active_frame_sibling_font_size: calc($frame_font_size + 10%);
+$active_frame_font_size: calc($frame_font_size + 25%);
+$active_frame_sibling_font_size: calc($frame_font_size + 15%);
 
 .ReedPlayer__Content {
     line-height: 1.618;
@@ -23,7 +23,7 @@ $active_frame_sibling_font_size: calc($frame_font_size + 10%);
     }
 
     &:has(+ .is-active) {
-        font-size: $active_frame_sibling_font_size;
+        // font-size: $active_frame_sibling_font_size;
         opacity: 1;
         transition: all 0.25s ease;
     }
@@ -32,12 +32,12 @@ $active_frame_sibling_font_size: calc($frame_font_size + 10%);
         opacity: 1;
         transition: all 0.25s ease;
         font-weight: bold;
-        font-size: $active_frame_font_size;
+        // font-size: $active_frame_font_size;
         color: $active_frame_font_color;
     }
 
     &.is-active + & {
-        font-size: $active_frame_sibling_font_size;
+        // font-size: $active_frame_sibling_font_size;
         opacity: 1;
         transition: all 0.25s ease;
     }

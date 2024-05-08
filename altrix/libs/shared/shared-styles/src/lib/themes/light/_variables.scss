@@ -1,9 +1,11 @@
-$color_action: hsla(327, 100%, 42%, 1);
+// @use '../base/variables' as *;
+
+$color_action: hsl(0, 0%, 85%);
 $color_disabled: hsl(0, 0%, 50%);
 $color_error: hsl(0, 100%, 50%);
 $color_info: hsl(200, 100%, 50%);
-$color_primary: hsla(327, 100%, 82%, 1);
-$color_secondary: hsla(196, 100%, 50%, 1);
+$color_primary: hsl(250, 70%, 70%);
+$color_secondary: hsl(39, 100%, 50%);
 $color_success: hsl(120, 100%, 50%);
 $color_txt: hsla(0, 0%, 10%, 1);
 $color_txt2: hsla(0, 0%, 20%, 1);
@@ -23,16 +25,16 @@ $colors: (
 );
 
 $fontFamilies: (
-    primary: unquote('Mate, serif'),
-    secondary: unquote('Podkova, serif'),
+    primary: unquote('Berkshire Swash, serif'),
+    secondary: unquote('Playfair Display, serif'),
 );
 
 $fontSizes: (
     xs: clamp(0.75rem, 2vw, 1rem),
-    sm: clamp(1rem, 5vw, 1.25rem),
-    md: clamp(1.25rem, 8vw, 1.5rem),
-    lg: clamp(1.5rem, 11vw, 1.75rem),
-    xl: clamp(2rem, 14vw, 2rem),
+    sm: clamp(1rem, 4vw, 1.25rem),
+    md: clamp(1.25rem, 6vw, 1.5rem),
+    lg: clamp(1.5rem, 8vw, 2.5rem),
+    xl: clamp(2rem, 10vw, 3.5rem),
 );
 
 $layers: (
@@ -45,8 +47,8 @@ $layers: (
 
 $spacings: (
     xs: 0.25rem,
-    sm: 0.75rem,
-    md: 1.5rem,
-    lg: 2.25rem,
-    xl: 2.75rem,
+    sm: 0.5rem,
+    md: 1rem,
+    lg: 2rem,
+    xl: 4rem,
 );

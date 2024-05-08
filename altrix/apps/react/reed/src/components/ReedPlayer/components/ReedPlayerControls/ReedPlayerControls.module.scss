@@ -1,3 +1,5 @@
+$control_size: var(--txt-lg);
+
 .ReedPlayer__Controls {
     display: flex;
     justify-content: center;
@@ -7,7 +9,8 @@
 
 .ReedPlayer__Control {
     color: var(--clr-action);
-    &:hover {
-        color: lightem(var(--clr-action), 10%);
+
+    svg {
+        font-size: $control_size;
     }
 }

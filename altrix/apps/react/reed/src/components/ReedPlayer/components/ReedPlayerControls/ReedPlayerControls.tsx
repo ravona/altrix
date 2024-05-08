@@ -4,6 +4,9 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import SettingsIcon from '@mui/icons-material/Settings';
 import StopIcon from '@mui/icons-material/Stop';
 
 import styles from './ReedPlayerControls.module.scss';
@@ -79,6 +82,26 @@ const ReedPlayerControls: React.FC<Props> = ({
                     <StopIcon />
                 </button>
             )}
+
+            <button
+                className={styles['ReedPlayer__Control']}
+                type="button"
+                onClick={() => store.toggleShowPlaylist()}
+            >
+                {store.showPlaylist ? (
+                    <PlaylistRemoveIcon />
+                ) : (
+                    <PlaylistPlayIcon />
+                )}
+            </button>
+
+            <button
+                className={styles['ReedPlayer__Control']}
+                type="button"
+                onClick={() => store.togglePlayerOptions()}
+            >
+                <SettingsIcon />
+            </button>
         </div>
     );
 };

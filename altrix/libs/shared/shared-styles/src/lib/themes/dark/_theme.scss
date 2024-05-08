@@ -1,6 +1,6 @@
 @use './variables' as *;
 
-.theme--base {
+.theme--dark {
     @each $key, $value in $colors {
         --clr-#{$key}: #{$value};
     }

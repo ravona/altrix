@@ -7,7 +7,7 @@ export class ReedPlayer {
     private activeFrame: Frame;
     private index: number = 0;
     private options: PlayerOptions = {
-        speed: 1000,
+        speed: 1,
         theme: 'primary',
         mode: 'auto',
         splitPattern: 'sentences',

@@ -1,9 +1,5 @@
 import { Frame, Story } from '@altrix/reed-core';
 
-import SettingsIcon from '@mui/icons-material/Settings';
-import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
-import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
-
 import { observer } from 'mobx-react';
 
 import React, { useContext, useRef } from 'react';
@@ -14,6 +10,11 @@ import ReedPlayerControls from './components/ReedPlayerControls/ReedPlayerContro
 import ReedPlayerHeader from './components/ReedPlayerHeader/ReedPlayerHeader';
 import ReedPlayerOptions from './components/ReedPlayerOptions/ReedPlayerOptions';
 import ReedPlayerSlider from './components/ReedPlayerSlider/ReedPlayerSlider';
+
+// import '@altrix/shared-styles/themes/base/_index.scss';
+// import '@altrix/shared-styles/themes/alt/_index.scss';
+// import '@altrix/shared-styles/themes/dark/_index.scss';
+import '@altrix/shared-styles/themes/_index.scss';
 
 import styles from './ReedPlayer.module.scss';
 
@@ -28,7 +29,7 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
 
     return (
         <article
-            className={`${styles['ReedPlayer']} ${styles[`theme--${store.theme}`]}`}
+            className={`${styles['ReedPlayer']} ${`theme--${store.theme}`}`}
         >
             <ReedPlayerHeader
                 name={store.story?.name || ''}
@@ -57,14 +58,6 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                     onStop={() => store.stop()}
                 />
 
-                <button
-                    className={styles['ReedPlayer__Control']}
-                    type="button"
-                    onClick={() => store.togglePlayerOptions()}
-                >
-                    <SettingsIcon />
-                </button>
-
                 {store.showPlayerOptions && (
                     <ReedPlayerOptions
                         onChangeMode={() => console.log('mode changed')}
@@ -72,18 +65,6 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                         onChangeTheme={() => console.log('theme changed')}
                     />
                 )}
-
-                <button
-                    className={styles['ReedPlayer__Control']}
-                    type="button"
-                    onClick={() => store.toggleShowPlaylist()}
-                >
-                    {store.showPlaylist ? (
-                        <PlaylistRemoveIcon />
-                    ) : (
-                        <PlaylistPlayIcon />
-                    )}
-                </button>
 
                 {store.showPlaylist && (
                     <ol className={styles['ReedPlayer__Playlist']}>
