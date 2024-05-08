@@ -11,14 +11,12 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
-    InputLabel,
     MenuItem,
     Radio,
     RadioGroup,
     Select,
     Stack,
 } from '@mui/material';
-import { blue } from '@mui/material/colors';
 
 const ReedPlayerOptions: React.FC = () => {
     const store = useContext(ReedPlayerContext);
@@ -48,7 +46,7 @@ const ReedPlayerOptions: React.FC = () => {
                 </Stack>
             </FormControl>
 
-            <FormControl fullWidth>
+            <FormControl fullWidth sx={{ py: 3 }}>
                 <FormLabel
                     style={{
                         color: 'var(--color-primary)',
@@ -61,6 +59,7 @@ const ReedPlayerOptions: React.FC = () => {
                     aria-labelledby="player-mode-group-label"
                     defaultValue="auto"
                     name="player-mode-group"
+                    row
                 >
                     <FormControlLabel
                         value="auto"

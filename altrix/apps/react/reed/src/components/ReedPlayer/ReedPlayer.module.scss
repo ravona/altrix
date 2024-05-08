@@ -40,11 +40,12 @@
 .ReedPlayer__PlaylistItem {
     color: var(--clr-action);
     cursor: pointer;
-    font-size: var(--txt-md);
-    opacity: 0.5;
+    font-size: var(--txt-sm);
+    opacity: 0.75;
     transition: all 0.25s ease;
 
     &:hover {
         opacity: 1;
+        font-size: var(--txt-md);
     }
 }
