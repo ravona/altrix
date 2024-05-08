@@ -20,7 +20,7 @@ export type PlayerTheme =
     | 'light'
     | 'primary'
     | 'secondary'
-    | 'fantasy';
+    | 'potter';
 
 export type PlayerOptions = {
     mode: PlayerMode;

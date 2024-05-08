@@ -1,6 +1,6 @@
 @use './variables' as *;
 
-.theme--light {
+.theme--potter {
     @each $key, $value in $colors {
         --clr-#{$key}: #{$value};
     }

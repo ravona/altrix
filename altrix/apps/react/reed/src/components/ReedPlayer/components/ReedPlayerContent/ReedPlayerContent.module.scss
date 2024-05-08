@@ -31,7 +31,7 @@ $active_frame_sibling_font_size: calc($frame_font_size + 15%);
     &.is-active {
         opacity: 1;
         transition: all 0.25s ease;
-        font-weight: bold;
+        // font-weight: bold;
         // font-size: $active_frame_font_size;
         color: $active_frame_font_color;
     }

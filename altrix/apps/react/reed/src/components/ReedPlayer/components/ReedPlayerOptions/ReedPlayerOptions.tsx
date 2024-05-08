@@ -98,7 +98,7 @@ const ReedPlayerOptions: React.FC = () => {
                 >
                     <MenuItem value={'base'}>Base</MenuItem>
                     <MenuItem value={'dark'}>Dark</MenuItem>
-                    <MenuItem value={'light'}>Light</MenuItem>
+                    <MenuItem value={'potter'}>Potter</MenuItem>
                 </Select>
             </FormControl>
         </div>
