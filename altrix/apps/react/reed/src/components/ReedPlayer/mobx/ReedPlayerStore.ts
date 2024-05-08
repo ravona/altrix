@@ -13,6 +13,7 @@ import {
     generateTextFrame,
     regexRules,
     splitTextWithRegex,
+    PlayerTheme,
 } from '@altrix/reed-core';
 
 export class ReedPlayerStore {
@@ -24,6 +25,7 @@ export class ReedPlayerStore {
     @observable index: number = 0;
     @observable showPlayerOptions: boolean = false;
     @observable showPlaylist: boolean = false;
+    @observable theme: PlayerTheme = 'primary';
 
     constructor(story: Story) {
         makeAutoObservable(this);
@@ -72,7 +74,7 @@ export class ReedPlayerStore {
             if (this.index >= this.frames.length - 1) {
                 this.pause();
             } else {
-                this.index += 1;
+                this.setIndex(this.index + 1);
             }
         }, this.intervalDuration);
     }
@@ -131,9 +133,11 @@ export class ReedPlayerStore {
 
     @action setActiveFrame(frame: Frame) {
         const index = this.frames.findIndex((f) => f.id === frame.id);
-        if (index !== -1) {
-            this.index = index;
-        }
+        this.setIndex(index);
+    }
+
+    @action setTheme(theme: PlayerTheme) {
+        this.theme = theme;
     }
 }
 

@@ -27,7 +27,9 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <article className={styles['ReedPlayer']}>
+        <article
+            className={`${styles['ReedPlayer']} ${styles[`theme--${store.theme}`]}`}
+        >
             <ReedPlayerHeader
                 name={store.story?.name || ''}
                 source={store.story?.source}
