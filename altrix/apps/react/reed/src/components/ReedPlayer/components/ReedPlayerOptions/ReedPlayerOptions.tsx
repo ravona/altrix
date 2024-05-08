@@ -6,7 +6,7 @@ import styles from './ReedPlayerOptions.module.scss';
 import { useContext } from 'react';
 import { ReedPlayerContext } from '../../ReedPlayerContext';
 import { observer } from 'mobx-react';
-import { PlayerSpeed, PlayerTheme } from '@altrix/reed-core';
+import { PlayerMode, PlayerSpeed, PlayerTheme } from '@altrix/reed-core';
 import {
     FormControl,
     FormControlLabel,
@@ -60,6 +60,10 @@ const ReedPlayerOptions: React.FC = () => {
                     defaultValue="auto"
                     name="player-mode-group"
                     row
+                    value={store.playerMode}
+                    onChange={(e) => {
+                        store.setMode(e.target.value as PlayerMode);
+                    }}
                 >
                     <FormControlLabel
                         value="auto"

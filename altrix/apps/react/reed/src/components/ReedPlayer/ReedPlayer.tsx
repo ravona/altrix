@@ -42,43 +42,47 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                     onClickFrame={(frame: Frame) => store.setActiveFrame(frame)}
                 />
             </div>
-            <footer className={styles['ReedPlayer__Footer']}>
-                <ReedPlayerSlider
-                    min={0}
-                    max={store.frames.length - 1}
-                    value={store.index}
-                    onChange={(i) => store.setIndex(i)}
-                />
+            {store.playerMode === 'auto' && (
+                <footer className={styles['ReedPlayer__Footer']}>
+                    <ReedPlayerSlider
+                        min={0}
+                        max={store.frames.length - 1}
+                        value={store.index}
+                        onChange={(i) => store.setIndex(i)}
+                    />
 
-                <ReedPlayerControls
-                    onNextFrame={() => store.setIndex(store.index + 1)}
-                    onPrevFrame={() => store.setIndex(store.index - 1)}
-                    onPause={() => store.pause()}
-                    onPlay={() => store.play()}
-                    onStop={() => store.stop()}
-                />
+                    <ReedPlayerControls
+                        onNextFrame={() => store.setIndex(store.index + 1)}
+                        onPrevFrame={() => store.setIndex(store.index - 1)}
+                        onPause={() => store.pause()}
+                        onPlay={() => store.play()}
+                        onStop={() => store.stop()}
+                    />
 
-                {store.showPlayerOptions && <ReedPlayerOptions />}
+                    {store.showPlayerOptions && <ReedPlayerOptions />}
 
-                {store.showPlaylist && (
-                    <ol className={styles['ReedPlayer__Playlist']}>
-                        {props.stories.map((story: Story) => (
-                            <li
-                                className={styles['ReedPlayer__PlaylistItem']}
-                                key={story.id}
-                            >
-                                <button
-                                    className="button"
-                                    type="button"
-                                    onClick={() => store.setStory(story)}
+                    {store.showPlaylist && (
+                        <ol className={styles['ReedPlayer__Playlist']}>
+                            {props.stories.map((story: Story) => (
+                                <li
+                                    className={
+                                        styles['ReedPlayer__PlaylistItem']
+                                    }
+                                    key={story.id}
                                 >
-                                    {story.name}
-                                </button>
-                            </li>
-                        ))}
-                    </ol>
-                )}
-            </footer>
+                                    <button
+                                        className="button"
+                                        type="button"
+                                        onClick={() => store.setStory(story)}
+                                    >
+                                        {story.name}
+                                    </button>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </footer>
+            )}
         </article>
     );
 };
