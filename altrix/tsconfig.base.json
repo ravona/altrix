@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@altrix/reed-core": ["libs/reed-core/src/index.ts"],
             "@altrix/shared-styles/*": ["libs/shared/shared-styles/src/lib/*"],
             "@altrix/shared-utils": ["libs/shared/shared-utils/src/index.ts"]
         }

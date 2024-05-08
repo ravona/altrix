@@ -1,11 +1,7 @@
-import { regexRules } from './logic';
-import { Story, Frame, PlayerOptions, PlayerSpeed } from './types/types';
-import {
-    generateTextFrame,
-    splitTextWithRegex,
-} from '../components/ReedPlayer/utils';
+import { generateTextFrame, regexRules, splitTextWithRegex } from './logic';
+import { Frame, PlayerOptions, PlayerSpeed, Story } from './types';
 
-class ReedPlayer {
+export class ReedPlayer {
     private story: Story;
     private frames: Frame[] = [];
     private activeFrame: Frame;
@@ -43,12 +39,20 @@ class ReedPlayer {
         this.index = 0;
     }
 
-    getStory(): Story | null {
+    getStory(): Story {
         return this.story;
+    }
+
+    setStory(story: Story) {
+        this.story = story;
     }
 
     getFrames(): Frame[] {
         return this.frames;
+    }
+
+    setFrames(frames: Frame[]) {
+        this.frames = frames;
     }
 
     getActiveFrame(): Frame | null {
@@ -71,6 +75,10 @@ class ReedPlayer {
         return this.isPlaying;
     }
 
+    setIsPlaying(value: boolean): void {
+        this.isPlaying = value;
+    }
+
     setIntervalSpeed(value: PlayerSpeed) {
         this.options.speed = value;
     }
@@ -79,5 +87,3 @@ class ReedPlayer {
         return this.options.speed;
     }
 }
-
-export default ReedPlayer;

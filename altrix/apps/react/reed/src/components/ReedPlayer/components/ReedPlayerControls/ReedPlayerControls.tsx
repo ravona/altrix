@@ -9,6 +9,7 @@ import StopIcon from '@mui/icons-material/Stop';
 import styles from './ReedPlayerControls.module.scss';
 import { useContext } from 'react';
 import { ReedPlayerContext } from '../../ReedPlayerContext';
+import { observer } from 'mobx-react';
 
 export type Props = {
     onPrevFrame: () => void;
@@ -25,7 +26,7 @@ const ReedPlayerControls: React.FC<Props> = ({
     onPause,
     onStop,
 }: Props) => {
-    const { index, isPlaying } = useContext(ReedPlayerContext);
+    const store = useContext(ReedPlayerContext);
 
     return (
         <div className={styles['ReedPlayer__Controls']}>
@@ -44,7 +45,7 @@ const ReedPlayerControls: React.FC<Props> = ({
                 <FastForwardIcon />
             </button>
 
-            {isPlaying ? (
+            {store.isPlaying ? (
                 <>
                     <button
                         className={styles['ReedPlayer__Control']}
@@ -67,7 +68,7 @@ const ReedPlayerControls: React.FC<Props> = ({
                     <PlayArrowIcon />
                 </button>
             )}
-            {index !== 0 && (
+            {store.index !== 0 && (
                 <button
                     className={styles['ReedPlayer__Control']}
                     type="button"
@@ -82,4 +83,4 @@ const ReedPlayerControls: React.FC<Props> = ({
     );
 };
 
-export default ReedPlayerControls;
+export default observer(ReedPlayerControls);

@@ -17,8 +17,8 @@ export type PlayerSplitPattern = 'sentences' | 'words';
 export type PlayerTheme = 'primary' | 'secondary';
 
 export type PlayerOptions = {
-    speed: PlayerSpeed;
-    theme: PlayerTheme;
     mode: PlayerMode;
+    speed: PlayerSpeed;
     splitPattern: PlayerSplitPattern;
+    theme: PlayerTheme;
 };

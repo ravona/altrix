@@ -12,25 +12,20 @@
         padding: var(--spacing-md);
         font-family: var(--font-secondary);
     }
+}
 
-    &__Slider {
-        width: 100%;
-        padding: var(--spacing-md);
-    }
+.ReedPlayer__Playlist {
+    display: grid;
+    gap: var(--spacing-md);
+}
 
-    &__Playlist {
-        display: grid;
-        gap: var(--spacing-md);
-    }
+.ReedPlayer__PlaylistItem {
+    cursor: pointer;
+    font-size: var(--txt-sm);
+    opacity: 0.5;
+    transition: all 0.25s ease;
 
-    &__PlaylistItem {
-        cursor: pointer;
-        font-size: var(--txt-sm);
-        opacity: 0.5;
-        transition: all 0.25s ease;
-
-        &:hover {
-            opacity: 1;
-        }
+    &:hover {
+        opacity: 1;
     }
 }
