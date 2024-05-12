@@ -1,5 +1,5 @@
-import { Frame } from 'apps/react/reed/src/logic/types/types';
-import styles from './ReedPlayerContent.module.scss';
+import { Frame } from '@altrix/reed-core';
+import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 
 export type Props = {
     frames: Frame[];
@@ -19,7 +19,9 @@ const ReedPlayerContent: React.FC<Props> = ({
                     onClick={() => onClickFrame(frame)}
                     key={frame.id}
                     id={frame.id}
-                    className={`${styles['ReedPlayer__Frame']} ${activeFrame?.id === frame.id ? styles['is-active'] : ''}`}
+                    className={`${styles['ReedPlayer__Frame']} ${
+                        activeFrame?.id === frame.id ? styles['is-active'] : ''
+                    }`}
                 >
                     {frame.text}
                 </p>

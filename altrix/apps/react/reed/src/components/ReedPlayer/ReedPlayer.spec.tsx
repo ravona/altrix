@@ -11,7 +11,9 @@ describe('reedPlayer', () => {
             content: 'test-content',
         };
 
-        const { baseElement } = render(<ReedPlayer {...playerProps} />);
+        const { baseElement } = render(
+            <ReedPlayer stories={[]} {...playerProps} />
+        );
         expect(baseElement).toBeTruthy();
     });
 });

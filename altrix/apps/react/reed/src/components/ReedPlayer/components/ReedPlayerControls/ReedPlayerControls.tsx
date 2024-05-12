@@ -6,13 +6,13 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
-import SettingsIcon from '@mui/icons-material/Settings';
+
 import StopIcon from '@mui/icons-material/Stop';
 
-import styles from './ReedPlayerControls.module.scss';
 import { useContext } from 'react';
 import { ReedPlayerContext } from '../../ReedPlayerContext';
 import { observer } from 'mobx-react';
+import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 
 export type Props = {
     onPrevFrame: () => void;
@@ -33,51 +33,49 @@ const ReedPlayerControls: React.FC<Props> = ({
 
     return (
         <div className={styles['ReedPlayer__Controls']}>
-            <button
-                className={styles['ReedPlayer__Control']}
-                type="button"
-                onClick={onPrevFrame}
-            >
-                <FastRewindIcon />
-            </button>
-            <button
-                className={styles['ReedPlayer__Control']}
-                type="button"
-                onClick={onNextFrame}
-            >
-                <FastForwardIcon />
-            </button>
+            {store.currentIndex > 0 && (
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={onPrevFrame}
+                >
+                    <FastRewindIcon />
+                </button>
+            )}
+
+            {store.currentIndex < store.frames.length - 1 && (
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={onNextFrame}
+                >
+                    <FastForwardIcon />
+                </button>
+            )}
 
             {store.isPlaying ? (
-                <>
-                    <button
-                        className={styles['ReedPlayer__Control']}
-                        type="button"
-                        onClick={() => {
-                            onPause();
-                        }}
-                    >
-                        <PauseIcon />
-                    </button>
-                </>
+                <button
+                    className={styles['ReedPlayer__Control']}
+                    type="button"
+                    onClick={onPause}
+                >
+                    <PauseIcon />
+                </button>
             ) : (
                 <button
                     className={styles['ReedPlayer__Control']}
                     type="button"
-                    onClick={() => {
-                        onPlay();
-                    }}
+                    onClick={onPlay}
                 >
                     <PlayArrowIcon />
                 </button>
             )}
-            {store.index !== 0 && (
+
+            {store.currentIndex > 0 && (
                 <button
                     className={styles['ReedPlayer__Control']}
                     type="button"
-                    onClick={() => {
-                        onStop();
-                    }}
+                    onClick={onStop}
                 >
                     <StopIcon />
                 </button>
@@ -93,14 +91,6 @@ const ReedPlayerControls: React.FC<Props> = ({
                 ) : (
                     <PlaylistPlayIcon />
                 )}
-            </button>
-
-            <button
-                className={styles['ReedPlayer__Control']}
-                type="button"
-                onClick={() => store.togglePlayerOptions()}
-            >
-                <SettingsIcon />
             </button>
         </div>
     );

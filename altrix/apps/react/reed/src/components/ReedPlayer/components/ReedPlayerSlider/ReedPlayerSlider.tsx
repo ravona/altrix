@@ -1,4 +1,4 @@
-import styles from './ReedPlayerSlider.module.scss';
+import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 
 export type Props = {
     min: number;

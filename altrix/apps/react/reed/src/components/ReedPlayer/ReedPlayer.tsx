@@ -11,12 +11,10 @@ import ReedPlayerHeader from './components/ReedPlayerHeader/ReedPlayerHeader';
 import ReedPlayerOptions from './components/ReedPlayerOptions/ReedPlayerOptions';
 import ReedPlayerSlider from './components/ReedPlayerSlider/ReedPlayerSlider';
 
-// import '@altrix/shared-styles/themes/base/_index.scss';
-// import '@altrix/shared-styles/themes/alt/_index.scss';
-// import '@altrix/shared-styles/themes/dark/_index.scss';
 import '@altrix/shared-styles/themes/_index.scss';
 
-import styles from './ReedPlayer.module.scss';
+import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
+import FloatingMenu from './components/FloatingMenu/FloatingMenu';
 
 type Props = {
     stories: Story[];
@@ -38,51 +36,60 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
             <div className={styles['ReedPlayer__Screen']} ref={containerRef}>
                 <ReedPlayerContent
                     frames={store.frames}
-                    activeFrame={store.activeFrame}
-                    onClickFrame={(frame: Frame) => store.setActiveFrame(frame)}
+                    activeFrame={store.currentFrame}
+                    onClickFrame={(frame: Frame) =>
+                        store.handleClickFrame(frame)
+                    }
                 />
             </div>
+
             {store.playerMode === 'auto' && (
                 <footer className={styles['ReedPlayer__Footer']}>
                     <ReedPlayerSlider
                         min={0}
                         max={store.frames.length - 1}
-                        value={store.index}
-                        onChange={(i) => store.setIndex(i)}
+                        value={store.currentIndex}
+                        onChange={(i) => {
+                            store.setCurrentIndex(i);
+                        }}
                     />
 
                     <ReedPlayerControls
-                        onNextFrame={() => store.setIndex(store.index + 1)}
-                        onPrevFrame={() => store.setIndex(store.index - 1)}
+                        onNextFrame={() => {
+                            store.setCurrentIndex(store.currentIndex + 1);
+                        }}
+                        onPrevFrame={() =>
+                            store.setCurrentIndex(store.currentIndex - 1)
+                        }
                         onPause={() => store.pause()}
                         onPlay={() => store.play()}
                         onStop={() => store.stop()}
                     />
-
-                    {store.showPlayerOptions && <ReedPlayerOptions />}
-
-                    {store.showPlaylist && (
-                        <ol className={styles['ReedPlayer__Playlist']}>
-                            {props.stories.map((story: Story) => (
-                                <li
-                                    className={
-                                        styles['ReedPlayer__PlaylistItem']
-                                    }
-                                    key={story.id}
-                                >
-                                    <button
-                                        className="button"
-                                        type="button"
-                                        onClick={() => store.setStory(story)}
-                                    >
-                                        {story.name}
-                                    </button>
-                                </li>
-                            ))}
-                        </ol>
-                    )}
                 </footer>
             )}
+
+            {store.showPlaylist && (
+                <ol className={styles['ReedPlayer__Playlist']}>
+                    {props.stories.map((story: Story) => (
+                        <li
+                            className={styles['ReedPlayer__PlaylistItem']}
+                            key={story.id}
+                        >
+                            <button
+                                className="button"
+                                type="button"
+                                onClick={() => store.setStory(story)}
+                            >
+                                {story.name}
+                            </button>
+                        </li>
+                    ))}
+                </ol>
+            )}
+
+            {store.showPlayerOptions && <ReedPlayerOptions />}
+
+            <FloatingMenu />
         </article>
     );
 };

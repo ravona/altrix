@@ -2,7 +2,7 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import Slider from '@mui/material/Slider';
 
-import styles from './ReedPlayerOptions.module.scss';
+import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 import { useContext } from 'react';
 import { ReedPlayerContext } from '../../ReedPlayerContext';
 import { observer } from 'mobx-react';
@@ -47,14 +47,7 @@ const ReedPlayerOptions: React.FC = () => {
             </FormControl>
 
             <FormControl fullWidth sx={{ py: 3 }}>
-                <FormLabel
-                    style={{
-                        color: 'var(--color-primary)',
-                    }}
-                    id="player-mode"
-                >
-                    Mode
-                </FormLabel>
+                <FormLabel id="player-mode">Mode</FormLabel>
                 <RadioGroup
                     aria-labelledby="player-mode-group-label"
                     defaultValue="auto"
@@ -79,14 +72,7 @@ const ReedPlayerOptions: React.FC = () => {
             </FormControl>
 
             <FormControl fullWidth>
-                <FormLabel
-                    style={{
-                        color: 'var(--color-primary)',
-                    }}
-                    id="player-theme"
-                >
-                    Theme
-                </FormLabel>
+                <FormLabel id="player-theme">Theme</FormLabel>
                 <Select
                     variant="standard"
                     labelId="theme-select-label"
@@ -95,9 +81,6 @@ const ReedPlayerOptions: React.FC = () => {
                     label="Theme"
                     onChange={(e) => {
                         store.setTheme(e.target.value as PlayerTheme);
-                    }}
-                    style={{
-                        color: 'var(--color-primary)',
                     }}
                 >
                     <MenuItem value={'base'}>Base</MenuItem>

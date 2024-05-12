@@ -2,9 +2,8 @@ import stories from '../../../data/stories.json';
 import {
     makeAutoObservable,
     action,
-    computed,
     observable,
-    runInAction,
+    computed,
     reaction,
 } from 'mobx';
 import {
@@ -21,99 +20,66 @@ import {
 export class ReedPlayerStore {
     @observable story: Story | null = null;
     @observable frames: Frame[] = [];
+    @observable currentIndex: number = 0;
     @observable isPlaying: boolean = false;
-    @observable intervalId?: number;
     @observable playerSpeed: PlayerSpeed = 2;
-    @observable index: number = 0;
     @observable showPlayerOptions: boolean = false;
     @observable showPlaylist: boolean = false;
+    @observable showStoryForm: boolean = false;
     @observable theme: PlayerTheme = 'dark';
     @observable playerMode: PlayerMode = 'auto';
+    @observable intervalId?: number;
 
     constructor(story: Story) {
         makeAutoObservable(this);
         this.setStory(story);
 
         reaction(
-            () => this.activeFrame,
-            (activeFrame: Frame | null) => {
-                if (activeFrame?.id) {
-                    const element = document.querySelector(
-                        `#${activeFrame.id}`
-                    );
-                    if (element) {
-                        element.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center',
-                        });
-                    }
-                }
+            () => this.currentIndex,
+            () => {
+                this.focusCurrentFrame();
             }
         );
     }
 
-    @action setStory(story: Story) {
-        this.story = story;
-        const parsedContent = splitTextWithRegex(
-            story.content,
-            regexRules.sentences
-        );
-        this.frames = parsedContent.map(
-            (text: string): Frame => generateTextFrame(text)
-        );
-        this.index = 0;
-        this.isPlaying = false;
+    @computed get currentFrame(): Frame | null {
+        return this.frames[this.currentIndex] || null;
     }
 
-    @computed get activeFrame(): Frame | null {
-        return this.frames[this.index] || null;
+    @action setStory(story: Story) {
+        this.story = story;
+        this.frames = splitTextWithRegex(
+            story.content,
+            regexRules.sentences
+        ).map(generateTextFrame);
+        this.setIsPlaying(false);
+        this.setCurrentIndex(0);
     }
 
     @action play() {
-        if (this.isPlaying || this.frames.length === 0) return;
-
+        if (this.isPlaying) return;
         this.isPlaying = true;
-        if (this.showPlayerOptions) {
-            this.showPlayerOptions = false;
-        }
+        this.showPlayerOptions = false;
+        this.showPlaylist = false;
+
         this.intervalId = window.setInterval(() => {
-            if (this.index >= this.frames.length - 1) {
-                this.pause();
+            if (this.currentIndex === this.frames.length - 1) {
+                this.stop();
             } else {
-                this.setIndex(this.index + 1);
+                this.currentIndex++;
             }
         }, this.playerSpeed * 1000);
     }
 
     @action pause() {
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = undefined;
-        }
+        this.stopInterval();
         this.isPlaying = false;
-    }
-
-    @action play2() {
-        if (this.isPlaying || this.frames.length === 0) return;
-        this.isPlaying = true;
-        this.intervalId = window.setInterval(() => {
-            runInAction(() => {
-                if (this.index >= this.frames.length - 1) {
-                    this.pause();
-                } else {
-                    this.index += 1;
-                }
-            });
-        }, this.playerSpeed);
     }
 
     @action stop() {
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = undefined;
-        }
-        this.isPlaying = false;
-        this.index = 0;
+        this.stopInterval();
+        this.setIsPlaying(false);
+        this.setCurrentIndex(0);
     }
 
     @action restart() {
@@ -121,8 +87,8 @@ export class ReedPlayerStore {
         this.play();
     }
 
-    @action setIndex(index: number) {
-        this.index = index;
+    @action setIsPlaying(value: boolean) {
+        this.isPlaying = value;
     }
 
     @action togglePlayerOptions() {
@@ -133,13 +99,15 @@ export class ReedPlayerStore {
         this.showPlaylist = !this.showPlaylist;
     }
 
-    @action setActiveFrame(frame: Frame) {
-        const index = this.frames.findIndex((f) => f.id === frame.id);
-        this.setIndex(index);
+    @action toggleShowStoryForm() {
+        this.showStoryForm = !this.showStoryForm;
     }
 
-    @action setPlayerSpeed(duration: PlayerSpeed) {
-        this.playerSpeed = duration;
+    @action setPlayerSpeed(speed: PlayerSpeed) {
+        this.playerSpeed = speed;
+        if (this.isPlaying) {
+            this.restart();
+        }
     }
 
     @action setTheme(theme: PlayerTheme) {
@@ -148,6 +116,30 @@ export class ReedPlayerStore {
 
     @action setMode(mode: PlayerMode) {
         this.playerMode = mode;
+    }
+
+    @action handleClickFrame(frame: Frame) {
+        this.currentIndex = this.frames.findIndex((f) => f.id === frame.id);
+        this.focusCurrentFrame();
+    }
+
+    @action setCurrentIndex(index: number) {
+        this.currentIndex = index;
+    }
+
+    private stopInterval() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = undefined;
+        }
+    }
+
+    private focusCurrentFrame() {
+        if (!this.currentFrame || !this.frames) return;
+        const element = document.querySelector(`#${this.currentFrame?.id}`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 }
 
