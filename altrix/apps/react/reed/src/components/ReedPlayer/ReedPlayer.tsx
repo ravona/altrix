@@ -15,6 +15,7 @@ import '@altrix/shared-styles/themes/_index.scss';
 
 import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 import FloatingMenu from './components/FloatingMenu/FloatingMenu';
+import StoryForm from './components/StoryForm/StoryForm';
 
 type Props = {
     stories: Story[];
@@ -24,6 +25,11 @@ type Props = {
 const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
     const store = useContext(ReedPlayerContext);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleAddStory = (story: Story) => {
+        props.stories.push(story);
+        store.setStory(story);
+    };
 
     return (
         <article
@@ -85,6 +91,12 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
                         </li>
                     ))}
                 </ol>
+            )}
+
+            {store.showStoryForm && (
+                <StoryForm
+                    onAddStory={(story: Story) => handleAddStory(story)}
+                />
             )}
 
             {store.showPlayerOptions && <ReedPlayerOptions />}
