@@ -2,13 +2,12 @@ $sizes: ('xs', 'sm', 'md', 'lg', 'xl');
 $shades: ('lighter', 'normal', 'darker');
 $layers: ('lowest', 'low', 'medium', 'high', 'highest');
 $intensities: ('low', 'medium', 'high');
-$colors: (
+$variants: (
     'action',
-    'primary',
-    'secondary',
-    'success',
-    'warning',
+    'disabled',
     'error',
     'info',
-    'disabled'
+    'loading',
+    'success',
+    'warning'
 );

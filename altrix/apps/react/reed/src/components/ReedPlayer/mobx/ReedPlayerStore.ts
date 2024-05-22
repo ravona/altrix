@@ -38,7 +38,7 @@ export class ReedPlayerStore {
             () => this.currentIndex,
             () => {
                 this.focusCurrentFrame();
-            }
+            },
         );
     }
 
@@ -50,7 +50,7 @@ export class ReedPlayerStore {
         this.story = story;
         this.frames = splitTextWithRegex(
             story.content,
-            regexRules.sentences
+            regexRules.sentences,
         ).map(generateTextFrame);
         this.setIsPlaying(false);
         this.setCurrentIndex(0);

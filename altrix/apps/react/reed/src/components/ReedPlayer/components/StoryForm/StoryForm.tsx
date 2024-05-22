@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { StoryFormSchema } from './StoryFormSchema';
 import { Story } from '@altrix/reed-core';
-import { Box, Button, Stack, TextField } from '@mui/material';
+
 import React from 'react';
 
 type Props = {
@@ -18,6 +18,7 @@ const StoryForm: React.FC<Props> = ({ onAddStory }: Props) => {
         control,
         handleSubmit,
         reset,
+        register,
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(StoryFormSchema),
@@ -41,60 +42,29 @@ const StoryForm: React.FC<Props> = ({ onAddStory }: Props) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="column" gap={2}>
-                <Controller
+            <div>
+                <input
+                    {...register('name')}
+                    id="name"
                     name="name"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            variant="standard"
-                            fullWidth
-                            {...field}
-                            label="Name"
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
-                        />
-                    )}
+                    type="text"
                 />
-                <Controller
+                <input
+                    {...register('source')}
+                    id="source"
                     name="source"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            variant="standard"
-                            fullWidth
-                            {...field}
-                            label="Source"
-                            error={!!errors.source}
-                            helperText={errors.source?.message}
-                        />
-                    )}
+                    type="text"
                 />
-                <Controller
+                <textarea
+                    {...register('content')}
+                    id="content"
                     name="content"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            {...field}
-                            label="Content"
-                            multiline
-                            rows={4}
-                            error={!!errors.content}
-                            helperText={errors.content?.message}
-                        />
-                    )}
                 />
-                <Box>
-                    <Button type="submit" variant="contained" color="primary">
-                        Submit
-                    </Button>
-                </Box>
-            </Stack>
+
+                <div>
+                    <button type="button">Submit</button>
+                </div>
+            </div>
         </form>
     );
 };

@@ -1,8 +1,11 @@
+@use './colors' as *;
 @use './variables' as *;
 
 .theme--dark {
     @each $key, $value in $colors {
-        --clr-#{$key}: #{$value};
+        @each $k, $v in $value {
+            --clr-#{$key}--#{$k}: #{$v};
+        }
     }
 
     @each $key, $value in $layers {

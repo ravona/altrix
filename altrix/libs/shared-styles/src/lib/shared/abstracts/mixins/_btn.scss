@@ -1,7 +1,4 @@
-@use '../functions';
-
 @mixin btn(
-    $theme,
     $bg,
     $color,
     $font-family,
@@ -15,14 +12,15 @@
     color: $color;
     font-family: $font-family;
     font-size: $size;
-    padding: 0.5rem 1rem;
+    padding: 0.5em 1em;
+    line-height: 1;
 
     &:hover {
-        background-color: lighten($bg, 5%);
+        background-color: color.scale($bg, 20%);
     }
 
     &:active {
-        background-color: darken($bg, 5%);
+        background-color: color.scale($bg, -20%);
     }
 
     &:disabled {

@@ -3,7 +3,7 @@
     display: grid;
 }
 
-.layout--main {
+.layout--primay {
     grid-template-areas: 'header' 'main' 'footer';
 
     &.is-extended {
@@ -12,9 +12,9 @@
     }
 }
 
-.layout--alt {
+.layout--secondary {
     // small screens:
-    // grid-template-areas: 'header' 'extra-a' 'main' 'extra-b' 'footer';
+    grid-template-areas: 'header' 'extra-a' 'main' 'extra-b' 'footer';
 
     // large screens:
     grid-template-areas: 'header' 'main' 'footer';

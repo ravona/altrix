@@ -1,28 +1,4 @@
-$color_action: hsla(327, 100%, 42%, 1);
-$color_disabled: hsl(0, 0%, 50%);
-$color_error: hsl(0, 100%, 50%);
-$color_info: hsl(200, 100%, 50%);
-$color_primary: hsla(327, 100%, 80%, 1);
-$color_secondary: hsla(0, 0%, 90%, 1);
-$color_success: hsl(120, 100%, 50%);
-$color_tertiary: hsla(200, 100%, 40%, 1);
-$color_txt: hsla(0, 0%, 10%, 1);
-$color_txt2: hsla(0, 0%, 20%, 1);
-$color_warning: hsl(40, 100%, 50%);
-
-$colors: (
-    action: $color_action,
-    disabled: $color_disabled,
-    error: $color_error,
-    info: $color_info,
-    primary: $color_primary,
-    secondary: $color_secondary,
-    success: $color_success,
-    tertiary: $color_tertiary,
-    txt: $color_txt,
-    txt2: $color_txt2,
-    warning: $color_warning,
-);
+@forward 'colors';
 
 $fontFamilies: (
     primary: unquote('Mate, serif'),
@@ -30,11 +6,11 @@ $fontFamilies: (
 );
 
 $fontSizes: (
-    xs: clamp(0.75rem, 2vw, 1rem),
-    sm: clamp(1rem, 5vw, 1.25rem),
-    md: clamp(1.25rem, 8vw, 1.5rem),
-    lg: clamp(1.5rem, 11vw, 1.75rem),
-    xl: clamp(2rem, 14vw, 2rem),
+    xs: clamp(0.7rem, 0.9vw + 0.75rem, 0.85rem),
+    sm: clamp(0.875rem, 1.6vw + 0.75rem, 1.1rem),
+    md: clamp(1rem, 2.3vw + 0.75rem, 1.35rem),
+    lg: clamp(1.125rem, 3.1vw + 0.75rem, 1.6rem),
+    xl: clamp(1.25rem, 3.9vw + 0.75rem, 1.85rem),
 );
 
 $layers: (
@@ -46,9 +22,9 @@ $layers: (
 );
 
 $spacings: (
-    xs: 0.25rem,
-    sm: 0.75rem,
+    xs: 0.5rem,
+    sm: 1rem,
     md: 1.5rem,
-    lg: 2.25rem,
-    xl: 2.75rem,
+    lg: 2.5rem,
+    xl: 3rem,
 );

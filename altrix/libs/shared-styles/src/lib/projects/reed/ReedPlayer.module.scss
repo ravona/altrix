@@ -1,16 +1,11 @@
 $player_gutter: var(--spacing-lg);
-$frame_font_size: var(--txt-sm);
-
-$control_size: var(--txt-lg);
 
 @mixin frame {
-    font-size: $frame_font_size;
+    font-size: var(--txt-sm);
     line-height: 1.618;
-    // opacity: 0.5;
     cursor: pointer;
     transition: all 0.25s ease;
     letter-spacing: 1px;
-    color: var(--clr-secondary);
 
     &:hover {
         opacity: 1;
@@ -23,8 +18,8 @@ $control_size: var(--txt-lg);
 
 @mixin frame--active {
     font-weight: bold;
-    font-size: calc($frame_font_size + 15%);
-    color: var(--clr-tertiary);
+    font-size: var(--txt-md);
+    color: var(--clr-brand--30);
     transition: all 0.25s ease;
     opacity: 1;
 }
@@ -33,12 +28,13 @@ $control_size: var(--txt-lg);
     display: grid;
     grid-template-rows: auto 1fr auto auto;
     height: 100dvh;
-    background-color: var(--clr-primary);
+    background-color: var(--clr-bg--primary);
     padding: $player_gutter;
     row-gap: var(--spacing-md);
+    color: var(--clr-text--primary);
 
     input[type='range'] {
-        accent-color: var(--clr-tertiary);
+        accent-color: var(--clr-brand--60);
         cursor: pointer;
         border-radius: var(--txt-md);
         height: var(--txt-xs);
@@ -61,22 +57,15 @@ $control_size: var(--txt-lg);
 
 .ReedPlayer__Header {
     font-family: var(--font-secondary);
-    color: var(--clr-txt);
 
     &-Title {
         font-size: var(--txt-lg);
-
-        @media (orientation: landscape) {
-            font-size: var(--txt-sm);
-        }
+        color: var(--clr-brand--60);
     }
 
     &-Subtitle {
         font-size: var(--txt-md);
-
-        @media (orientation: landscape) {
-            font-size: var(--txt-xs);
-        }
+        color: var(--clr-brand--10);
     }
 }
 
@@ -128,7 +117,7 @@ $control_size: var(--txt-lg);
     color: var(--clr-tertiary);
 
     svg {
-        font-size: $control_size;
+        font-size: var(--txt-lg);
     }
 
     &:disabled {

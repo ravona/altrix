@@ -1,25 +1,29 @@
-@use '../abstracts/index' as *;
+@use 'sass:color';
+
+@use '../abstracts/variables/colors' as *;
+@use '../abstracts/placeholders/' as *;
 
 .button {
     &:disabled {
         @extend %is-disabled;
     }
-}
 
-@each $color in $colors {
-    .button-bg--#{$color} {
-        // background-color: var(--clr-#{$color});
-        transition: all 0.3s ease-in-out;
+    @each $key, $value in $theme_colors {
+        @each $k, $v in $value {
+            &-clr-#{$key}--#{$k} {
+                background-color: $v;
+                transition: all 0.3s ease-in-out;
 
-        &:hover {
-            // background-color: lighten(var(--clr-#{$color}), 5%);
-            transform: scale(1.1);
-            transition: all 0.3s ease-in-out;
-        }
+                &:hover {
+                    // background-color: color.scale(#{$v}, 20%);
+                    transform: scale(1.1);
+                    transition: all 0.3s ease-in-out;
+                }
 
-        &:active {
-            // background-color: darken(var(--clr-#{$color}), 5%);
-            outline: 1px solid red;
+                &:active {
+                    // background-color: color.scale(#{$v}, -20%);
+                }
+            }
         }
     }
 }

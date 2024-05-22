@@ -1,0 +1,44 @@
+@use 'sass:color';
+
+$color_brand_60: hsla(60, 100%, 50%, 1);
+$color_brand_30: hsl(0, 0%, 5%);
+$color_brand_10: hsla(240, 100%, 80%, 1);
+
+$color_bg_primary: hsla(340, 100%, 80%, 1);
+$color_bg_secondary: color.invert($color_bg_primary);
+
+$color_text_primary: hsl(0, 0%, 100%);
+$color_text_secondary: color.invert($color_text_primary);
+
+$color_variant_action: color.scale($color_brand_60, $saturation: 20%);
+$color_variant_disabled: color.scale($color_brand_30, $lightness: -50%);
+$color_variant_error: color.scale($color_brand_30, $saturation: 100%);
+$color_variant_info: color.scale($color_brand_30, $lightness: 50%);
+$color_variant_loading: color.scale($color_brand_30, $lightness: -75%);
+$color_variant_success: color.scale($color_brand_30, $saturation: -25%);
+$color_variant_warning: color.scale($color_brand_30, $lightness: 25%);
+
+$colors: (
+    bg: (
+        primary: $color_bg_primary,
+        secondary: $color_bg_secondary,
+    ),
+    brand: (
+        60: $color_brand_60,
+        30: $color_brand_30,
+        10: $color_brand_10,
+    ),
+    text: (
+        primary: $color_text_primary,
+        secondary: $color_text_secondary,
+    ),
+    variant: (
+        action: $color_variant_action,
+        disabled: $color_variant_disabled,
+        error: $color_variant_error,
+        info: $color_variant_info,
+        loading: $color_variant_loading,
+        success: $color_variant_success,
+        warning: $color_variant_warning,
+    ),
+);

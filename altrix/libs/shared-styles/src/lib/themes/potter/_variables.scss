@@ -1,34 +1,4 @@
-$color_1: #641e1e;
-$color_2: #c39a1c;
-$color_3: #3d2f22;
-$color_4: #717679;
-$color_5: #efeee9;
-
-$color_action: #c39a1c;
-$color_disabled: hsl(0, 0%, 50%);
-$color_error: lighten($color_1, 20%);
-$color_info: lighten($color_3, 20%);
-$color_primary: $color_2;
-$color_secondary: $color_3;
-$color_success: #2c8309;
-$color_tertiary: $color_1;
-$color_txt: $color_5;
-$color_txt2: $color_4;
-$color_warning: hsl(40, 100%, 50%);
-
-$colors: (
-    action: $color_action,
-    disabled: $color_disabled,
-    error: $color_error,
-    info: $color_info,
-    primary: $color_primary,
-    secondary: $color_secondary,
-    success: $color_success,
-    tertiary: $color_tertiary,
-    txt: $color_txt,
-    txt2: $color_txt2,
-    warning: $color_warning,
-);
+@forward 'colors';
 
 $fontFamilies: (
     primary: unquote('Berkshire Swash, serif'),
@@ -52,9 +22,9 @@ $layers: (
 );
 
 $spacings: (
-    xs: 0.25rem,
-    sm: 0.5rem,
-    md: 1rem,
-    lg: 2rem,
-    xl: 4rem,
+    xs: 1rem,
+    sm: 2rem,
+    md: 3rem,
+    lg: 4rem,
+    xl: 5rem,
 );
