@@ -33,7 +33,9 @@ const ReedPlayerComponent: React.FC<Props> = (props: Props) => {
 
     return (
         <article
-            className={`${styles['ReedPlayer']} ${`theme--${store.theme}`}`}
+            className={`${styles['ReedPlayer']} ${`theme--${store.theme}`} ${
+                styles[`splitBy--${store.playerSplitPattern}`]
+            }`}
         >
             <ReedPlayerHeader
                 name={store.story?.name || ''}

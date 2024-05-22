@@ -18,17 +18,19 @@ import {
 } from '@altrix/reed-core';
 
 export class ReedPlayerStore {
-    @observable story: Story | null = null;
-    @observable frames: Frame[] = [];
     @observable currentIndex: number = 0;
+    @observable frames: Frame[] = [];
+    @observable intervalId?: number;
     @observable isPlaying: boolean = false;
+    @observable playerMode: PlayerMode = 'auto';
     @observable playerSpeed: PlayerSpeed = 2;
+    @observable playerSplitPattern: 'sentences' | 'words' | 'paragraphs' =
+        'sentences';
     @observable showPlayerOptions: boolean = false;
     @observable showPlaylist: boolean = false;
     @observable showStoryForm: boolean = false;
+    @observable story: Story | null = null;
     @observable theme: PlayerTheme = 'dark';
-    @observable playerMode: PlayerMode = 'auto';
-    @observable intervalId?: number;
 
     constructor(story: Story) {
         makeAutoObservable(this);
@@ -140,6 +142,15 @@ export class ReedPlayerStore {
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+    }
+
+    @action setSplitPattern(pattern: 'sentences' | 'words' | 'paragraphs') {
+        this.playerSplitPattern = pattern;
+        this.frames = splitTextWithRegex(
+            this.story?.content || '',
+            regexRules[pattern],
+        ).map(generateTextFrame);
+        this.stop();
     }
 }
 

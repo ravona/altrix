@@ -1,27 +1,26 @@
 $player_gutter: var(--spacing-lg);
 
 @mixin frame {
-    font-size: var(--txt-sm);
+    font-size: var(--txt-md);
     line-height: 1.618;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.25s ease-in-out;
     letter-spacing: 1px;
-
-    &:hover {
-        opacity: 1;
-    }
 }
 
 @mixin frame--sibling {
-    opacity: 1;
+    // transition: all 0.25s ease-in-out;
 }
 
 @mixin frame--active {
     font-weight: bold;
-    font-size: var(--txt-md);
+    font-size: calc(var(--txt-md) + 0.15rem);
     color: var(--clr-brand--30);
-    transition: all 0.25s ease;
-    opacity: 1;
+    transition: all 0.25s ease-in-out;
+
+    .splitBy--words & {
+        font-size: var(--txt-md);
+    }
 }
 
 .ReedPlayer {
@@ -73,6 +72,12 @@ $player_gutter: var(--spacing-lg);
     font-family: var(--font-primary);
     display: grid;
     row-gap: var(--spacing-lg);
+
+    .splitBy--words & {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
 }
 
 .ReedPlayer__Frame {

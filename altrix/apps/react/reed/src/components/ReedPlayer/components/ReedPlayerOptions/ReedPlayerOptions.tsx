@@ -5,7 +5,12 @@ import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 import { useContext } from 'react';
 import { ReedPlayerContext } from '../../ReedPlayerContext';
 import { observer } from 'mobx-react';
-import { PlayerMode, PlayerSpeed, PlayerTheme } from '@altrix/reed-core';
+import {
+    PlayerMode,
+    PlayerSpeed,
+    PlayerSplitPattern,
+    PlayerTheme,
+} from '@altrix/reed-core';
 
 const ReedPlayerOptions: React.FC = () => {
     const store = useContext(ReedPlayerContext);
@@ -70,6 +75,23 @@ const ReedPlayerOptions: React.FC = () => {
                         <option value={'base'}>Base</option>
                         <option value={'dark'}>Dark</option>
                         <option value={'potter'}>Potter</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label id="player-split-pattern">Split by:</label>
+                    <select
+                        id="player-split-pattern"
+                        value={store.playerSplitPattern}
+                        onChange={(e) => {
+                            store.setSplitPattern(
+                                e.target.value as PlayerSplitPattern,
+                            );
+                        }}
+                    >
+                        <option value={'words'}>Words</option>
+                        <option value={'sentences'}>Sentences</option>
+                        <option value={'paragraphs'}>Paragraphs</option>
                     </select>
                 </div>
             </form>

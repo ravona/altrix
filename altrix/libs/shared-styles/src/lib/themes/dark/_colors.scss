@@ -4,8 +4,8 @@ $color_bg_primary: hsl(0, 0%, 10%);
 $color_bg_secondary: color.invert($color_bg_primary);
 
 $color_brand_60: hsl(120, 50%, 60%);
-$color_brand_30: color.adjust($color_brand_60, $saturation: 30%, $hue: -120);
-$color_brand_10: color.scale($color_brand_60, $saturation: 80%);
+$color_brand_30: color.scale($color_brand_60, $saturation: 50%);
+$color_brand_10: color.scale($color_brand_30, $saturation: 100%);
 
 $color_text_primary: hsl(0, 0%, 85%);
 $color_text_secondary: color.adjust($color_text_primary, $lightness: 85%);
