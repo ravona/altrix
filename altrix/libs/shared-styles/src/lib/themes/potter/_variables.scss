@@ -1,30 +1,63 @@
-@forward 'colors';
+@use './config' as *;
+
+$colors: (
+    bg: (
+        primary: $clr-bg--primary,
+        secondary: $clr-bg--secondary,
+    ),
+    brand: (
+        60: $clr-brand--60,
+        30: $clr-brand--30,
+        10: $clr-brand--10,
+    ),
+    txt: (
+        primary: $clr-txt--primary,
+        secondary: $clr-txt--secondary,
+    ),
+    variant: (
+        action: $clr-variant--action,
+        disabled: $clr-variant--disabled,
+        error: $clr-variant--error,
+        info: $clr-variant--info,
+        loading: $clr-variant--loading,
+        success: $clr-variant--success,
+        warning: $clr-variant--warning,
+    ),
+);
 
 $fontFamilies: (
-    primary: unquote('Berkshire Swash, serif'),
-    secondary: unquote('Playfair Display, serif'),
+    primary: $font--primary,
+    secondary: $font--secondary,
 );
 
 $fontSizes: (
-    xs: clamp(0.75rem, 2vw, 1rem),
-    sm: clamp(1rem, 4vw, 1.25rem),
-    md: clamp(1.25rem, 6vw, 1.5rem),
-    lg: clamp(1.5rem, 8vw, 2.5rem),
-    xl: clamp(2rem, 10vw, 3.5rem),
+    xs: $txt-size--xs,
+    sm: $txt-size--sm,
+    md: $txt-size--md,
+    lg: $txt-size--lg,
+    xl: $txt-size--xl,
 );
 
 $layers: (
-    lowest: -1,
-    low: 10,
-    mid: 100,
-    high: 200,
-    highest: 1000,
+    lowest: $z--lowest,
+    low: $z--low,
+    mid: $z--mid,
+    high: $z--high,
+    highest: $z--highest,
 );
 
 $spacings: (
-    xs: 1rem,
-    sm: 2rem,
-    md: 3rem,
-    lg: 4rem,
-    xl: 5rem,
+    xs: $spacing--xs,
+    sm: $spacing--sm,
+    md: $spacing--md,
+    lg: $spacing--lg,
+    xl: $spacing--xl,
+);
+
+$breakpoints: (
+    xs: $breakpoint--xs,
+    sm: $breakpoint--sm,
+    md: $breakpoint--md,
+    lg: $breakpoint--lg,
+    xl: $breakpoint--xl,
 );

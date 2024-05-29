@@ -7,11 +7,9 @@ import sharedStyle from '@altrix/shared-styles/shared/ui/app.module.scss';
 export function App() {
     return (
         <main className={sharedStyle['app']}>
-            <div>
-                <ReedPlayerProvider>
-                    <ReedPlayerComponent stories={stories} />
-                </ReedPlayerProvider>
-            </div>
+            <ReedPlayerProvider>
+                <ReedPlayerComponent stories={stories} />
+            </ReedPlayerProvider>
         </main>
     );
 }

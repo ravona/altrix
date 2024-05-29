@@ -1,11 +1,14 @@
+@use '../../shared/abstracts/index.scss' as *;
+
 $player_gutter: var(--spacing-lg);
 
 @mixin frame {
-    font-size: var(--txt-md);
+    font-size: var(--fs-md);
     line-height: 1.618;
     cursor: pointer;
     transition: all 0.25s ease-in-out;
     letter-spacing: 1px;
+    opacity: 0.5;
 }
 
 @mixin frame--sibling {
@@ -14,29 +17,29 @@ $player_gutter: var(--spacing-lg);
 
 @mixin frame--active {
     font-weight: bold;
-    font-size: calc(var(--txt-md) + 0.15rem);
+    font-size: calc(var(--fs-md) + 0.15rem);
     color: var(--clr-brand--30);
     transition: all 0.25s ease-in-out;
-
+    opacity: 1;
     .splitBy--words & {
-        font-size: var(--txt-md);
+        font-size: var(--fs-md);
     }
 }
 
 .ReedPlayer {
     display: grid;
-    grid-template-rows: auto 1fr auto auto;
+    grid-template-rows: auto 1fr auto;
     height: 100dvh;
     background-color: var(--clr-bg--primary);
     padding: $player_gutter;
     row-gap: var(--spacing-md);
-    color: var(--clr-text--primary);
+    color: var(--clr-txt--primary);
 
     input[type='range'] {
         accent-color: var(--clr-brand--60);
         cursor: pointer;
-        border-radius: var(--txt-md);
-        height: var(--txt-xs);
+        border-radius: var(--fs-md);
+        height: var(--fs-xs);
 
         &::-webkit-slider-runnable-track {
             cursor: pointer;
@@ -49,34 +52,37 @@ $player_gutter: var(--spacing-lg);
     }
 }
 
-.ReedPlayer__Screen {
-    overflow-y: auto;
-    padding-right: $player_gutter;
-}
-
 .ReedPlayer__Header {
-    font-family: var(--font-secondary);
+    font-family: var(--ff-secondary);
 
     &-Title {
-        font-size: var(--txt-lg);
+        font-size: var(--fs-lg);
         color: var(--clr-brand--60);
     }
 
     &-Subtitle {
-        font-size: var(--txt-md);
+        font-size: var(--fs-md);
         color: var(--clr-brand--10);
     }
 }
 
+.ReedPlayer__Screen {
+    overflow-y: auto;
+    padding-right: $player_gutter;
+    @include mq((var(--bg-md))) {
+        padding-right: 0;
+    }
+}
+
 .ReedPlayer__Content {
-    font-family: var(--font-primary);
+    font-family: var(--ff-primary);
     display: grid;
     row-gap: var(--spacing-lg);
 
     .splitBy--words & {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--spacing-sm);
+        gap: 1ch;
     }
 }
 
@@ -98,18 +104,19 @@ $player_gutter: var(--spacing-lg);
 
 .ReedPlayer__FloatingMenu {
     position: fixed;
-    bottom: var(--spacing-sm);
-    left: var(--spacing-sm);
+    bottom: 0;
+    left: 0;
     z-index: var(--z-high);
+    height: $player_gutter;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
 }
 
 .ReedPlayer__Footer {
     z-index: var(--z-high);
-    font-family: var(--font-secondary);
-
-    background-color: var(--clr-primary);
-    padding-top: var(--spacing-sm);
-    padding-bottom: var(--spacing-sm);
+    font-family: var(--ff-secondary);
 }
 
 .ReedPlayer__Controls {
@@ -119,10 +126,10 @@ $player_gutter: var(--spacing-lg);
 }
 
 .ReedPlayer__Control {
-    color: var(--clr-tertiary);
+    color: var(--clr-brand--30);
 
     svg {
-        font-size: var(--txt-lg);
+        font-size: var(--fs-lg);
     }
 
     &:disabled {
@@ -133,12 +140,16 @@ $player_gutter: var(--spacing-lg);
 
 .ReedPlayer__Options {
     padding: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
 }
 
 .ReedPlayer__Option {
-    color: var(--clr-secondary);
-    &:hover {
-        color: ligten(var(--clr-secondary), 10%);
+    width: 100%;
+    input,
+    select {
+        width: 100%;
     }
 }
 
@@ -160,12 +171,12 @@ $player_gutter: var(--spacing-lg);
 .ReedPlayer__PlaylistItem {
     color: var(--clr-secondary);
     cursor: pointer;
-    font-size: var(--txt-sm);
+    font-size: var(--fs-sm);
     opacity: 0.75;
     transition: all 0.25s ease;
 
     &:hover {
         opacity: 1;
-        font-size: var(--txt-md);
+        font-size: var(--fs-md);
     }
 }

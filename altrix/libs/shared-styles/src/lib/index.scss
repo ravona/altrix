@@ -1,2 +1,2 @@
-@forward './lib/shared/index';
-@forward './lib/themes/index';
+@use './shared/index.scss' as *;
+@use './themes/index' as *;

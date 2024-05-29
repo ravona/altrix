@@ -1,9 +1,7 @@
 @use '../functions' as *;
 @use '../variables' as *;
 
-@mixin mq($size) {
-    $breakpoint: safe-map-get($breakpoints, $size);
-
+@mixin mq($breakpoint) {
     @media (min-width: $breakpoint) {
         @content;
     }

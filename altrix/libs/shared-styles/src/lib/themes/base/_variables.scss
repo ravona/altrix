@@ -1,30 +1,63 @@
-@forward 'colors';
+@use './config' as *;
+
+$colors: (
+    bg: (
+        primary: $clr-bg--primary,
+        secondary: $clr-bg--secondary,
+    ),
+    brand: (
+        60: $clr-brand--60,
+        30: $clr-brand--30,
+        10: $clr-brand--10,
+    ),
+    txt: (
+        primary: $clr-txt--primary,
+        secondary: $clr-txt--secondary,
+    ),
+    variant: (
+        action: $clr-variant--action,
+        disabled: $clr-variant--disabled,
+        error: $clr-variant--error,
+        info: $clr-variant--info,
+        loading: $clr-variant--loading,
+        success: $clr-variant--success,
+        warning: $clr-variant--warning,
+    ),
+);
 
 $fontFamilies: (
-    primary: unquote('Mate, serif'),
-    secondary: unquote('Podkova, serif'),
+    primary: $font--primary,
+    secondary: $font--secondary,
 );
 
 $fontSizes: (
-    xs: clamp(0.7rem, 0.9vw + 0.75rem, 0.85rem),
-    sm: clamp(0.875rem, 1.6vw + 0.75rem, 1.1rem),
-    md: clamp(1rem, 2.3vw + 0.75rem, 1.35rem),
-    lg: clamp(1.125rem, 3.1vw + 0.75rem, 1.6rem),
-    xl: clamp(1.25rem, 3.9vw + 0.75rem, 1.85rem),
+    xs: $txt-size--xs,
+    sm: $txt-size--sm,
+    md: $txt-size--md,
+    lg: $txt-size--lg,
+    xl: $txt-size--xl,
 );
 
 $layers: (
-    lowest: -1,
-    low: 10,
-    mid: 100,
-    high: 200,
-    highest: 1000,
+    lowest: $z--lowest,
+    low: $z--low,
+    mid: $z--mid,
+    high: $z--high,
+    highest: $z--highest,
 );
 
 $spacings: (
-    xs: 0.5rem,
-    sm: 1rem,
-    md: 1.5rem,
-    lg: 2.5rem,
-    xl: 3rem,
+    xs: $spacing--xs,
+    sm: $spacing--sm,
+    md: $spacing--md,
+    lg: $spacing--lg,
+    xl: $spacing--xl,
+);
+
+$breakpoints: (
+    xs: $breakpoint--xs,
+    sm: $breakpoint--sm,
+    md: $breakpoint--md,
+    lg: $breakpoint--lg,
+    xl: $breakpoint--xl,
 );

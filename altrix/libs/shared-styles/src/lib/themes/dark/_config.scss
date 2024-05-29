@@ -1,0 +1,53 @@
+@use 'sass:color';
+
+// # colors:
+// ## background colors:
+$clr-bg--primary: hsl(0, 0%, 10%);
+$clr-bg--secondary: color.invert($clr-bg--primary);
+// ## brand colors:
+$clr-brand--60: hsl(18, 68%, 50%);
+$clr-brand--30: color.scale($clr-brand--60, $saturation: 50%);
+$clr-brand--10: color.scale($clr-brand--30, $saturation: 100%);
+// ## text colors:
+$clr-txt--primary: hsl(0, 0%, 85%);
+$clr-txt--secondary: color.adjust($clr-txt--primary, $lightness: 85%);
+// ## variant colors:
+$clr-variant--action: color.scale($clr-brand--60, $saturation: 20%);
+$clr-variant--disabled: color.scale($clr-brand--30, $lightness: -50%);
+$clr-variant--error: hsl(0, 50%, 50%);
+$clr-variant--info: color.scale($clr-brand--30, $lightness: 50%);
+$clr-variant--loading: color.scale($clr-brand--30, $lightness: -75%);
+$clr-variant--success: hsl(120, 50%, 50%);
+$clr-variant--warning: hsl(40, 50%, 50%);
+
+// # fonts:
+$font--primary: unquote('Old Standard TT, serif');
+$font--secondary: unquote('Forum, serif');
+
+// # font sizes:
+$txt-size--xs: clamp(0.8rem, 1vw + 0.5rem, 1rem);
+$txt-size--sm: clamp(1rem, 2vw + 0.5rem, 1.25rem);
+$txt-size--md: clamp(1.125rem, 3vw + 0.5rem, 1.5rem);
+$txt-size--lg: clamp(1.25rem, 4vw + 0.5rem, 1.75rem);
+$txt-size--xl: clamp(1.5rem, 5vw + 0.5rem, 2rem);
+
+// # layers (z-index):
+$z--lowest: -1;
+$z--low: 10;
+$z--mid: 100;
+$z--high: 200;
+$z--highest: 1000;
+
+// # spacings:
+$spacing--xs: 0.5rem;
+$spacing--sm: 1rem;
+$spacing--md: 1.5rem;
+$spacing--lg: 2.5rem;
+$spacing--xl: 4rem;
+
+// # breakpoints:
+$breakpoint--xs: 0;
+$breakpoint--sm: 600px;
+$breakpoint--md: 900px;
+$breakpoint--lg: 1200px;
+$breakpoint--xl: 1536px;
