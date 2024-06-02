@@ -39,7 +39,14 @@
 
 .flex {
     display: flex;
-    flex-wrap: wrap;
+}
+
+.flex--nowrap {
+    flex-wrap: nowrap;
+}
+
+.flex--wrap {
+    flex-wrap: nowrap;
 }
 
 .jc-c {

@@ -79,7 +79,7 @@ export function App() {
                         </button>
                     </div>
 
-                    <div className="box p-sm flex ai-c gap-md">
+                    <div className="box p-sm flex ai-c gap-md mb-md">
                         <button className="button button-size--md button-clr-variant--action">
                             Action
                         </button>
@@ -106,7 +106,42 @@ export function App() {
                         </button>
                     </div>
 
-                    <div className="box"></div>
+                    <div className="wrapper-size--lg">
+                        <div className="flex gap-md">
+                            <div className="card bgc-variant--success clr-txt--primary">
+                                <h3 className="heading txt-md mb-sm">
+                                    Card Heading
+                                </h3>
+                                <p className="txt-sm mb-sm">
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Nulla quam velit, vulputate
+                                    eu pharetra nec, mattis ac neque.
+                                </p>
+                                <div className="box">
+                                    <button className="button button-size--sm button-clr-brand--60">
+                                        Read More
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="card clr-txt--primary">
+                                <h3 className="heading txt-lg mb-sm">
+                                    Card Heading
+                                </h3>
+                                <p className="txt-md mb-lg">
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Nulla quam velit, vulputate
+                                    eu pharetra nec, mattis ac neque.
+                                </p>
+
+                                <div className="box flex jc-c">
+                                    <button className="button button-size--sm button-clr-variant--action">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
                 <footer className="app-footer">Footer</footer>
             </div>
