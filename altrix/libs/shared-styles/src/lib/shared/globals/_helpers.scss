@@ -1,0 +1,71 @@
+@use '../../themes/base/index.scss' as *;
+
+%is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+@each $key, $value in $colors {
+    @each $k, $v in $value {
+        .bgc-#{$key}--#{$k} {
+            background-color: #{$v};
+        }
+
+        .clr-#{$key}--#{$k} {
+            color: #{$v};
+        }
+    }
+}
+
+@each $key, $value in $spacings {
+    .mb-#{$key} {
+        margin-bottom: $value;
+    }
+
+    .gap-#{$key} {
+        gap: $value;
+    }
+
+    .p-#{$key} {
+        padding: $value;
+    }
+}
+
+@each $key, $value in $fontSizes {
+    .txt-#{$key} {
+        font-size: $value;
+    }
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.jc-c {
+    justify-content: center;
+}
+
+.jc-sb {
+    justify-content: space-between;
+}
+
+.ai-c {
+    align-items: center;
+}
+
+.highlight {
+    border: 2px dashed crimson;
+}
+
+.ta-l {
+    text-align: left;
+}
+
+.ta-c {
+    text-align: center;
+}
+
+.ta-r {
+    text-align: right;
+}

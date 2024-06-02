@@ -5,22 +5,18 @@
 $clr-bg--primary: hsl(0, 0%, 95%);
 $clr-bg--secondary: hsl(0, 0%, 5%);
 // ## brand colors:
-$clr-brand--10: hsl(210, 20%, 25%);
-$clr-brand--30: hsl(210, 40%, 40%);
-$clr-brand--60: hsl(210, 60%, 55%);
+$clr-brand--10: hsl(210, 40%, 75%);
+$clr-brand--30: hsl(210, 40%, 50%);
+$clr-brand--60: hsl(210, 0%, 25%);
 // ## text colors:
 $clr-txt--primary: hsl(0, 0%, 15%);
 $clr-txt--secondary: hsl(0, 0%, 90%);
 // ## variant colors:
-$clr-variant--action: color.scale(
-    $clr-brand--60,
-    $saturation: -20%,
-    $lightness: 10%
-);
-$clr-variant--disabled: color.scale($clr-brand--30, $saturation: -50%);
+$clr-variant--action: color.scale($clr-brand--30, $lightness: 25%);
+$clr-variant--disabled: color.scale($clr-brand--30, $lightness: 50%);
 $clr-variant--error: hsl(0, 70%, 50%);
 $clr-variant--info: hsl(200, 50%, 50%);
-$clr-variant--loading: hsl(240, 30%, 50%);
+$clr-variant--loading: hsl(0, 0%, 50%);
 $clr-variant--success: hsl(120, 50%, 50%);
 $clr-variant--warning: hsl(40, 80%, 50%);
 

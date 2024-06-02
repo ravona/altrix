@@ -1,0 +1,87 @@
+@use '../../themes/base' as *;
+
+.form {
+    /* Add any form-level styles here */
+}
+
+.field {
+    font-size: var(--fs-sm);
+    margin-bottom: map-get($spacings, md);
+}
+
+.field--radio {
+    /* Add any specific styles for radio fields */
+}
+
+.field--range {
+    /* Add any specific styles for range fields */
+}
+
+.field__label {
+    display: block;
+    margin-bottom: map-get($spacings, sm);
+}
+
+.field__input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.field__input {
+    width: 100%;
+    padding: map-get($spacings, sm);
+    border: 1px solid var(--clr-brand--10);
+    background-color: unset;
+
+    &:focus {
+        outline: none;
+        border-color: var(--clr-variant--warning);
+    }
+}
+
+.field__input--range-number {
+    flex-basis: fit-content;
+}
+
+.field__input--range-slider {
+}
+
+.field__input--radio {
+    display: flex;
+    gap: map-get($spacings, sm);
+    justify-content: center;
+}
+
+.field__select-wrapper {
+    position: relative;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.field__options {
+    display: flex;
+    flex-direction: column;
+}
+
+.field__option {
+    display: flex;
+    align-items: center;
+    gap: map-get($spacings, sm);
+    position: relative;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.field__option-radio {
+    /* Add any specific styles for radio option */
+}
+
+.field__option-label {
+    /* Add any specific styles for radio option label */
+}
+
+.field__error {
+    color: map-get($colors, error);
+    font-size: var(--fs-xs);
+    margin-top: map-get($spacings, xs);
+}

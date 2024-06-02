@@ -1,0 +1,8 @@
+@use '../../themes/base/' as *;
+
+@each $key, $value in $breakpoints {
+    .wrapper-size--#{$key} {
+        margin-inline: auto;
+        max-width: $value;
+    }
+}

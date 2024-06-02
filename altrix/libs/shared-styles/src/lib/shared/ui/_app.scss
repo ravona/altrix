@@ -1,0 +1,44 @@
+$app_gutter: var(--spacing-lg);
+$app_min_width: 400px;
+
+$app_header_background: var(--clr-bg--primary);
+$app_header_height: 60px;
+
+$app_footer_background: var(--clr-secondary);
+$app_footer_height: 60px;
+
+.app {
+    display: grid;
+    grid-template-areas: 'header' 'main' 'footer';
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+    min-width: $app_min_width;
+}
+
+.app-header {
+    grid-area: header;
+    min-height: $app_header_height;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $app_gutter;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-high);
+    background-color: $app_header_background;
+    overflow-x: auto;
+}
+
+.app-main {
+    grid-area: main;
+    padding: $app_gutter;
+    background-color: var(--clr-brand--60);
+    overflow: hidden;
+}
+
+.app-footer {
+    grid-area: footer;
+    min-height: $app_footer_height;
+    padding: $app_gutter;
+    background-color: $app_footer_background;
+}

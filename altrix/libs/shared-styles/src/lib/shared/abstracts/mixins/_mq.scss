@@ -1,7 +1,8 @@
-@use '../functions' as *;
-@use '../variables' as *;
+@use '../../../themes/base' as *;
 
-@mixin mq($breakpoint) {
+@mixin mq($size) {
+    $breakpoint: map-get($breakpoints, $size);
+
     @media (min-width: $breakpoint) {
         @content;
     }
