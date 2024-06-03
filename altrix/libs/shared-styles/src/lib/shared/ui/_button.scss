@@ -4,7 +4,7 @@
 @use '../globals/helpers' as *;
 
 .button {
-    padding: 0.25em 1em;
+    padding: 0.25rem 1rem;
     white-space: nowrap;
     border-radius: var(--spacing-xs);
     text-shadow: 0 2px 2px rgba(0, 0, 0, 1);

@@ -61,7 +61,7 @@ export function App() {
                         </p>
                     </div>
 
-                    <div className="box p-sm flex ai-c gap-lg">
+                    <div className="box flex flex--wrap p-sm ai-c gap-lg">
                         <button className="button button-size--xl button-clr-brand--30">
                             button-size--xl
                         </button>
@@ -79,7 +79,7 @@ export function App() {
                         </button>
                     </div>
 
-                    <div className="box p-sm flex ai-c gap-md mb-md">
+                    <div className="box flex flex--wrap p-sm ai-c gap-md mb-md">
                         <button className="button button-size--md button-clr-variant--action">
                             Action
                         </button>
@@ -107,7 +107,7 @@ export function App() {
                     </div>
 
                     <div className="wrapper-size--lg">
-                        <div className="flex gap-md">
+                        <div className="gap-md">
                             <div className="card bgc-variant--success clr-txt--primary">
                                 <h3 className="heading txt-md mb-sm">
                                     Card Heading
