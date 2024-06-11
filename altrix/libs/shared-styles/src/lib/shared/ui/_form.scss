@@ -1,12 +1,10 @@
-@use '../../themes/base' as *;
-
 .form {
     /* Add any form-level styles here */
 }
 
 .field {
     font-size: var(--fs-sm);
-    margin-bottom: map-get($spacings, md);
+    margin-bottom: var(--spacing-md);
 }
 
 .field--radio {
@@ -19,7 +17,7 @@
 
 .field__label {
     display: block;
-    margin-bottom: map-get($spacings, sm);
+    margin-bottom: var(--spacing-sm);
 }
 
 .field__input-wrapper {
@@ -29,7 +27,7 @@
 
 .field__input {
     width: 100%;
-    padding: map-get($spacings, sm);
+    padding: var(--spacing-sm);
     border: 1px solid var(--clr-brand--10);
     background-color: unset;
 
@@ -48,7 +46,7 @@
 
 .field__input--radio {
     display: flex;
-    gap: map-get($spacings, sm);
+    gap: var(--spacing-sm);
     justify-content: center;
 }
 
@@ -66,7 +64,7 @@
 .field__option {
     display: flex;
     align-items: center;
-    gap: map-get($spacings, sm);
+    gap: var(--spacing-sm);
     position: relative;
     width: 100%;
     justify-content: flex-start;
@@ -81,7 +79,7 @@
 }
 
 .field__error {
-    color: map-get($colors, error);
+    color: var(--clr-variant--danger);
     font-size: var(--fs-xs);
-    margin-top: map-get($spacings, xs);
+    margin-top: var(--spacing-xs);
 }

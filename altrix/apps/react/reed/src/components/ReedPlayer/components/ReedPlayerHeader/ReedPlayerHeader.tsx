@@ -1,4 +1,3 @@
-import sharedStyles from '@altrix/shared-styles/shared/ui/index.module.scss';
 import styles from '@altrix/shared-styles/projects/reed/ReedPlayer.module.scss';
 
 export type Props = {
@@ -9,14 +8,12 @@ export type Props = {
 const ReedPlayerHeader: React.FC<Props> = (props) => {
     return (
         <header className={styles['ReedPlayer__Header']}>
-            <h2
-                className={`${styles['ReedPlayer__Header-Title']} ${sharedStyles['heading']}`}
-            >
+            <h2 className={`${styles['ReedPlayer__Header-Title']} heading`}>
                 {props.name}
             </h2>
             {props.source && (
                 <h3
-                    className={`${styles['ReedPlayer__Header-Subtitle']} ${sharedStyles['heading']}`}
+                    className={`${styles['ReedPlayer__Header-Subtitle']} heading`}
                 >
                     Source: {props.source}
                 </h3>
